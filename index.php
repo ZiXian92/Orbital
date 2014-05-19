@@ -6,10 +6,13 @@
 </head>
 
 <body>
-	<?php include('includes/header.php'); ?>
+	<!--Imports the header and navigation links-->
+	<?php 
+	include('includes/header.php');
+	include('includes/nav.php');
+	?>
 
-	<?php include('includes/nav.php'); ?>
-
+	<!--The main content of the page-->
 	<div id="content">
 		<p>Do you have photos of any significant life events that you
 		do not wish to forget? Or do you want to share these life events
@@ -25,6 +28,7 @@
 		<p style="text-align: center;"><a href="create_entry.php">Let's Get Started!</a></p>
 	</div>
 
+	<!--Imports the footer-->
 	<?php include('includes/footer.php'); ?>
 </body>
 </html>

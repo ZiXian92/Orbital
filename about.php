@@ -6,10 +6,13 @@
 </head>
 
 <body>
-	<?php include('includes/header.php'); ?>
+	<!--Imports the header and navigation links-->
+	<?php
+	include('includes/header.php');
+	include('includes/nav.php');
+	?>
 
-	<?php include('includes/nav.php'); ?>
-
+	<!--Main content of the page-->
 	<div id="content">
 		<h2>About Us</h2>
 		<p>This site is created by 2 NUS students as part of their
@@ -22,6 +25,7 @@
 		</p>
 	</div>
 
+	<!--Imports the footer-->
 	<?php include('includes/footer.php'); ?>
 </body>
 </html>
