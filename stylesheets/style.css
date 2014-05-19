@@ -43,6 +43,7 @@ nav{
 	width: 60%;
 	min-width: 500px;
 	margin: 0 auto;
+	padding: 10px 5px;
 }
 
 #content h2{
@@ -61,4 +62,8 @@ nav{
 	position: absolute;
 	text-align: center;
 	bottom: 0;
+}
+
+textarea{
+	vertical-align: top;
 }

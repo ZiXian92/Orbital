@@ -22,6 +22,7 @@
 
 		<h2>I've done this before</h2>
 		<!--Insert image button link to the standard form-->
+		<p style="text-align: center;"><a href="create_entry.php">Let's Get Started!</a></p>
 	</div>
 
 	<?php include('includes/footer.php'); ?>
