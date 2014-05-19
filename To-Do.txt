@@ -1,3 +1,11 @@
-1. Create button to use as link for 1st time users
-2. Create button to use as link for more experienced users
-3. Create page with standard form to create entry.
+Main(updated as of 19 May 2014):
+1. Fill upload_handler.php with functions to handle file upload and generate
+   PDF file.(Follow the example in the library book)
+2. Create button to use as link for 1st time users
+3. Create button to use as link for more experienced users
+	- Created a normal text link as stand in to test functionality.
+4. Decorate  the webpages.
+
+Optional stuff:
+1. URL masking for ALL links(hide all the .php extensions and the parameters
+   sent via the url)
