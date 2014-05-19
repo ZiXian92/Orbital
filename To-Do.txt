@@ -7,5 +7,8 @@ Main(updated as of 19 May 2014):
 4. Decorate  the webpages.
 
 Optional stuff:
-1. URL masking for ALL links(hide all the .php extensions and the parameters
+1. Modularise the site further by having 1 template file and then using PHP
+   script to load the template file and fill in contents appropriately for
+   EVERY page.
+2. URL masking for ALL links(hide all the .php extensions and the parameters
    sent via the url)
