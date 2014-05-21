@@ -1,4 +1,5 @@
 <?php
 	include 'view.php';
-	render_page("home");
+	$dest = $_SERVER['REQUEST_URI'];
+	render_page($dest);
 ?>
