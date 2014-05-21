@@ -1,10 +1,8 @@
 <?php
-class View{
-	private $_template = "template.html";
-	private $_content = file_get_contents($_template);
-	public function render() { echo $_content; }
-}
-
-$home = new View();
-$home->render();
+	function render_page($page){
+		$content = file_get_contents("template.html");
+		$content = str_replace("{{title}}", $page, $content);
+		$content = str_replace("{{content}}", file_get_contents($page.".html"), $content);
+		echo $content;
+	}
 ?>
