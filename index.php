@@ -1,5 +1,9 @@
 <?php
 	include 'view.php';
-	$dest = $_SERVER['REQUEST_URI'];
-	render_page($dest);
+
+	if(!isset($_GET['page']))
+		render_page('home');
+	else
+		render_page($_GET['page']);
+	unset($_GET['page']);
 ?>
