@@ -6,18 +6,24 @@
 </head>
 
 <body>
-	<!--Imports the header and navigation links-->
-	<?php 
-	include('includes/header.php');
-	include('includes/nav.php');
-	?>
+	<div id="header">
+		<h1>Site Title</h1>
+	</div>
+
+	<nav>
+		<ul id="navbar">
+			<li><a href="/">Home</a></li>
+			<li><a href="about.php">About</a></li>
+		</ul>
+	</nav>
 
 	<!--The main content of the page-->
 	<div id="content">
 		{{content}}
 	</div>
 
-	<!--Imports the footer-->
-	<?php include('includes/footer.php'); ?>
+	<div id="footer">
+		Created by: XXX and XXX on XX July 2014
+	</div>
 </body>
 </html>
