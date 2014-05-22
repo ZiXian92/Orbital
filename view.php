@@ -1,22 +1,29 @@
 <?php
-	/* Defines the view component of the MVC framework.
-	 * Defining view as a class object causes many statements to be
-	 * not executed so this function is the next better alternative.
-	 * Currently handles only page requests.
-	 * To be modified when more placeholders in the template are needed.
-	 * Note: As this function reads in the entire template as a big chunk
-	 * of text, network bandwidth may be insufficient if template.html
-	 * gets too big.
-	 * Comments by Zi Xian
-	 */
-	function render_page($page){
-		$content = file_get_contents("template.html");
-		$content = str_replace("{{title}}", $page, $content);
-		$content = str_replace("{{content}}", file_get_contents($page.".html"), $content);
-		if($page=='create_entry')
-			$content = str_replace("{{javascript}}", "<script src=\"javascripts/jscript.js\"></script>", $content);
-		else
-			$content = str_replace("{{javascript}}", "", $content);
-		echo $content;
+	class View{
+		private $_template = "template.html";
+		private $_content;
+		public function __construct($arr){
+			$this->_content = $this->get_template();
+			$this->setContent($arr);
+		}
+		private function get_template(){
+			return file_get_contents($this->_template);
+		}
+		private function setContent($arr){
+			foreach($arr as $key=>$value)
+				$this->_content = str_replace("{{".$key."}}",
+					$value, $this->_content);
+		}
+		public function render(){
+			echo $this->_content;
+		}
 	}
+	
+	/*$dict = array();
+	$dict['title'] = 'Home';
+	$dict['javascript'] = '';
+	$dict['content'] = file_get_contents('home.html');
+	$view = new View($dict);
+	$view->render();*/
+	#print_r($dict);
 ?>

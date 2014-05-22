@@ -7,14 +7,7 @@
 	 * URLs.
 	 */
 
-	/*include 'view.php';
-
-	if(!isset($_GET['page']))
-		render_page('home');
-	else
-		render_page($_GET['page']);*/
-
-	include 'view2.php';
+	include 'view.php';
 
 	/* To be outsourced to model component */
 	function getContent($page){
