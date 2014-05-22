@@ -7,11 +7,32 @@
 	 * URLs.
 	 */
 
-	include 'view.php';
+	/*include 'view.php';
 
 	if(!isset($_GET['page']))
 		render_page('home');
 	else
-		render_page($_GET['page']);
+		render_page($_GET['page']);*/
+
+	include 'view2.php';
+
+	/* To be outsourced to model component */
+	function getContent($page){
+		$arr = array();
+		$arr['title'] = strtoupper(substr($page, 0, 1)).substr($page, 1);
+		$arr['content'] = file_get_contents($page.".html");
+		if($page=="create_entry")
+			$arr['javascript'] = "<script src=\"javascripts/jscript.js\"></script>";
+		else
+			$arr['javascript'] = "";
+		return $arr;
+	}
+	
+	$content_array = array();
+	if(!isset($_GET['page']))
+		$_GET['page'] = "home";
+	$content_array = getContent($_GET['page']);
+	$view = new View($content_array);
+	$view->render();
 	unset($_GET['page']);
 ?>

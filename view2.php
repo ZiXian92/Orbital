@@ -19,11 +19,11 @@
 		}
 	}
 	
-	$dict = array();
+	/*$dict = array();
 	$dict['title'] = 'Home';
 	$dict['javascript'] = '';
 	$dict['content'] = file_get_contents('home.html');
 	$view = new View($dict);
-	$view->render();
+	$view->render();*/
 	#print_r($dict);
 ?>
