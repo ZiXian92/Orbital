@@ -1,4 +1,9 @@
 <?php
+	/* Defines each view object.
+	 * Each view is o be created after compiling all required contents
+	 * into an array.
+	 * $arr must be an array of key-value pairs
+	 */
 	class View{
 		private $_template = "template.html";
 		private $_content;
@@ -19,11 +24,11 @@
 		}
 	}
 	
+	/* Code to test that the class is working */
 	/*$dict = array();
 	$dict['title'] = 'Home';
 	$dict['javascript'] = '';
 	$dict['content'] = file_get_contents('home.html');
 	$view = new View($dict);
 	$view->render();*/
-	#print_r($dict);
 ?>

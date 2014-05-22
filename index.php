@@ -21,6 +21,7 @@
 		return $arr;
 	}
 	
+	/* Handles page requests using the 'ugly' URLs */
 	$content_array = array();
 	if(!isset($_GET['page']))
 		$_GET['page'] = "home";
