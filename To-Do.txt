@@ -1,11 +1,15 @@
-Main(updated as of 21 May 2014):
+Main(updated as of 23 May 2014):
 1. Fill upload_handler.php with functions to handle file upload and generate
-   PDF file.(Follow the example in the library book)
-2. Create button to use as link for 1st time users
-3. Create button to use as link for more experienced users
+   PDF file.(W.I.P.)
+2. Resolve/Debug the problem of javascript validation not executing when 1 or
+   more field(s) is/are empty.
+3. Create button to use as link for 1st time users
+4. Create button to use as link for more experienced users
 	- Created a normal text link as stand in to test functionality.
-4. Decorate the webpages.
-5. Remove the borders.
+5. Make changes in the CSS file so that pages render nicely even when browser
+   window size is adjusted
+6. Decorate the webpages.
+7. Remove the borders.
 
 Optional stuff:
 1. Use .htaccess file for URL rewriting for user-friendly URLs

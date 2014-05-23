@@ -1,10 +1,12 @@
 <!--Form to gather required information for an entry-->
-<form name="new_entry" action="upload_handler.php" method="post" id="entry" onsubmit="return validate();">
+<!--Lesson learnt: Must include enctype="multipart/form-data in <form> to
+    allow file to be submitted as file"-->
+<form name="new_entry" action="upload_handler.php" method="post" id="entry" onsubmit="return validate();" enctype="multipart/form-data">
 
 	<!--Image file upload field-->
 	<label for="file">Image File:</label>
 	<!--readURL() function to be implemented. Complicated.-->
-	<input type="file" name="img_file" id="file"
+	<input type="file" name="img" id="file"
 	accept="image/gif, image/jpeg, image/png"
 	onchange="">*required<br/>
 
