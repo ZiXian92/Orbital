@@ -16,6 +16,8 @@
 	
 	/* Moves image to uploads folder in server for use in PDF
 	 * Image to be deleted form uploads folder after use
+	 * Please create the destination folder called uploads with the same
+	 * relative pathas in the 2nd parameter of move_uploaded_file.
 	 * Destination folder requires permission setting of 777 instead of
 	 * 755 or 766. Why?
 	 */
