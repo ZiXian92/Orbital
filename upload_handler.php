@@ -1,20 +1,67 @@
 <?php
 /* This file only handles form submissions.
- * To be incorporated or called by index.php
- * Temporary measure, only to test working functionality.
- * Next step is to write the image and all form details preoperly into
- * PDF file
- * Commented by: Qua Zi Xian
+ * To be modularised as an object to be used by index.php
+ * Commented by: Qua Zi Xian on 26 May 2014
  */
-#This file only handles form submissions.
-	if($_SERVER['REQUEST_METHOD']=="POST"){
-		echo "File name: ".$_FILES['img']['name']."<br/>";
-		echo "Title: ".$_POST['title']."<br/>";
-		echo "Story: ".$_POST['story'];
+	/* FPDF class definition is in the specified file */
+	require 'fpdf/fpdf.php';
 
-	/* Destination folder requires permission setting of 777 instead of
+	if($_SERVER['REQUEST_METHOD']!="POST"){
+		//Redirect to create_entry page
+	}
+
+	/*Destination folder requires permission setting of 777 instead of
 	 * 755 or 766. Why?
 	 */
-		move_uploaded_file($_FILES['img']['tmp_name'], "../uploads/{$_FILES['img']['name']}");
-	}
+	
+	/* Moves image to uploads folder in server for use in PDF
+	 * Image to be deleted form uploads folder after use
+	 * Destination folder requires permission setting of 777 instead of
+	 * 755 or 766. Why?
+	 */
+	move_uploaded_file($_FILES['img']['tmp_name'], "../uploads/{$_FILES['img']['name']}");
+
+	/* Creates a new PDF document.
+	 * Default page settings for PDF are Portrait and A4 size */
+	$fpdf = new FPDF('P', 'pt', 'A4');
+
+	/* Default values are 100% zoom and Portrait layout */
+	$fpdf->SetDisplayMode('default', 'default');
+
+	/* Adds a new page to the document */
+	$fpdf->AddPage();
+
+	/* Gets an array of size information
+	 * Elements 0 and 1 are width and height of image respectively
+	 */
+	$img_size = getimagesize("../uploads/{$_FILES['img']['name']}");
+
+	/* Each cell/multicell represents a line
+	 * Cell parameters: width, height, text, border, next cursor
+	 * position after call, text alignment, fill
+	 * MultiCell parameters: width, height, text, border,
+	 * text alignment, fill
+	 */
+	/* To-Do: Center ANY image in the cell.
+	 * Currently not exactly centered
+	 */
+	$fpdf->Cell(0, $img_size[1], $fpdf->Image("../uploads/{$_FILES['img']['name']}", (595-$img_size[0])/2.0, 50), 0, 1, 'C');
+
+	/* Prints the title */
+	$fpdf->SetFont('Arial', 'B', '18');
+	$fpdf->Cell(0, 20, $_POST['title'], 0, 1, 'C');
+
+	/* Prints the story */
+	$fpdf->SetFont('Arial', '', 14);
+	$fpdf->MultiCell(0, 16, $_POST['story'], 0, 'J');
+
+	/* Sends the document to the specified destination.
+	 * 1st parameter is the name to be given to document.
+	 * Options: I = Show in browser, with download option
+	 *	    D = Send to browser and force download
+	 *	    F = Save to local file
+	 *	    S = Return document as string
+	 * Change the destination to D before publishing.
+	 */
+	$fpdf->Output("test.pdf", "I");
 ?>
