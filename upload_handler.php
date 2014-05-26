@@ -30,16 +30,17 @@
 	/* Default values are 100% zoom and Portrait layout */
 	$fpdf->SetDisplayMode('default', 'default');
 
+	$fpdf->SetMargins(40, 50, 40);
+
 	/* Adds a new page to the document */
 	$fpdf->AddPage();
 
-	$fpdf->SetFont('Arial', '', 14);
-	#$fpdf->MultiCell(0, 16, $_POST['title'], 0, 'L');
+	/* Must set font efore using Cell or MultiCell functions */
+	$fpdf->SetFont('Arial', '', 0);
 
 	/* Gets an array of size information
 	 * Elements 0 and 1 are width and height of image respectively
 	 */
-	move_uploaded_file($_FILES['img']['tmp_name'], "../uploads/{$_FILES['img']['name']}");
 	$img_size = getimagesize("../uploads/{$_FILES['img']['name']}");
 
 	/* Each cell/multicell represents a line
@@ -49,13 +50,13 @@
 	 * text alignment, fill
 	 */
 	/* To-Do: Center ANY image in the cell.
-	 * Currently not exactly centered
+	 * Currently not centered
 	 */
-	$fpdf->Cell(0, 0, $fpdf->Image("../uploads/{$_FILES['img']['name']}"), 0, 1, 'C');
+	$fpdf->Cell(0, 20, $fpdf->Image("../uploads/{$_FILES['img']['name']}", (660-$img_size[0])/2), 0, 1, 'C');
 
 	/* Prints the title */
 	$fpdf->SetFont('Arial', 'B', '18');
-	$fpdf->Cell(0, 20, $_POST['title'], 0, 1, 'C');
+	$fpdf->Cell(0, 22, $_POST['title'], 0, 1, 'C');
 
 	/* Prints the story */
 	$fpdf->SetFont('Arial', '', 14);
