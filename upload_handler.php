@@ -6,9 +6,9 @@
 	/* FPDF class definition is in the specified file */
 	require 'fpdf/fpdf.php';
 
-	if($_SERVER['REQUEST_METHOD']!="POST"){
+	/*if($_SERVER['REQUEST_METHOD']!="POST"){
 		//Redirect to create_entry page
-	}
+	}*/
 
 	/*Destination folder requires permission setting of 777 instead of
 	 * 755 or 766. Why?
@@ -22,7 +22,7 @@
 	 * 755 or 766. Why?
 	 */
 	move_uploaded_file($_FILES['img']['tmp_name'], "../uploads/{$_FILES['img']['name']}");
-
+	
 	/* Creates a new PDF document.
 	 * Default page settings for PDF are Portrait and A4 size */
 	$fpdf = new FPDF('P', 'pt', 'A4');
@@ -33,9 +33,13 @@
 	/* Adds a new page to the document */
 	$fpdf->AddPage();
 
+	$fpdf->SetFont('Arial', '', 14);
+	#$fpdf->MultiCell(0, 16, $_POST['title'], 0, 'L');
+
 	/* Gets an array of size information
 	 * Elements 0 and 1 are width and height of image respectively
 	 */
+	move_uploaded_file($_FILES['img']['tmp_name'], "../uploads/{$_FILES['img']['name']}");
 	$img_size = getimagesize("../uploads/{$_FILES['img']['name']}");
 
 	/* Each cell/multicell represents a line
@@ -47,7 +51,7 @@
 	/* To-Do: Center ANY image in the cell.
 	 * Currently not exactly centered
 	 */
-	$fpdf->Cell(0, $img_size[1], $fpdf->Image("../uploads/{$_FILES['img']['name']}", (595-$img_size[0])/2.0, 50), 0, 1, 'C');
+	$fpdf->Cell(0, 0, $fpdf->Image("../uploads/{$_FILES['img']['name']}"), 0, 1, 'C');
 
 	/* Prints the title */
 	$fpdf->SetFont('Arial', 'B', '18');
@@ -65,5 +69,5 @@
 	 *	    S = Return document as string
 	 * Change the destination to D before publishing.
 	 */
-	$fpdf->Output("test.pdf", "I");
+	$fpdf->Output("{$_FILES['img']['name']}.pdf", "I");
 ?>
