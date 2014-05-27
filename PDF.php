@@ -43,6 +43,7 @@
 			/* Initialise member attributes */
 			$this->_img_file = "../uploads/{$_FILES['img']['name']}";
 			$this->_author = $_POST['author'];
+			parent::SetAuthor($this->_author);
 			$this->_title = $_POST['title'];
 			$this->_story = $_POST['story'];
 		
