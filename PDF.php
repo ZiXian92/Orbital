@@ -12,14 +12,15 @@
 		/* Object variables */
 		const MAX_IMG_WIDTH = 300;
 		const MAX_IMG_HEIGHT = 300;
-		private $_img_file;
-		private $_img_size;
-		private $_img_width;
-		private $_img_height;
-		private $_author;
-		private $_title;
-		private $_story;
-		private $_scale;
+		private $_img_file;	//Name of image file
+		private $_img_size;	//Array of size information of image
+		private $_img_width;	//Width to be applied on image
+		private $_img_height;	//Height to be applied on image
+		private $_author;	//Name of author
+		private $_title;	//Title of story
+		private $_story;	//The story
+		private $_scale;	//Scale factor used to calculate width
+					//and height
 
 		/* Constructor */
 		/* Initialises all variables and sets up the document,
@@ -27,21 +28,36 @@
 		 * To-Do: Implement exception handling for moving uploaded file.
 		 */
 		public function __construct(){
+			/* Creates a new PDF document */
 			parent::__construct("P", "pt", "A4");
 			parent::SetDisplayMode("real", "default");
 			parent::SetMargins(50, 50, 50);
+
+			/* Initialise member attributes */
 			$this->_img_file = "../uploads/{$_FILES['img']['name']}";
 			$this->_author = $_POST['author'];
 			$this->_title = $_POST['title'];
 			$this->_story = $_POST['story'];
+		
+			/* Width and height are in pixels */
 			$this->_img_size = getimagesize($this->_img_file);
 			$this->_scale = $this->get_scale();
 			$this->set_size();
+
+			/* Fills in the contents */
 			$this->fill();
 		}
 	
-		/* Destructor */
-		/* On destruction, outputs the completed PDF file */
+		/* Destructor
+		 * On destruction, sends the document to the
+		 * specified destination.
+		 * 1st parameter is the name to be given to document.
+		 * Options: I = Show in browser, with download option
+		 *	    D = Send to browser and force download
+		 *	    F = Save to local file
+		 *	    S = Return document as string
+		 * Change the destination to D before publishing.
+		 */
 		public function __destruct(){
 			parent::Output($this->_title.".pdf", "I");
 		}
@@ -52,6 +68,7 @@
 		 * Else, returns scale factor of 1
 		 */
 		private function get_scale(){
+			/* 1 pt = 0.75 pixels */
 			$width = 0.75*$this->_img_size[0];
 			$height = 0.75*$this->_img_size[1];
 			$width_scale = $height_scale = 1.0;
@@ -64,11 +81,15 @@
 			return $height_scale;
 		}
 		
+		/* Sets the dimensions ti be applied to the image
+		 * using the scale factor to scale any oversized images
+		 */
 		private function set_size(){
 			$this->_img_width = 0.75*$this->_scale*$this->_img_size[0];
 			$this->_img_height = 0.75*$this->_scale*$this->_img_size[1];
 		}
 
+		/* Horizontally aligns the image to center of page */
 		private function center_image(){
 			parent::SetFont("Times", "", 14);
 			parent::Cell(0, $this->_img_height,
@@ -82,17 +103,34 @@
 		 * following format:
 		 * Uploaded image at the top in the center.
 		 * Title in the center on next line.
-		 * Author in center on next line
-		 * Story aligned left on next line
+		 * Author in center on next line.
+		 * Story aligned left on next line.
+		 * Each cell/multicell represents a line.
+		 * Cell parameters: width, height, text, border, next cursor
+		 * position after call, text alignment, fill
+		 * MultiCell parameters: width, height, text, border,
+		 * text alignment, fill.
+		 * Note: Must set the font before using Cell/MultiCell.
 		 */
 		private function fill(){
+			/* Creates a new page */
 			parent::AddPage();
+
+			/* Horizontally aligns the image to center of page */
 			$this->center_image();
+	
+			/* Prints the title */
 			parent::SetFont("Times", "B", 18);
 			parent::Cell(0, 20, $this->_title, 0, 1, "C");
+		
+			/* Prints the author */
 			parent::SetFont("Times", "", 15);
 			parent::Cell(0, 18, "By ".$this->_author, 0, 1, "C");
+
+			/* Leaves some extra spacing */
 			parent::Cell(0, 18, "", 0, 1, "L");
+
+			/* Prints the story */
 			parent::SetFont("Times", "", 13);
 			parent::MultiCell(0, 15, $this->_story, 0, "J");
 		}
