@@ -9,9 +9,16 @@
 	 * Author: Qua Zi Xian
 	 */
 	class PDF extends FPDF{
-		/* Object variables */
+		/* Defines the maximum width and height allowed for the image.
+		 * Change the maximum size accordingly using only these 2
+		 * constants.
+		 * Leave the function implementations untouched unless change
+		 * in implementation is called for.
+		 */
 		const MAX_IMG_WIDTH = 300;
 		const MAX_IMG_HEIGHT = 300;
+
+		/* Object variables */
 		private $_img_file;	//Name of image file
 		private $_img_size;	//Array of size information of image
 		private $_img_width;	//Width to be applied on image
