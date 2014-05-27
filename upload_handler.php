@@ -4,7 +4,7 @@
  * Commented by: Qua Zi Xian on 26 May 2014
  */
 	/* FPDF class definition is in the specified file */
-	require 'fpdf/fpdf.php';
+	require 'PDF.php';
 
 	/*if($_SERVER['REQUEST_METHOD']!="POST"){
 		//Redirect to create_entry page
@@ -25,23 +25,23 @@
 	
 	/* Creates a new PDF document.
 	 * Default page settings for PDF are Portrait and A4 size */
-	$fpdf = new FPDF('P', 'pt', 'A4');
+	#$fpdf = new FPDF('P', 'pt', 'A4');
 
 	/* Default values are 100% zoom and Portrait layout */
-	$fpdf->SetDisplayMode('default', 'default');
+	#$fpdf->SetDisplayMode('default', 'default');
 
-	$fpdf->SetMargins(40, 50, 40);
+	#$fpdf->SetMargins(40, 50, 40);
 
 	/* Adds a new page to the document */
-	$fpdf->AddPage();
+	#$fpdf->AddPage();
 
 	/* Must set font efore using Cell or MultiCell functions */
-	$fpdf->SetFont('Arial', '', 0);
+	#$fpdf->SetFont('Arial', '', 0);
 
 	/* Gets an array of size information
 	 * Elements 0 and 1 are width and height of image respectively
 	 */
-	$img_size = getimagesize("../uploads/{$_FILES['img']['name']}");
+	#$img_size = getimagesize("../uploads/{$_FILES['img']['name']}");
 
 	/* Each cell/multicell represents a line
 	 * Cell parameters: width, height, text, border, next cursor
@@ -52,15 +52,15 @@
 	/* To-Do: Center ANY image in the cell.
 	 * Currently not centered
 	 */
-	$fpdf->Cell(0, 20, $fpdf->Image("../uploads/{$_FILES['img']['name']}", (660-$img_size[0])/2), 0, 1, 'C');
+	#$fpdf->Cell(0, 20, $fpdf->Image("../uploads/{$_FILES['img']['name']}", (595-$img_size[0]*0.75)/2), 0, 1, 'C');
 
 	/* Prints the title */
-	$fpdf->SetFont('Arial', 'B', '18');
-	$fpdf->Cell(0, 22, $_POST['title'], 0, 1, 'C');
+	#$fpdf->SetFont('Arial', 'B', 18);
+	#$fpdf->Cell(0, 22, $_POST['title'], 0, 1, 'C');
 
 	/* Prints the story */
-	$fpdf->SetFont('Arial', '', 14);
-	$fpdf->MultiCell(0, 16, $_POST['story'], 0, 'J');
+	#$fpdf->SetFont('Arial', '', 14);
+	#$fpdf->MultiCell(0, 16, $_POST['story'], 0, 'J');
 
 	/* Sends the document to the specified destination.
 	 * 1st parameter is the name to be given to document.
@@ -70,5 +70,8 @@
 	 *	    S = Return document as string
 	 * Change the destination to D before publishing.
 	 */
-	$fpdf->Output("{$_FILES['img']['name']}.pdf", "I");
+	#$fpdf->Output("{$_FILES['img']['name']}.pdf", "I");
+
+	$pdf = new PDF();
+	unset($pdf);
 ?>

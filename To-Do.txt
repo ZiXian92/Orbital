@@ -1,8 +1,7 @@
 Main(updated as of 26 May 2014):
 1. Resolve/Debug the problem of javascript validation not executing when 1 or
    more field(s) is/are empty.
-2. Modularise the code in upload_handler.php as a class to be invoked as an
-   object in index.php.
+2. Move upload handling to index.php.
 3. Create button to use as link for 1st time users
 4. Create button to use as link for more experienced users
 	- Created a normal text link as stand in to test functionality.
