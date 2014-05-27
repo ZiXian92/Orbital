@@ -37,14 +37,19 @@
 		public function __construct(){
 			/* Creates a new PDF document */
 			parent::__construct("P", "pt", "A4");
+
+			/* Sets document settings */
 			parent::SetDisplayMode("real", "default");
 			parent::SetMargins(50, 50, 50);
+			parent::SetCreator("XXX");
+			parent::SetSubject("My XXX");
 
 			/* Initialise member attributes */
 			$this->_img_file = "../uploads/{$_FILES['img']['name']}";
 			$this->_author = $_POST['author'];
 			parent::SetAuthor($this->_author);
 			$this->_title = $_POST['title'];
+			parent::SetTitle($this->_title);
 			$this->_story = $_POST['story'];
 		
 			/* Width and height are in pixels */
