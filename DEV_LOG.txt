@@ -1,0 +1,26 @@
+********************************************************************************
+		Documentation of what has been implemented
+********************************************************************************
+
+May 2014
+- Skeletal template of each web page
+- Contents for each of the basic pages, including entry form.
+- Implemented a simplae MVC framework, currently only the View and Control
+  components.
+- Implements each view as an object that renders each page using the template
+  and loading contents into the template.
+- Directs all page queries to index.php, which serves as the controller for
+  the website.
+- Completes 1 main functionality of filling out the form contents into a story
+  entry in downloadable PDF format
+
+June 2014(target)
+- Fix up the Javascript form input validation.
+- Implements storing of PDF file in database.
+- Implements user sessions for users who want to have compiled collection
+  of stories.
+- Integration with social media(ideal target)
+
+July 2014(tentative)
+- Touch up on look and design of website.
+- Publishing on online server.
