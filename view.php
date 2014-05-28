@@ -5,7 +5,7 @@
 	 * $arr must be an array of key-value pairs
 	 */
 	class View{
-		private $_template = "template.html";
+		private $_template = "html/template.html";
 		private $_content;
 		public function __construct($arr){
 			$this->_content = $this->get_template();

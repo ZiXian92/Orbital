@@ -13,7 +13,7 @@
 	function getContent($page){
 		$arr = array();
 		$arr['title'] = strtoupper(substr($page, 0, 1)).substr($page, 1);
-		$arr['content'] = file_get_contents($page.".html");
+		$arr['content'] = file_get_contents("html/".$page.".html");
 		if($page=="create_entry")
 			$arr['javascript'] = "<script src=\"javascripts/jscript.js\"></script>";
 		else
