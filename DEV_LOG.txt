@@ -12,7 +12,7 @@ May 2014
 - Directs all page queries to index.php, which serves as the controller for
   the website.
 - Completes 1 main functionality of filling out the form contents into a story
-  entry in downloadable PDF format
+  entry in downloadable PDF format, while keeping a local copy in server.
 
 June 2014(target)
 - Fix up the Javascript form input validation.
