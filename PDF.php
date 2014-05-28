@@ -62,8 +62,8 @@
 		}
 	
 		/* Destructor
-		 * On destruction, sends the document to the
-		 * specified destination.
+		 * On destruction, saves a local copy of the document
+		 * and also sends to the browser for download.
 		 * 1st parameter is the name to be given to document.
 		 * Options: I = Show in browser, with download option
 		 *	    D = Send to browser and force download
@@ -73,6 +73,7 @@
 		 */
 		public function __destruct(){
 			parent::Output("../entries/".$this->_title.".pdf", "F");
+			parent::Output($this->_title.".pdf", "D");
 		}
 
 		/* Methods */
@@ -146,11 +147,6 @@
 			/* Prints the story */
 			parent::SetFont("Times", "", 13);
 			parent::MultiCell(0, 15, $this->_story, 0, "J");
-		}
-
-		/* Returns the directory of the PDF file */
-		public function get_file(){
-			return "../entries/".$this->_title.".pdf";
 		}
 	}
 ?>

@@ -18,11 +18,14 @@
 
 		/* Creates and loads form contents into a new PDF document */
 		$pdf = new PDF();
-		$file = $pdf->get_file();
+
+		/* Destroys the PDF object, saving to ../entries folder in
+		 * the process
+		 */
 		unset($pdf);
-		header("Content-Type: application/pdf");
-		header("Content-Disposition: attachment; filename=$file");
-		header("Content-Length: filesize($file)");
+
+		/* Removes the image file from ..uploads folder */
+		unlink("../uploads/{$_FILES['img']['name']}");
 	}
 	else{
 		//Redirect to form entry page
