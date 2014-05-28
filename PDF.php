@@ -72,7 +72,7 @@
 		 * Change the destination to D before publishing.
 		 */
 		public function __destruct(){
-			parent::Output($this->_title.".pdf", "I");
+			parent::Output("../entries/".$this->_title.".pdf", "F");
 		}
 
 		/* Methods */
@@ -146,6 +146,11 @@
 			/* Prints the story */
 			parent::SetFont("Times", "", 13);
 			parent::MultiCell(0, 15, $this->_story, 0, "J");
+		}
+
+		/* Returns the directory of the PDF file */
+		public function get_file(){
+			return "../entries/".$this->_title.".pdf";
 		}
 	}
 ?>

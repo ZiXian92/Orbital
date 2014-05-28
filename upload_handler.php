@@ -18,7 +18,11 @@
 
 		/* Creates and loads form contents into a new PDF document */
 		$pdf = new PDF();
+		$file = $pdf->get_file();
 		unset($pdf);
+		header("Content-Type: application/pdf");
+		header("Content-Disposition: attachment; filename=$file");
+		header("Content-Length: filesize($file)");
 	}
 	else{
 		//Redirect to form entry page
