@@ -10,9 +10,8 @@
 	/* Moves image to uploads folder in server for use in PDF.
 	 * Please create the destination folder called uploads with the same
 	 * relative paths in the 2nd parameter of move_uploaded_file.
-	 * Destination folder requires permission setting of 777 instead of
+	 * ../uploads and ../entries requires permission setting of 777 instead of
 	 * 755 or 766. Why?
-	 * To-Do: Remove image from uploads directory after use.
 	 */
 		move_uploaded_file($_FILES['img']['tmp_name'], "../uploads/{$_FILES['img']['name']}");
 
@@ -20,7 +19,8 @@
 		$pdf = new PDF();
 
 		/* Destroys the PDF object, saving to ../entries folder in
-		 * the process
+		 * the process, and then sending the file to browser
+		 * for download.
 		 */
 		unset($pdf);
 
