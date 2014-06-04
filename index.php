@@ -7,13 +7,14 @@
 	 * URLs.
 	 */
 
-	include 'view.php';
+	require "view.php";
+	require "model.php";
 
-	/* To be outsourced to model component */
+	/* Sets the title of the web page and the javascript source. */
 	function getContent($page){
 		$arr = array();
 		$arr['title'] = strtoupper(substr($page, 0, 1)).substr($page, 1);
-		$arr['content'] = file_get_contents("html/".$page.".html");
+		#$arr['content'] = file_get_contents("html/".$page.".html");
 		if($page=="create_entry")
 			$arr['javascript'] = "<script src=\"javascripts/jscript.js\"></script>";
 		else
@@ -21,11 +22,14 @@
 		return $arr;
 	}
 	
+	$model = new Model();
+	
 	/* Handles page requests using the 'ugly' URLs */
 	$content_array = array();
 	if(!isset($_GET['page']))
 		$_GET['page'] = "home";
 	$content_array = getContent($_GET['page']);
+	$content_array['content'] = $model->get_page($_GET['page']);
 	$view = new View($content_array);
 	$view->render();
 	unset($_GET['page']);
