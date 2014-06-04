@@ -1,17 +1,18 @@
 Main(updated as of 26 May 2014):
-1. Resolve/Debug the problem of javascript validation not executing when 1 or
+1. Complete model.php.
+2. Resolve/Debug the problem of javascript validation not executing when 1 or
    more field(s) is/are empty.
-2. Move upload handling to index.php.
-3. Create button to use as link for 1st time users
-4. Create button to use as link for more experienced users
+3. Move upload handling to index.php.
+4. Create button to use as link for 1st time users
+5. Create button to use as link for more experienced users
 	- Created a normal text link as stand in to test functionality.
-5. Make changes in the CSS file so that pages render nicely even when browser
+6. Make changes in the CSS file so that pages render nicely even when browser
    window size is adjusted
-6. Add user/session management functionality(involves use of database and
+7. Add user/session management functionality(involves use of database and
    MySQL).
    * Database probably needed for sharing on Facebook.
-7. Decorate the webpages.
-8. Remove the borders.
+8. Decorate the webpages.
+9. Remove the borders.
 
 Optional stuff:
 1. Use .htaccess file for URL rewriting for user-friendly URLs

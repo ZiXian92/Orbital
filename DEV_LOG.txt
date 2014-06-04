@@ -16,7 +16,7 @@ May 2014
 
 June 2014(target)
 - Fix up the Javascript form input validation.
-- Implements storing of PDF file in database.
+- Implements storing of PDF file directory in database.
 - Implements user sessions for users who want to have compiled collection
   of stories.
 - Integration with social media(ideal target)
