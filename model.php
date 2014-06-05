@@ -21,7 +21,7 @@
 			mysqli_close($this->sql_con);
 		}
 
-		/* Replaces all placeholders in the template,
+		/* Sets all placeholder values in the template,
 		 * except for contents
 		 */
 		public function set_template(&$arr, $page){
