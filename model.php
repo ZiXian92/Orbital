@@ -27,7 +27,7 @@
 		public function set_template(&$arr, $page){
 			$arr['title'] = strtoupper(substr($page, 0, 1)).substr($page, 1);
 			if($page=="create_entry")
-				$arr['javascript'] = "<script src=\"javascripts/jscript.js\"></script>>";
+				$arr['javascript'] = "<script src=\"javascripts/jscript.js\"></script>";
 			else
 				$arr['javascript'] = "";
 			if(isset($_COOKIE['username']))

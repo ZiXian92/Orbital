@@ -1,8 +1,9 @@
 <?php
-	/* The controller component of the MVC framework.
-	 * Currently handles only page requests.
-	 * Form submission requests to be handled later upon figuring out the
-	 * SQL portion of the model component.
+	/* Part of the controller of the MVC framework.
+	 * Handles only page requests.
+	 * Form submission requests to be handled by upload_handler.php.
+	 * User login/logout requests to be handled by login.php
+	 * and logout.php respectively.
 	 * More edits to be made upon successful URL rewriting for friendlier
 	 * URLs.
 	 */
@@ -10,27 +11,36 @@
 	require "view.php";
 	require "model.php";
 
-	/* Sets the title of the web page and the javascript source. */
-	function getContent($page){
-		$arr = array();
-		$arr['title'] = strtoupper(substr($page, 0, 1)).substr($page, 1);
-		#$arr['content'] = file_get_contents("html/".$page.".html");
-		if($page=="create_entry")
-			$arr['javascript'] = "<script src=\"javascripts/jscript.js\"></script>";
-		else
-			$arr['javascript'] = "";
-		return $arr;
-	}
-	
 	$model = new Model();
 	
 	/* Handles page requests using the 'ugly' URLs */
+	/* Initialise to an empty array */
 	$content_array = array();
+
+	/* When user enters URL of main page, $_GET['page']
+	 * does not hold any value
+	 */
 	if(!isset($_GET['page']))
 		$_GET['page'] = "home";
-	$content_array = getContent($_GET['page']);
+
+	/* Assigns values to replace placeholders with into $content_array
+	 * $content_array is passed by reference
+	 */
+	$model->set_template($content_array, $_GET['page']);
+
+	/* Gets the content from the appropriate HTML file based
+	 * on page requested.
+	 */
 	$content_array['content'] = $model->get_page($_GET['page']);
+
+	/* Creates a new View object once all the required information
+	 * are stored in the array.
+	 */
 	$view = new View($content_array);
 	$view->render();
+
+	/* Clears the $_GET['page'] superglobal variable to
+	 * prevent wrong execution in the future.
+	 */
 	unset($_GET['page']);
 ?>
