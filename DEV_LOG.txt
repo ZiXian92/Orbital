@@ -2,19 +2,23 @@
 		Documentation of what has been implemented
 ********************************************************************************
 
+Legend: + represents completed and - represents To-Do
+
 May 2014
-- Skeletal template of each web page
-- Contents for each of the basic pages, including entry form.
-- Implemented a simplae MVC framework, currently only the View and Control
++ Skeletal template of each web page
++ Contents for each of the basic pages, including entry form.
++ Implemented a simplae MVC framework, currently only the View and Control
   components.
-- Implements each view as an object that renders each page using the template
++ Implements each view as an object that renders each page using the template
   and loading contents into the template.
-- Directs all page queries to index.php, which serves as the controller for
++ Directs all page queries to index.php, which serves as the controller for
   the website.
-- Completes 1 main functionality of filling out the form contents into a story
++ Completes 1 main functionality of filling out the form contents into a story
   entry in downloadable PDF format, while keeping a local copy in server.
 
 June 2014(target)
++ Creates Login form for registered users(unprogrammed)
++ Adds form for users who forgot their passwords(backend not implemented)
 - Fix up the Javascript form input validation.
 - Implements storing of PDF file directory in database.
 - Implements user sessions for users who want to have compiled collection
