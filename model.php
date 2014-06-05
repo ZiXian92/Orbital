@@ -14,23 +14,22 @@
 				echo "Unable to connect to database. Error: ".mysqli_connect_error()."<br/>";
 				$this->__destruct();
 			}
-			#echo "Connection success!<br/>";
 		}
 
 		/* Destructor. Closes database connection. */
 		public function __destruct(){
 			mysqli_close($this->sql_con);
-			#echo "Connection closed.<br/>";
 		}
 
 		/* Returns the contents of the HTML file referred
-		 * to by $page
+		 * to by $page.
+		 * Returns a 404 error page if the page requested
+		 * does not exist.
 		 */
 		public function get_page($page){
 			if(file_exists("html/".$page.".html"))
 				return file_get_contents("html/".$page.".html");
-			#else throw an exception or return contents of 404.html
-			return NULL;
+			return file_get_contents("html/404.html");
 		}
 
 		/* Adds a new user to the database.
