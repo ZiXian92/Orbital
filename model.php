@@ -4,6 +4,7 @@
 	 */
 
 	class Model{
+		/* Variable holding connection with database */
 		private $sql_con;
 
 		/* Constructor. Establishes database connection. */
@@ -51,11 +52,22 @@
 			mysqli_query($this->sql_con, "DELETE FROM USERS WHERE ID=".(string)$id.";");
 		}
 
-		/* Adds a new entry to the database.
-		 * To be completed.
-		 */
-		public function add_entry(){
+		/* Returns the next entry_id to assign to the new entry */
+		public function get_entry_id(){
+			$result = mysqli_query($this->con, "SELECT MAX(ENTRY_ID) MAX FROM ENTRIES;");
+			$row = mysqli_fetch_assoc($result);
+			return ((int)$row['MAX'])+1;
+		}
 
+		/* Adds a new entry to the database.
+		 * $entry_id must be an integer between 0 and 99999.
+		 * $title must be a string of length
+		 * $user_id must be an integer of between 0 and 99999.
+		 * $date must be
+		 * $file must be a string of length
+		 */
+		public function add_entry($entry_id, $title, $user_id, $date, $file){
+			mysqli_query($this->sql_con, "INSERT INTO ENTRIES VALUES(".$entry_id.", \"".$title."\", ".$user_id.", ".$date.", \"".$file."\");");
 		}
 		
 		/* Removes an entry from the database.
