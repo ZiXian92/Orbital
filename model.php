@@ -21,6 +21,30 @@
 			mysqli_close($this->sql_con);
 		}
 
+		/* Replaces all placeholders in the template,
+		 * except for contents
+		 */
+		public function set_template(&$arr, $page){
+			$arr['title'] = strtoupper(substr($page, 0, 1)).substr($page, 1);
+			if($page=="create_entry")
+				$arr['javascript'] = "<script src=\"javascripts/jscript.js\"></script>>";
+			else
+				$arr['javascript'] = "";
+			if(isset($_COOKIE['username']))
+				$arr['usrmenu'] = "<li>
+					<a href=\"index.php?page=create_entry\">
+					Create Entry</a>
+					</li>
+					<li>
+					<a href=\"logout.php\">Logout</a>
+					</li>";
+			else
+				$arr['usrmenu'] = "<li>
+					<a href=\"index.php?page=login\">
+					Login</a>
+					</li>";
+		}
+
 		/* Returns the contents of the HTML file referred
 		 * to by $page.
 		 * Returns a 404 error page if the page requested
