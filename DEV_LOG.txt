@@ -17,9 +17,11 @@ May 2014
   entry in downloadable PDF format, while keeping a local copy in server.
 
 June 2014(target)
-+ Creates Login form for registered users(unprogrammed)
++ Creates Login and signup forms for users
++ Handles signup and login requests, with some exception handling.
 + Adds form for users who forgot their passwords(backend not implemented)
-- Fix up the Javascript form input validation.
+- Display error messages for failed signups or login.
+- Fix up the Javascript form input validation of entry, signup and login forms.
 - Implements storing of PDF file directory in database.
 - Implements user sessions for users who want to have compiled collection
   of stories.

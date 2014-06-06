@@ -7,7 +7,8 @@
 
 	require "model.php";
 
-	function is_valid_email($email, $model){
+	/* Checks if the supplied email address is valid */
+	function is_valid_email($email){
 		if(preg_match("/^[a-zA-Z0-9_]+@[a-z]+\.com$/", $email))
 			return true;
 		return false;
@@ -19,11 +20,11 @@
 	if(isset($_GET['action']) && $_GET['action']=="signup"){
 		/* If email is not currently
 		 * used by another user, add the user to database.
-		 * Then, automatically log the user in.
+		 * Then, redirects to log in page.
 		 * Validity of email address is done on browser
 		 * using Javascript.
 		 */
-		if(!$model->contains_email($_POST['email'])){
+		if(is_valid_email($_POST['email']) && !$model->contains_email($_POST['email'])){
 			$model->add_user($model->get_user_id(), $_POST['name'], $_POST['passwd'], $_POST['email']);
 			$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=login";
 		}
