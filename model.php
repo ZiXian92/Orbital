@@ -40,6 +40,10 @@
 					</li>";
 			else
 				$arr['usrmenu'] = "<li>
+					<a href=\"index.php?page=signup\">
+					Sign Up</a>
+					</li>
+					<li>
 					<a href=\"index.php?page=login\">
 					Login</a>
 					</li>";
@@ -51,6 +55,10 @@
 		 * does not exist.
 		 */
 		public function get_page($page){
+			if(isset($_COOKIE['user_id']) && $page=="home"){
+				//list table of entries
+				#return;
+			}
 			if(file_exists("html/".$page.".html"))
 				return file_get_contents("html/".$page.".html");
 			return file_get_contents("html/404.html");
@@ -73,6 +81,13 @@
 		 */
 		public function remove_user($id){
 			mysqli_query($this->sql_con, "DELETE FROM USERS WHERE ID=".(string)$id.";");
+		}
+
+		/* Returns the next user_id to assign to the new user */
+		public function get_user_id(){
+			$result = mysqli_query($this->con, "SELECT MAX(ID) MAX FROM USERS;");
+			$row = mysqli_fetch_assoc($result);
+			return ((int)$row['MAX'])+1;
 		}
 
 		/* Returns the next entry_id to assign to the new entry */
@@ -98,6 +113,23 @@
 		 */
 		public function remove_entry($id){
 			mysqli_query($this->sql_con, "DELETE FROM ENTRIES WHERE ID=".(string)$id.";");
+		}
+
+		/* Returns a table of entries by the user of the given $id */
+		private function list_entries_by_id($id){
+			$result = mysqli_query($this->sql_con, "SELECT ENTRY_ID, DATE, TITLE FROM ENTRIES WHERE AUTHOR=".(string)$id." ORDER BY ENTRY_ID DESC;");
+			$table = "<table>
+				<tr><th>Date</th><th>Title</th>
+				<th>Action</th><tr>";
+			$row = mysqli_fetch_assoc($result);
+			while($row!=NULL){
+				$table.="<tr><td>".$row['DATE']."</td>
+					<td>".$row['TITLE']."</td>
+					<td><a href=\"view_entry.php?id=".$row['ENTRY_ID']."\">View</a>
+					<a href=\"delete_entry.php?id=".$row['ENTRY_ID']."\">Delete</a></td></tr>";
+				$row = mysqli_fetch_assoc($result);
+			}
+			$table.="</table>";
 		}
 	}
 	
