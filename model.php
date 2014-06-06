@@ -61,8 +61,8 @@
 		 */
 		public function get_page($page){
 			if(isset($_COOKIE['user_id']) && $page=="home"){
-				//list table of entries
-				#return;
+				return "<p>Welcome, ".$_COOKIE['username']."</p>".$this->list_entries_by_id($_COOKIE['user_id']);
+				
 			}
 			if(file_exists("html/".$page.".html"))
 				return file_get_contents("html/".$page.".html");
@@ -135,6 +135,7 @@
 				$row = mysqli_fetch_assoc($result);
 			}
 			$table.="</table>";
+			return $table;
 		}
 
 		/* Checks if the database contains a user with the
