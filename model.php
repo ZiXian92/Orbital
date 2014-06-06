@@ -26,7 +26,7 @@
 		 */
 		public function set_template(&$arr, $page){
 			$arr['title'] = strtoupper(substr($page, 0, 1)).substr($page, 1);
-			if($page=="create_entry")
+			if($page=="create_entry" || $page=="signup" || $page=="login")
 				$arr['javascript'] = "<script src=\"javascripts/jscript.js\"></script>";
 			else
 				$arr['javascript'] = "";
@@ -47,6 +47,11 @@
 					<a href=\"index.php?page=login\">
 					Login</a>
 					</li>";
+
+			if(isset($_GET['error']))
+				$arr['error'] = $_GET['error'];
+			else
+				$arr['error'] = "";
 		}
 
 		/* Returns the contents of the HTML file referred

@@ -15,6 +15,7 @@
 			return file_get_contents($this->_template);
 		}
 		private function setContent($arr){
+			$this->_content = str_replace("{{content}}", $arr['content'], $this->_content);
 			foreach($arr as $key=>$value)
 				$this->_content = str_replace("{{".$key."}}",
 					$value, $this->_content);
