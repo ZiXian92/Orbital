@@ -131,6 +131,26 @@
 			}
 			$table.="</table>";
 		}
+
+		/* Checks if the database contains a user with the
+		 * given email address
+		 */
+		public function contains_email($email){
+			$result = mysqli_query($this->sql_con, "SELECT * FROM USERS WHERE EMAIL=".$email.";");
+			$row = mysqli_fetch_assoc($result);
+			if($row==NULL)
+				return false;
+			return true;
+		}
+
+		/* Checks if the user credentials are valid */
+		public function is_valid_user($email, $passwd){
+			$result = mysqli_query($this->sql_con, "SELECT * FROM USERS WHERE EMAIL=".$email."AND PASSWD=".$passwd.";");
+			$row = mysqli_fetch_assoc($result);
+			if($row==NULL)
+				return false;
+			return true;
+		}
 	}
 	
 	/*
