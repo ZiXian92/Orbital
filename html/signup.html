@@ -1,0 +1,17 @@
+<!--Signup form-->
+{{error}}
+<form name="signup" action="users.php?action=signup" method="POST">
+	<label>Email:
+	<input type="text" name="email" size="30">
+	</label><br/>
+
+	<label>Password:
+	<input type="password" name="passwd" size="10" maxlength="10">
+	</label><br/>
+
+	<label>Re-type password:
+	<input type="password" name="re-passwd" size="10" maxlength="10">
+	</label><br/>
+
+	<input type="submit" name="submit" value="Sign Up">
+</form>

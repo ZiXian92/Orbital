@@ -1,4 +1,10 @@
 <?php
+	/* Handles all user account-related requests, such as signup,
+	 * login, logout, and reset password.
+	 * To-Do: Update $_GET['error'] is the appropriate error messages
+	 * in each of the sections.
+	 */
+
 	require "model.php";
 
 	function is_valid_email($email, $model){
@@ -25,9 +31,6 @@
 		/* Else, return to signup page */
 		else
 			$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=signup";
-		unset($_GET['action']);
-		header("Location: ".$url);
-		exit(0);
 	}
 
 	/* Handles login requests */
@@ -40,20 +43,16 @@
 			//set cookies
 			$url = "http://".$_SERVER['HTTP_HOST'];
 		}
-		else
+		else{
+			$_GET['error'] = "Incorrect email or password";
 			$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=login";
-		unset($_GET['action']);
-		header("Location: ".$url);
-		exit(0);
+		}
 	}
 
 	/* Handles logout requests */
 	elseif(isset($_GET['action']) && $_GET['action']){
 		//delete cookies from user side
 		$url = "http://".$_SERVER['HTTP_HOST'];
-		unset($_GET['action']);
-		header("Location: ".$url);
-		exit(0);
 	}
 
 	/* Redirects to home page if user tries to access this script directly

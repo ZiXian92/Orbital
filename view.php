@@ -19,6 +19,7 @@
 			foreach($arr as $key=>$value)
 				$this->_content = str_replace("{{".$key."}}",
 					$value, $this->_content);
+			unset($_GET['error']);
 		}
 		public function render(){
 			echo $this->_content;
