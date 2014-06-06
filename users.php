@@ -23,9 +23,9 @@
 		 * Validity of email address is done on browser
 		 * using Javascript.
 		 */
-		if($model->contains_email($_POST['email'])){
-			$model->add_user($model->get_user_id(), $POST['name'], $POST['passwd'], $_POST['email']);
-			$url = "http://".$_SERVER['HTTP_HOST']."/users.php?action=login";
+		if(!$model->contains_email($_POST['email'])){
+			$model->add_user($model->get_user_id(), $_POST['name'], $_POST['passwd'], $_POST['email']);
+			$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=login";
 		}
 
 		/* Else, return to signup page */
