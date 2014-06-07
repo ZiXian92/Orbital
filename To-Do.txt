@@ -1,8 +1,10 @@
 Main(updated as of 26 May 2014):
-1. Complete model.php.
+1. Complete model.php(Majority completed. Left with digging out more
+   information from database based on needs, as well as touching up and
+   cleaning up)
 2. Resolve/Debug the problem of javascript validation not executing when 1 or
-   more field(s) is/are empty.
-3. Move upload handling to index.php.
+   more field(s) is/are empty.(to be done by Yulong)
+3. Modify upload_handler.php to take into account logged in users.
 4. Create button to use as link for 1st time users
 5. Create button to use as link for more experienced users
 	- Created a normal text link as stand in to test functionality.
@@ -16,4 +18,4 @@ Main(updated as of 26 May 2014):
 
 Optional stuff:
 1. Use .htaccess file for URL rewriting for user-friendly URLs
-2. Storing of entries in database(to be bound together with user login sessions)
+2. Storing of entries in database if user is logged in.
