@@ -18,7 +18,7 @@ May 2014
 
 June 2014(target)
 + Creates Login and signup forms for users
-+ Handles signup and login requests, with some exception handling.
++ Implements signup, login and logout, with some exception handling.
 + Adds form for users who forgot their passwords(backend not implemented)
 - Display error messages for failed signups or login.
 - Fix up the Javascript form input validation of entry, signup and login forms.
