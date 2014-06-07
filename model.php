@@ -21,6 +21,8 @@
 			mysqli_close($this->sql_con);
 		}
 
+		/* Page Content-related Functions */
+
 		/* Sets all placeholder values in the template,
 		 * except for contents
 		 */
@@ -56,6 +58,8 @@
 			return file_get_contents("html/404.html");
 		}
 
+		/* User-related Administrative Functions */
+
 		/* Adds a new user to the database.
 		 * Refer to database design on restrictions on parameters.
 		 * Restrictions to be listed here once finalised.
@@ -75,6 +79,8 @@
 			mysqli_query($this->sql_con, "DELETE FROM USERS WHERE ID=".(string)$id.";");
 		}
 
+		/* User signup-related functions */
+
 		/* Returns the next user_id to assign to the new user */
 		public function get_user_id(){
 			$result = mysqli_query($this->con, "SELECT MAX(ID) MAX FROM USERS;");
@@ -82,12 +88,36 @@
 			return ((int)$row['MAX'])+1;
 		}
 
-		/* Returns the next entry_id to assign to the new entry */
-		public function get_entry_id(){
-			$result = mysqli_query($this->con, "SELECT MAX(ENTRY_ID) MAX FROM ENTRIES;");
+		/* Checks if the database contains a user with the
+		 * given email address
+		 */
+		public function contains_email($email){
+			$result = mysqli_query($this->sql_con, "SELECT * FROM USERS WHERE EMAIL=".$email.";");
 			$row = mysqli_fetch_assoc($result);
-			return ((int)$row['MAX'])+1;
+			if($row==NULL)
+				return false;
+			return true;
 		}
+
+		/* User Login Functions */
+		/* Checks if the user credentials are valid */
+		public function is_valid_user($email, $passwd){
+			$result = mysqli_query($this->sql_con, "SELECT * FROM USERS WHERE EMAIL=\"".$email."\" AND PASSWD=\"".$passwd."\";");
+			$row = mysqli_fetch_assoc($result);
+			if($row==NULL)
+				return false;
+			return true;
+		}
+
+		/* Returns the user id and username based on the given
+		 * email and password
+		 */
+		public function get_user($email, $passwd){
+			$result = mysqli_query($this->sql_con, "SELECT ID, USERNAME from USERS WHERE EMAIL=\"".$email."\" AND PASSWD=\"".$passwd."\";");
+			return mysqli_fetch_assoc($result);
+		}
+
+		/* Entries-related Administrative Functions */
 
 		/* Adds a new entry to the database.
 		 * $entry_id must be an integer between 0 and 99999.
@@ -125,39 +155,11 @@
 			return $table;
 		}
 
-		/* Checks if the database contains a user with the
-		 * given email address
-		 */
-		public function contains_email($email){
-			$result = mysqli_query($this->sql_con, "SELECT * FROM USERS WHERE EMAIL=".$email.";");
+		/* Returns the next entry_id to assign to the new entry */
+		public function get_entry_id(){
+			$result = mysqli_query($this->con, "SELECT MAX(ENTRY_ID) MAX FROM ENTRIES;");
 			$row = mysqli_fetch_assoc($result);
-			if($row==NULL)
-				return false;
-			return true;
-		}
-
-		/* Checks if the user credentials are valid */
-		public function is_valid_user($email, $passwd){
-			$result = mysqli_query($this->sql_con, "SELECT * FROM USERS WHERE EMAIL=\"".$email."\" AND PASSWD=\"".$passwd."\";");
-			$row = mysqli_fetch_assoc($result);
-			if($row==NULL)
-				return false;
-			return true;
-		}
-
-		/* Returns the user id and username based on the given
-		 * email and password
-		 */
-		public function get_user($email, $passwd){
-			$result = mysqli_query($this->sql_con, "SELECT ID, USERNAME from USERS WHERE EMAIL=\"".$email."\" AND PASSWD=\"".$passwd."\";");
-			return mysqli_fetch_assoc($result);
+			return ((int)$row['MAX'])+1;
 		}
 	}
-	
-	/*
-	$model = new Model();
-	$model->remove_user(1);
-	#$model->add_user(1, "xxx", NULL, "xxx@gmail.com");
-	unset($model);
-	*/
 ?>
