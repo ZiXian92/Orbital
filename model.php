@@ -30,13 +30,13 @@
 				$arr['javascript'] = "<script src=\"javascripts/jscript.js\"></script>";
 			else
 				$arr['javascript'] = "";
-			if(isset($_COOKIE['username']))
+			if(isset($_SESSION['username']))
 				$arr['usrmenu'] = "<li>
 					<a href=\"index.php?page=create_entry\">
 					Create Entry</a>
 					</li>
 					<li>
-					<a href=\"logout.php\">Logout</a>
+					<a href=\"users.php?action=logout\">Logout</a>
 					</li>";
 			else
 				$arr['usrmenu'] = "<li>
@@ -156,6 +156,14 @@
 			if($row==NULL)
 				return false;
 			return true;
+		}
+
+		/* Returns the user id and username based on the given
+		 * email and password
+		 */
+		public function get_user($email, $passwd){
+			$result = mysqli_query($this->sql_con, "SELECT ID, USERNAME from USERS WHERE EMAIL=\"".$email."\" AND PASSWD=\"".$passwd."\";");
+			return mysqli_fetch_assoc($result);
 		}
 	}
 	

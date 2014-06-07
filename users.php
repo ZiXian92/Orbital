@@ -36,12 +36,16 @@
 
 	/* Handles login requests */
 	elseif(isset($_GET['action']) && $_GET['action']=="login"){
-		/* If login credentials are correct, send cookies to identify
-		 * user as logged in and redirect to the user's home page.
+		/* If login credentials are correct, start a new session.
+		 * Sets the user's ID and username as session variables.
 		 * Else, returns the user to the login page.
 		 */
 		if($model->is_valid_user($_POST['email'], $_POST['passwd'])){
-			//set cookies
+			session_start();
+			$user = $model->get_user($_POST['email'], $_POST['passwd']);
+			$_SESSION['user_id'] = $user['ID'];
+			$_SESSION['username'] = $user['USERNAME'];
+			echo $user['NAME'];
 			$url = "http://".$_SERVER['HTTP_HOST'];
 		}
 		else{
@@ -51,8 +55,11 @@
 	}
 
 	/* Handles logout requests */
-	elseif(isset($_GET['action']) && $_GET['action']){
-		//delete cookies from user side
+	elseif(isset($_GET['action']) && $_GET['action']=="logout"){
+		session_start();
+		$_SESSION = array();
+		session_destroy();
+		setcookie('PHPSESSID', '', time()-3600, '/', '', 0, 0);
 		$url = "http://".$_SERVER['HTTP_HOST'];
 	}
 

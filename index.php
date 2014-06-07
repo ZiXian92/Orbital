@@ -11,6 +11,8 @@
 	require "view.php";
 	require "model.php";
 
+	session_start();
+
 	$model = new Model();
 	
 	/* Handles page requests using the 'ugly' URLs */
