@@ -31,22 +31,9 @@
 			else
 				$arr['javascript'] = "";
 			if(isset($_SESSION['username']))
-				$arr['usrmenu'] = "<li>
-					<a href=\"index.php?page=create_entry\">
-					Create Entry</a>
-					</li>
-					<li>
-					<a href=\"users.php?action=logout\">Logout</a>
-					</li>";
+				$arr['usrmenu'] = file_get_contents("html/loggedinmenu.html");
 			else
-				$arr['usrmenu'] = "<li>
-					<a href=\"index.php?page=signup\">
-					Sign Up</a>
-					</li>
-					<li>
-					<a href=\"index.php?page=login\">
-					Login</a>
-					</li>";
+				$arr['usrmenu'] = file_get_contents("html/loggedoutmenu.html");
 
 			if(isset($_GET['error']))
 				$arr['error'] = $_GET['error'];
@@ -60,8 +47,8 @@
 		 * does not exist.
 		 */
 		public function get_page($page){
-			if(isset($_COOKIE['user_id']) && $page=="home"){
-				return "<p>Welcome, ".$_COOKIE['username']."</p>".$this->list_entries_by_id($_COOKIE['user_id']);
+			if(isset($_SESSION['user_id']) && $page=="home"){
+				return "<p>Welcome, ".$_SESSION['username']."</p>";#.$this->list_entries_by_id($_COOKIE['user_id']);
 				
 			}
 			if(file_exists("html/".$page.".html"))
