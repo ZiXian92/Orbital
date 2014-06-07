@@ -45,7 +45,6 @@
 			$user = $model->get_user($_POST['email'], $_POST['passwd']);
 			$_SESSION['user_id'] = $user['ID'];
 			$_SESSION['username'] = $user['USERNAME'];
-			echo $user['NAME'];
 			$url = "http://".$_SERVER['HTTP_HOST'];
 		}
 		else{
