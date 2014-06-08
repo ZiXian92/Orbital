@@ -69,7 +69,7 @@
 		 * $email must be a valid email address of length 50
 		 */
 		public function add_user($id, $name, $passwd, $email){
-			mysqli_query($this->sql_con, "INSERT INTO USERS VALUES(".(string)$id.", \"".$name."\", \"".$passwd."\", \"".$email."\");");
+			mysqli_query($this->sql_con, "INSERT INTO USERS VALUES(".(string)$id.", \"".$name."\", \"".SHA1($passwd)."\", \"".$email."\");");
 		}
 
 		/* Removes a user identified bt $id from database.
