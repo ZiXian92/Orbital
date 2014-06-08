@@ -30,8 +30,10 @@
 		}
 
 		/* Else, return to signup page */
-		else
+		else{
+			file_put_contents("message.txt", "Invalid email or email is used by another user.");
 			$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=signup";
+		}
 	}
 
 	/* Handles login requests */
@@ -48,8 +50,30 @@
 			$url = "http://".$_SERVER['HTTP_HOST'];
 		}
 		else{
-			$_GET['error'] = "Incorrect email or password";
+			file_put_contents("message.txt", "Incorrect email or password");
 			$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=login";
+		}
+	}
+
+	/* Handles password change request */
+	elseif(isset($_GET['action']) && $_GET['action']=="changepasswd"){
+		session_start();
+		if(!isset($_SESSION['user_id'])){
+			$url = "http://".$_SERVER['HTTP_HOST'];
+			$_SESSION = array();
+			session_destroy();
+			setcookie('PHPSESSID', '', time()-3600, '/', '', 0, 0);
+		}
+		else{
+			if($model->get_password_by_id($_SESSION['user_id'])==
+				SHA1($_POST['old_passwd'])){
+				$model->set_new_password($_SESSION['user_id'], $_POST['new_passwd']);
+				file_put_contents("message.txt", "Success!");
+			}
+			else{
+				file_put_contents("message.txt", "Failed to change password.");
+			}
+			$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=change_passwd";
 		}
 	}
 

@@ -28,7 +28,7 @@
 		 */
 		public function set_template(&$arr, $page){
 			$arr['title'] = strtoupper(substr($page, 0, 1)).substr($page, 1);
-			if($page=="create_entry" || $page=="signup" || $page=="login")
+			if($page=="create_entry" || $page=="signup" || $page=="login" || $page=="change_passwd")
 				$arr['javascript'] = "<script src=\"javascripts/jscript.js\"></script>";
 			else
 				$arr['javascript'] = "";
@@ -37,10 +37,12 @@
 			else
 				$arr['usrmenu'] = file_get_contents("html/loggedoutmenu.html");
 
-			if(isset($_GET['error']))
-				$arr['error'] = $_GET['error'];
+			if(file_exists("message.txt")){
+				$arr['message'] = file_get_contents("message.txt");
+				unlink("message.txt");
+			}
 			else
-				$arr['error'] = "";
+				$arr['message'] = "";
 		}
 
 		/* Returns the contents of the HTML file referred
@@ -85,6 +87,18 @@
 		 */
 		public function remove_user($id){
 			mysqli_query($this->sql_con, "DELETE FROM USERS WHERE ID=".(string)$id.";");
+		}
+
+		/* Returns the encrypted password of the user
+		 * identified by $id
+		 */
+		public function get_password_by_id($id){
+			return mysqli_query($this->sql_con, "SELECT PASSWD FROM USERS WHERE ID=".(string)$id.";");
+		}
+
+		/* CHanges the password of a user identified by $id */
+		public function set_new_password($id, $passwd){
+			mysqli_query($this->sql_con, "UPDATE USERS SET PASSWD=\"".$passwd."\" WHERE ID=".(string)$id.";");
 		}
 
 		/* User signup-related functions */
