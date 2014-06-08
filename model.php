@@ -93,12 +93,14 @@
 		 * identified by $id
 		 */
 		public function get_password_by_id($id){
-			return mysqli_query($this->sql_con, "SELECT PASSWD FROM USERS WHERE ID=".(string)$id.";");
+			$result = mysqli_query($this->sql_con, "SELECT PASSWD FROM USERS WHERE ID=".(string)$id.";");
+			$result = mysqli_fetch_assoc($result);
+			return $result['PASSWD'];
 		}
 
 		/* CHanges the password of a user identified by $id */
 		public function set_new_password($id, $passwd){
-			mysqli_query($this->sql_con, "UPDATE USERS SET PASSWD=\"".$passwd."\" WHERE ID=".(string)$id.";");
+			mysqli_query($this->sql_con, "UPDATE USERS SET PASSWD=\"".SHA1($passwd)."\" WHERE ID=".(string)$id.";");
 		}
 
 		/* User signup-related functions */
