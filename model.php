@@ -102,7 +102,7 @@
 		/* User Login Functions */
 		/* Checks if the user credentials are valid */
 		public function is_valid_user($email, $passwd){
-			$result = mysqli_query($this->sql_con, "SELECT * FROM USERS WHERE EMAIL=\"".$email."\" AND PASSWD=\"".$passwd."\";");
+			$result = mysqli_query($this->sql_con, "SELECT * FROM USERS WHERE EMAIL=\"".$email."\" AND PASSWD=\"".SHA1($passwd)."\";");
 			$row = mysqli_fetch_assoc($result);
 			if($row==NULL)
 				return false;
@@ -113,7 +113,7 @@
 		 * email and password
 		 */
 		public function get_user($email, $passwd){
-			$result = mysqli_query($this->sql_con, "SELECT ID, USERNAME from USERS WHERE EMAIL=\"".$email."\" AND PASSWD=\"".$passwd."\";");
+			$result = mysqli_query($this->sql_con, "SELECT ID, USERNAME from USERS WHERE EMAIL=\"".$email."\" AND PASSWD=\"".SHA1($passwd)."\";");
 			return mysqli_fetch_assoc($result);
 		}
 
@@ -160,6 +160,10 @@
 			$result = mysqli_query($this->con, "SELECT MAX(ENTRY_ID) MAX FROM ENTRIES;");
 			$row = mysqli_fetch_assoc($result);
 			return ((int)$row['MAX'])+1;
+		}
+		
+		public function set_password($id, $passwd){
+			mysqli_query($this->sql_con, "UPDATE USERS SET PASSWD=\"".SHA1($passwd)."\" WHERE ID=".$id.";");
 		}
 	}
 ?>
