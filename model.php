@@ -53,6 +53,12 @@
 				return "<p>Welcome, ".$_SESSION['username']."</p>";#.$this->list_entries_by_id($_COOKIE['user_id']);
 				
 			}
+			if(isset($_SESSION['user_id']) && ($page!="about" ||
+					$page!="create_entry" ||
+					$page!="change_passwd")){
+				header("Location: http://".$_SERVER['HTTP_HOST']."/index.php?page=home");
+				exit(0);
+			}
 			if(file_exists("html/".$page.".html"))
 				return file_get_contents("html/".$page.".html");
 			return file_get_contents("html/404.html");

@@ -26,7 +26,7 @@
 		 */
 		if(is_valid_email($_POST['email']) && !$model->contains_email($_POST['email'])){
 			$model->add_user($model->get_user_id(), $_POST['name'], $_POST['passwd'], $_POST['email']);
-			$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=login";
+			$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=signedup";
 		}
 
 		/* Else, return to signup page */
@@ -59,7 +59,7 @@
 		$_SESSION = array();
 		session_destroy();
 		setcookie('PHPSESSID', '', time()-3600, '/', '', 0, 0);
-		$url = "http://".$_SERVER['HTTP_HOST'];
+		$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=loggedout";
 	}
 
 	/* Redirects to home page if user tries to access this script directly
