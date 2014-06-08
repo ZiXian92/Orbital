@@ -1,4 +1,4 @@
-Main(updated as of 26 May 2014):
+Main(updated as of 8 June 2014):
 1. Complete model.php(Majority completed. Left with digging out more
    information from database based on needs, as well as touching up and
    cleaning up)
@@ -10,8 +10,8 @@ Main(updated as of 26 May 2014):
 	- Created a normal text link as stand in to test functionality.
 6. Make changes in the CSS file so that pages render nicely even when browser
    window size is adjusted
-7. Add user/session management functionality(involves use of database and
-   MySQL).
+7. Add user/session management functionality(left with that for 1st time
+   non-registered users)
    * Database probably needed for sharing on Facebook.
 8. Decorate the webpages.
 9. Remove the borders.

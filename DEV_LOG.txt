@@ -18,9 +18,11 @@ May 2014
 
 June 2014(target)
 + Creates Login and signup forms for users
-+ Implements signup, login and logout, with some exception handling.
++ Implements signup, login, logout and password change,
+  with some exception handling, such as preventing users from running
+  PHP scripts directly through URL.
 + Adds form for users who forgot their passwords(backend not implemented)
-- Display error messages for failed signups or login.
++ Display error messages for failed signups or login.
 - Fix up the Javascript form input validation of entry, signup and login forms.
 - Implements storing of PDF file directory in database.
 - Implements user sessions for users who want to have compiled collection
