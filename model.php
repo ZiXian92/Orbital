@@ -55,6 +55,14 @@
 				return "<p>Welcome, ".$_SESSION['username']."</p>";#.$this->list_entries_by_id($_COOKIE['user_id']);
 				
 			}
+
+			/* For logged in users, requests to any other pages
+			 * are prohibited.
+			 * If the page requested is to change password, only
+			 * logged is users are allowed.
+			 * All prohibited access are redirected to
+			 * the home page.
+			 */
 			if((isset($_SESSION['user_id']) && ($page!="about" &&
 					$page!="create_entry" &&
 					$page!="change_passwd")) ||
@@ -82,11 +90,15 @@
 			mysqli_query($this->sql_con, "INSERT INTO USERS VALUES(".(string)$id.", \"".$name."\", \"".SHA1($passwd)."\", \"".$email."\");");
 		}
 
-		/* Removes a user identified bt $id from database.
-		 * $id must be an integer between 0 and 99999
+		/* Removes a user identified by $id from database.
+		 * $id must be an integer between 1 and 99999.
+		 * ID 0 is reserved for site admin and should only be
+		 * deleted manually through an admin script or through
+		 * the database client.
 		 */
 		public function remove_user($id){
-			mysqli_query($this->sql_con, "DELETE FROM USERS WHERE ID=".(string)$id.";");
+			if($id!=0)
+				mysqli_query($this->sql_con, "DELETE FROM USERS WHERE ID=".(string)$id.";");
 		}
 
 		/* Returns the encrypted password of the user
@@ -98,7 +110,7 @@
 			return $result['PASSWD'];
 		}
 
-		/* CHanges the password of a user identified by $id */
+		/* Changes the password of a user identified by $id */
 		public function set_new_password($id, $passwd){
 			mysqli_query($this->sql_con, "UPDATE USERS SET PASSWD=\"".SHA1($passwd)."\" WHERE ID=".(string)$id.";");
 		}
@@ -124,6 +136,7 @@
 		}
 
 		/* User Login Functions */
+
 		/* Checks if the user credentials are valid */
 		public function is_valid_user($email, $passwd){
 			$result = mysqli_query($this->sql_con, "SELECT * FROM USERS WHERE EMAIL=\"".$email."\" AND PASSWD=\"".SHA1($passwd)."\";");
@@ -184,10 +197,6 @@
 			$result = mysqli_query($this->con, "SELECT MAX(ENTRY_ID) MAX FROM ENTRIES;");
 			$row = mysqli_fetch_assoc($result);
 			return ((int)$row['MAX'])+1;
-		}
-		
-		public function set_password($id, $passwd){
-			mysqli_query($this->sql_con, "UPDATE USERS SET PASSWD=\"".SHA1($passwd)."\" WHERE ID=".$id.";");
 		}
 	}
 ?>
