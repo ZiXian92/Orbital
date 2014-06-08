@@ -1,8 +1,7 @@
 <?php
 	/* Handles all user account-related requests, such as signup,
-	 * login, logout, and reset password.
-	 * To-Do: Update $_GET['error'] is the appropriate error messages
-	 * in each of the sections.
+	 * login, logout, change and forgot password.
+	 * To-Do: Handle forgot password.
 	 */
 
 	require "model.php";
