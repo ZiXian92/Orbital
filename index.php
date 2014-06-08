@@ -22,8 +22,10 @@
 	/* When user enters URL of main page, $_GET['page']
 	 * does not hold any value
 	 */
-	if(!isset($_GET['page']))
-		$_GET['page'] = "home";
+	if(!isset($_GET['page'])){
+		header("Location: http://".$_SERVER['HTTP_HOST']."/index.php?page=home");
+		exit(0);
+	}
 
 	/* Assigns values to replace placeholders with into $content_array
 	 * $content_array is passed by reference
