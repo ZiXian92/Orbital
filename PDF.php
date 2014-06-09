@@ -73,7 +73,7 @@
 		 */
 		public function __destruct(){
 			if(isset($_SESSION['user_id'])){
-				parent::Output("../entries/".$this->_title.".pdf", "F");
+				parent::Output("../entries/".(string)$_POST['entry_id'].".pdf", "F");
 			}
 			parent::Output($this->_title.".pdf", "D");
 		}

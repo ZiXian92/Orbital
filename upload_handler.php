@@ -19,8 +19,14 @@
 		$model = new Model();
 		move_uploaded_file($_FILES['img']['tmp_name'], "../uploads/{$_FILES['img']['name']}");
 
-		if(isset($_SESSION['user_id']))
+		/* Somehow, having the author field disabled for
+		 * logged in users prevent the field value from
+		 * being submitted
+		 */
+		if(isset($_SESSION['user_id'])){
 			$_POST['author'] = $_SESSION['username'];
+			$_POST['entry_id'] = $model->get_entry_id();
+		}
 
 		/* Creates and loads form contents into a new PDF document */
 		$pdf = new PDF();
@@ -31,20 +37,20 @@
 	 	*/
 		unset($pdf);
 
-		/*if(isset($_SESSION['user_id'])){
-			$entry_id = $model->get_entry_id();
-			$model->add_entry($entry_id, $_POST['title'], $_SESSION['user_id'], date('Y-m-d'), "../entries/".(string)$entry_id.".pdf");
+		/* Enter entry information to database */
+		if(isset($_SESSION['user_id'])){
+			$model->add_entry($_POST['entry_id'], $_POST['title'], $_SESSION['user_id'], date('Y-m-d'), "../entries/".(string)$_POST['entry_id'].".pdf");
 		}
 		else{
 			$_SESSION = array();
 			session_destroy();
 			setcookie('PHPSESSID', '', time()-3600, '/', '', 0, 0);
-		}*/
+		}
 
 		/* Removes the image file from ..uploads folder */
 		unlink("../uploads/{$_FILES['img']['name']}");
 	}
 	else{
-		//Redirect to form entry page
+		header("Location: http://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
 	}
 ?>
