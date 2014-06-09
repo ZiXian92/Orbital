@@ -174,7 +174,7 @@
 		 * $file must be a string of length
 		 */
 		public function add_entry($entry_id, $title, $user_id, $date, $file){
-			mysqli_query($this->sql_con, "INSERT INTO ENTRIES VALUES(".(string)$entry_id.", \"".$title."\", ".(string)$user_id.", \"".(string)$date."\", \"".$file."\");");
+			mysqli_query($this->sql_con, "INSERT INTO ENTRIES VALUES(".(string)$entry_id.", \"".$title."\", ".(string)$user_id.", \"".$date."\", \"".$file."\");");
 		}
 		
 		/* Removes an entry from the database.

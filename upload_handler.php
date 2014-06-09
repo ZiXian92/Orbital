@@ -1,6 +1,7 @@
 <?php
 /* This file only handles form submissions.
- * To be modularised as an object to be used by index.php
+ * To-Do: Redirect browser back to the same page before prompting
+ * file download.
  * Commented by: Qua Zi Xian on 26 May 2014
  */
 	/* FPDF class definition is in the specified file */
@@ -50,6 +51,6 @@
 		/* Removes the image file from ..uploads folder */
 		unlink("../uploads/{$_FILES['img']['name']}");
 	}
-	
-	header("Location: http://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
+	else	
+		header("Location: http://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
 ?>
