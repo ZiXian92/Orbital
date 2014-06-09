@@ -11,8 +11,8 @@
 	/* Moves image to uploads folder in server for use in PDF.
 	 * Please create the destination folder called uploads with the same
 	 * relative paths in the 2nd parameter of move_uploaded_file.
-	 * ../uploads and ../entries requires permission setting of 777 instead of
-	 * 755 or 766. Why?
+	 * ../uploads and ../entries requires permission setting of 777
+	 * instead of 755 or 766. Why?
 	 */
 	
 		session_start();	
@@ -39,7 +39,7 @@
 
 		/* Enter entry information to database */
 		if(isset($_SESSION['user_id'])){
-			$model->add_entry($_POST['entry_id'], $_POST['title'], $_SESSION['user_id'], date('Y-m-d'), "../entries/".(string)$_POST['entry_id'].".pdf");
+			$model->add_entry($_POST['entry_id'], $_POST['title'], $_SESSION['user_id'], date("Y-m-d"), "../entries/".(string)$_POST['entry_id'].".pdf");
 		}
 		else{
 			$_SESSION = array();
@@ -50,7 +50,6 @@
 		/* Removes the image file from ..uploads folder */
 		unlink("../uploads/{$_FILES['img']['name']}");
 	}
-	else{
-		header("Location: http://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
-	}
+	
+	header("Location: http://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
 ?>
