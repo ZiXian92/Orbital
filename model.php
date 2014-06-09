@@ -166,6 +166,12 @@
 
 		/* Entries-related Administrative Functions */
 
+		/* AUthenticates if the given entry request is valid */
+		public function authenticate_entry_request($user_id, $entry_id){
+			$result = mysqli_query($this->sql_con, "SELECT ENTRY_ID FROM ENTRIES WHERE AUTHOR=".(string)$user_id." AND ENTRY_ID=".(string)$entry_id.";");
+			return ($result!=null);
+		}
+
 		/* Adds a new entry to the database.
 		 * $entry_id must be an integer between 0 and 99999.
 		 * $title must be a string of length
@@ -181,7 +187,7 @@
 		 * $id must be an integer between 0 to 99999.
 		 */
 		public function remove_entry($id){
-			mysqli_query($this->sql_con, "DELETE FROM ENTRIES WHERE ID=".(string)$id.";");
+			mysqli_query($this->sql_con, "DELETE FROM ENTRIES WHERE ENTRY_ID=".(string)$id.";");
 		}
 
 		/* Returns a table of entries by the user of the given $id */
@@ -194,8 +200,8 @@
 			while($row!=NULL){
 				$table.="<tr><td>".$row['DATE']."</td>
 					<td>".$row['TITLE']."</td>
-					<td><a href=\"view_entry.php?id=".$row['ENTRY_ID']."\">View</a>
-					<a href=\"delete_entry.php?id=".$row['ENTRY_ID']."\">Delete</a></td></tr>";
+					<td><a href=\"entries_handler.php?action=view&id=".$row['ENTRY_ID']."\">View</a>
+					<a href=\"entries_handler.php?action=delete&id=".$row['ENTRY_ID']."\">Delete</a></td></tr>";
 				$row = mysqli_fetch_assoc($result);
 			}
 			$table.="</table>";
@@ -207,6 +213,18 @@
 			$result = mysqli_query($this->sql_con, "SELECT MAX(ENTRY_ID) MAX FROM ENTRIES;");
 			$row = mysqli_fetch_assoc($result);
 			return ((int)$row['MAX'])+1;
+		}
+
+		/* Returns the path to the entry file
+		 * specified by the entry id.
+		 * Returns NULL if the query returns nothing.
+		 */
+		public function get_entry_file($id){
+			$result = mysqli_query($this->sql_con, "SELECT FILE FROM ENTRIES WHERE ENTRY_ID=".(string)$id.";");
+			if($result==null)
+				return null;
+			$result = mysqli_fetch_assoc($result);
+			return $result['FILE'];
 		}
 	}
 ?>
