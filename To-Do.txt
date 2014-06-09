@@ -1,10 +1,10 @@
-Main(updated as of 8 June 2014):
+Main(updated as of 9 June 2014):
 1. Complete model.php(Majority completed. Left with digging out more
    information from database based on needs, as well as touching up and
    cleaning up)
-2. Resolve/Debug the problem of javascript validation not executing when 1 or
+2. Implement password reset for users who forgot their passwords
+3. Resolve/Debug the problem of javascript validation not executing when 1 or
    more field(s) is/are empty.(to be done by Yulong)
-3. Modify upload_handler.php to take into account logged in users.
 4. Create button to use as link for 1st time users
 5. Create button to use as link for more experienced users
 	- Created a normal text link as stand in to test functionality.
@@ -13,9 +13,10 @@ Main(updated as of 8 June 2014):
 7. Add user/session management functionality(left with that for 1st time
    non-registered users)
    * Database probably needed for sharing on Facebook.
-8. Decorate the webpages.
-9. Remove the borders.
+8. Thorough testing of all functionalities and identifying all possible
+   exceptional scenarios(ie. hack our own website!)
+9. Decorate the webpages.
+10. Remove the borders.
 
 Optional stuff:
 1. Use .htaccess file for URL rewriting for user-friendly URLs
-2. Storing of entries in database if user is logged in.

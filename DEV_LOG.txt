@@ -23,10 +23,11 @@ June 2014(target)
   PHP scripts directly through URL.
 + Adds form for users who forgot their passwords(backend not implemented)
 + Display error messages for failed signups or login.
-- Fix up the Javascript form input validation of entry, signup and login forms.
-- Implements storing of PDF file directory in database.
-- Implements user sessions for users who want to have compiled collection
++ Implements storing of PDF file directory in database.
++ Implements user sessions for users who want to have compiled collection
   of stories.
++ Implements viewing and deleting of entries for logged in users
+- Fix up the Javascript form input validation of entry, signup and login forms.
 - Integration with social media(ideal target)
 
 July 2014(tentative)
