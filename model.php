@@ -62,7 +62,7 @@
 		 */
 		public function get_page($page){
 			if(isset($_SESSION['user_id']) && $page=="home"){
-				return "<p>Welcome, ".$_SESSION['username']."</p>";#.$this->list_entries_by_id($_COOKIE['user_id']);
+				return "<p>Welcome, ".$_SESSION['username']."</p>".$this->list_entries_by_id($_SESSION['user_id']);
 				
 			}
 
@@ -187,7 +187,7 @@
 		/* Returns a table of entries by the user of the given $id */
 		private function list_entries_by_id($id){
 			$result = mysqli_query($this->sql_con, "SELECT ENTRY_ID, DATE, TITLE FROM ENTRIES WHERE AUTHOR=".(string)$id." ORDER BY ENTRY_ID DESC;");
-			$table = "<table>
+			$table = "<table border=\"1\">
 				<tr><th>Date</th><th>Title</th>
 				<th>Action</th><tr>";
 			$row = mysqli_fetch_assoc($result);
