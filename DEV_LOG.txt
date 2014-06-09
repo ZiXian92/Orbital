@@ -27,6 +27,7 @@ June 2014(target)
 + Implements user sessions for users who want to have compiled collection
   of stories.
 + Implements viewing and deleting of entries for logged in users
+- Implement administrative front-end
 - Fix up the Javascript form input validation of entry, signup and login forms.
 - Integration with social media(ideal target)
 

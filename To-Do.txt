@@ -3,20 +3,21 @@ Main(updated as of 9 June 2014):
    information from database based on needs, as well as touching up and
    cleaning up)
 2. Implement password reset for users who forgot their passwords
-3. Resolve/Debug the problem of javascript validation not executing when 1 or
+3. Implement admin login and front-end administrative functionalities
+4. Resolve/Debug the problem of javascript validation not executing when 1 or
    more field(s) is/are empty.(to be done by Yulong)
-4. Create button to use as link for 1st time users
-5. Create button to use as link for more experienced users
+5. Create button to use as link for 1st time users
+6. Create button to use as link for more experienced users
 	- Created a normal text link as stand in to test functionality.
-6. Make changes in the CSS file so that pages render nicely even when browser
+7. Make changes in the CSS file so that pages render nicely even when browser
    window size is adjusted
-7. Add user/session management functionality(left with that for 1st time
+8. Add user/session management functionality(left with that for 1st time
    non-registered users)
    * Database probably needed for sharing on Facebook.
-8. Thorough testing of all functionalities and identifying all possible
+9. Thorough testing of all functionalities and identifying all possible
    exceptional scenarios(ie. hack our own website!)
-9. Decorate the webpages.
-10. Remove the borders.
+10. Decorate the webpages.
+11. Remove the borders.
 
 Optional stuff:
 1. Use .htaccess file for URL rewriting for user-friendly URLs
