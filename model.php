@@ -32,10 +32,20 @@
 				$arr['javascript'] = "<script src=\"javascripts/jscript.js\"></script>";
 			else
 				$arr['javascript'] = "";
-			if(isset($_SESSION['username']))
+			if(isset($_SESSION['username'])){
 				$arr['usrmenu'] = file_get_contents("html/loggedinmenu.html");
-			else
+				$arr['author'] = "<input type=\"text\" 
+					name=\"author\" size=\"20\" 
+					value=\"".$_SESSION['username'].
+					"\"maxlength=\"20\" disabled>";
+			}
+			else{
 				$arr['usrmenu'] = file_get_contents("html/loggedoutmenu.html");
+				$arr['author'] = "<input type=\"text\" 
+					name=\"author\" size=\"20\" 
+					placeholder=\"Your name here\"
+					maxlength=\"20\">*required";
+			}
 
 			if(file_exists("message.txt")){
 				$arr['message'] = file_get_contents("message.txt");
