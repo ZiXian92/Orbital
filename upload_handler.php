@@ -15,6 +15,15 @@
 	 * ../uploads and ../entries requires permission setting of 777
 	 * instead of 755 or 766. Why?
 	 */
+
+		if($_FILES['img']['type']!="image/jpg" &&
+		$_FILES['img']['type']!="image/jpeg" &&
+		$_FILES['img']['type']!="image/png"){
+			file_put_contents("message.txt", "Please use only JPEG or PNG files");
+			header("Location: http://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
+			exit(0);
+		}
+			
 	
 		session_start();	
 		$model = new Model();
