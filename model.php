@@ -174,7 +174,7 @@
 		 * $file must be a string of length
 		 */
 		public function add_entry($entry_id, $title, $user_id, $date, $file){
-			mysqli_query($this->sql_con, "INSERT INTO ENTRIES VALUES(".$entry_id.", \"".$title."\", ".$user_id.", ".$date.", \"".$file."\");");
+			mysqli_query($this->sql_con, "INSERT INTO ENTRIES VALUES(".(string)$entry_id.", \"".$title."\", ".(string)$user_id.", ".$date.", \"".$file."\");");
 		}
 		
 		/* Removes an entry from the database.
@@ -204,7 +204,7 @@
 
 		/* Returns the next entry_id to assign to the new entry */
 		public function get_entry_id(){
-			$result = mysqli_query($this->con, "SELECT MAX(ENTRY_ID) MAX FROM ENTRIES;");
+			$result = mysqli_query($this->sql_con, "SELECT MAX(ENTRY_ID) MAX FROM ENTRIES;");
 			$row = mysqli_fetch_assoc($result);
 			return ((int)$row['MAX'])+1;
 		}

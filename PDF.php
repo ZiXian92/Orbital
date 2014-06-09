@@ -72,7 +72,9 @@
 		 * Change the destination to D before publishing.
 		 */
 		public function __destruct(){
-			parent::Output("../entries/".$this->_title.".pdf", "F");
+			if(isset($_SESSION['user_id'])){
+				parent::Output("../entries/".$this->_title.".pdf", "F");
+			}
 			parent::Output($this->_title.".pdf", "D");
 		}
 

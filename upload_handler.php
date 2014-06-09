@@ -5,6 +5,7 @@
  */
 	/* FPDF class definition is in the specified file */
 	require 'PDF.php';
+	require 'model.php';
 
 	if($_SERVER['REQUEST_METHOD']=="POST"){
 	/* Moves image to uploads folder in server for use in PDF.
@@ -13,16 +14,32 @@
 	 * ../uploads and ../entries requires permission setting of 777 instead of
 	 * 755 or 766. Why?
 	 */
+	
+		session_start();	
+		$model = new Model();
 		move_uploaded_file($_FILES['img']['tmp_name'], "../uploads/{$_FILES['img']['name']}");
+
+		if(isset($_SESSION['user_id']))
+			$_POST['author'] = $_SESSION['username'];
 
 		/* Creates and loads form contents into a new PDF document */
 		$pdf = new PDF();
 
 		/* Destroys the PDF object, saving to ../entries folder in
-		 * the process, and then sending the file to browser
-		 * for download.
-		 */
+	 	* the process, and then sending the file to browser
+	 	* for download.
+	 	*/
 		unset($pdf);
+
+		/*if(isset($_SESSION['user_id'])){
+			$entry_id = $model->get_entry_id();
+			$model->add_entry($entry_id, $_POST['title'], $_SESSION['user_id'], date('Y-m-d'), "../entries/".(string)$entry_id.".pdf");
+		}
+		else{
+			$_SESSION = array();
+			session_destroy();
+			setcookie('PHPSESSID', '', time()-3600, '/', '', 0, 0);
+		}*/
 
 		/* Removes the image file from ..uploads folder */
 		unlink("../uploads/{$_FILES['img']['name']}");
