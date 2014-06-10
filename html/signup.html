@@ -1,6 +1,7 @@
 <!--Signup form-->
 {{message}}
-<form name="signup" action="users.php?action=signup" method="POST">
+<form name="signup" action="users.php?action=signup" method="POST"
+onsubmit="return validate_signup();">
 	<label>Name:
 	<input type="text" name="name" size="20" maxlength="20">
 	</label><br/>

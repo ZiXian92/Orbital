@@ -13,6 +13,8 @@
 
 	session_start();
 
+	header("Content-type: text/html; charset=utf-8");
+
 	$model = new Model();
 	
 	/* Handles page requests using the 'ugly' URLs */

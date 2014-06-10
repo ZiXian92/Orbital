@@ -14,9 +14,35 @@ function validate_file(){
 	var filename = document.forms["new_entry"]["img"].value;
 	var arr = str.split(filename, ".");
 	var ext = arr[arr.length-1];
-	alert(ext);
 	if(ext!="jpg" && ext!="jpeg" && ext!="png"){
-		document.forms["new_entry"]["img_file"]="";
-		alert("Please upload an image file(extensions: jpg, jpeg, png");
+		document.forms["new_entry"]["img"]="";
+		alert("Please upload an image file(extensions: jpg, jpeg, png)");
 	}
+}
+
+/* Validates signup form submission */
+function validate_signup(){
+	var name = document.forms["signup"]["name"].value;
+	var email = document.forms["signup"]['email'].value;
+	var pass1 = document.forms["signup"]["passwd"].value;
+	var pass2 = document.forms["signup"]["re-passwd"].value;
+	var email_format = /^[a-zA-Z0-9]+[a-zA-Z0-9_]*@[a-z]+\.com$/;
+
+	if(name.length==0 || email.length==0 ||
+		pass1.length==0 || pass2.length==0){
+		alert("Please fill out all required fields.");
+		return false;
+	}
+
+	if(!email.match(email_format)){
+		alert("Invalid email address.");
+		return false;
+	}
+
+	if(pass1!==pass2){
+		alert("Please make sure the 2 password fields are the same.");
+		return false;
+	}
+
+	return true;
 }
