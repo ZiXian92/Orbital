@@ -9,13 +9,14 @@
 	require 'model.php';
 
 	if($_SERVER['REQUEST_METHOD']=="POST"){
-	/* Moves image to uploads folder in server for use in PDF.
-	 * Please create the destination folder called uploads with the same
-	 * relative paths in the 2nd parameter of move_uploaded_file.
-	 * ../uploads and ../entries requires permission setting of 777
-	 * instead of 755 or 766. Why?
-	 */
+		/* Make sure all fields are filled */
+		if(empty($_POST['title']) || empty($_POST['story'])){
+			file_put_contents("message.txt", "Please fill out ALL required fields.");
+			header("Location: http://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
+			exit(0);
+		}
 
+		/* Check for invalid file types */
 		if($_FILES['img']['type']!="image/jpg" &&
 		$_FILES['img']['type']!="image/jpeg" &&
 		$_FILES['img']['type']!="image/png"){
@@ -27,6 +28,13 @@
 	
 		session_start();	
 		$model = new Model();
+
+	/* Moves image to uploads folder in server for use in PDF.
+	 * Please create the destination folder called uploads with the same
+	 * relative paths in the 2nd parameter of move_uploaded_file.
+	 * ../uploads and ../entries requires permission setting of 777
+	 * instead of 755 or 766. Why?
+	 */
 		move_uploaded_file($_FILES['img']['tmp_name'], "../uploads/{$_FILES['img']['name']}");
 
 		/* Somehow, having the author field disabled for
