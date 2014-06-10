@@ -1,6 +1,6 @@
 //Returns true if ALL fields are not empty and false otherwise
 function validate(){
-	var filename = document.forms["new_entry"]["img_file"].value;
+	var filename = document.forms["new_entry"]["img"].value;
 	var title = document.forms["new_entry"]["title"].value;
 	var text = document.forms["new_entry"]["story"].value;
 	if(filename=="" || title=="" || text==""){
@@ -11,7 +11,7 @@ function validate(){
 }
 
 function validate_file(){
-	var filename = document.forms["new_entry"]["img_file"].value;
+	var filename = document.forms["new_entry"]["img"].value;
 	var arr = str.split(filename, ".");
 	var ext = arr[arr.length-1];
 	alert(ext);
