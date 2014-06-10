@@ -1,3 +1,9 @@
+/* jscript.js
+ * Defines the functions to be used for form validation or any other
+ * event-handling in the web page.
+ * To be updated by Yulong
+ */
+
 //Returns true if ALL fields are not empty and false otherwise
 function validate(){
 	var filename = document.forms["new_entry"]["img"].value;
@@ -41,6 +47,25 @@ function validate_signup(){
 
 	if(pass1!==pass2){
 		alert("Please make sure the 2 password fields are the same.");
+		return false;
+	}
+
+	return true;
+}
+
+/* Validates the login form */
+function validate_login(){
+	var email = document.forms["login_form"]["email"].value;
+	var pass = document.forms["login_form"]["passwd"].value;
+	var email_format = /^[a-zA-Z0-9]+[a-zA-Z0-9_]*@[a-z]+\.com$/;
+
+	if(email.length==0 || pass.length==0){
+		alert("Please fill out all required fields.");
+		return false;
+	}
+
+	if(!email.match(email_format)){
+		alert("Invalid email address.");
 		return false;
 	}
 

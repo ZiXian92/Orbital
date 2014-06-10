@@ -1,12 +1,13 @@
 <!--User login form-->
 {{message}}
-<form name="login_form" action="users.php?action=login" method="POST">
+<form name="login_form" action="users.php?action=login" method="POST"
+onsubmit="return validate_login()">
 	<label>Email: 
-	<input type="text" name="email" size="30">
+	<input type="text" name="email" size="30">*required
 	</label><br/>
 
 	<label>Password: 
-	<input type="password" name="passwd" size="10" maxlength="10">
+	<input type="password" name="passwd" size="10" maxlength="10">*required
 	</label><br/>
 
 	<!--Fill the href section with the appropriate request
