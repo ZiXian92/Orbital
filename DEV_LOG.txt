@@ -26,9 +26,11 @@ June 2014(target)
 + Implements storing of PDF file directory in database.
 + Implements user sessions for users who want to have compiled collection
   of stories.
-+ Implements viewing and deleting of entries for logged in users
++ Implement viewing and deleting of entries for logged in users
++ Implement form input validation of entry, signup and login forms using
+  Javascript(to be updated by Yulong)
+- Refine entries listing to list only 10 entries each time.
 - Implement administrative front-end
-- Fix up the Javascript form input validation of entry, signup and login forms.
 - Integration with social media(ideal target)
 
 July 2014(tentative)
