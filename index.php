@@ -24,8 +24,13 @@
 	/* When user enters URL of main page, $_GET['page']
 	 * does not hold any value
 	 */
-	if(!isset($_GET['page']))
+	if(!isset($_GET['page'])){
+		if(!isset($_SESSION['user_id']) && !empty($_SERVER['HTTPS'])){
+			header("Location: http://".$_SERVER['HTTP_HOST']);
+			exit(0);
+		}
 		$_GET['page'] = "home";
+	}
 
 	/* Assigns values to replace placeholders with into $content_array
 	 * $content_array is passed by reference
@@ -42,6 +47,13 @@
 	 */
 	$view = new View($content_array);
 	$view->render();
+
+	/* Destroys the session if the user is not logged in */
+	if(!isset($_SESSION['user_id'])){
+		$_SESSION = array();
+		session_destroy();
+		setcookie("PHPSESSID", "", time()-3600, "/", "", 0, 0);
+	}
 
 	/* Clears the $_GET['page'] superglobal variable to
 	 * prevent wrong execution in the future.
