@@ -1,3 +1,6 @@
 RewriteEngine Off
 RewriteBase /
-RewriteRule ^.*$ index.php
+
+RewriteCond %{REQUEST_URI} ^signup$ [or]
+RewriteCond %{REQUEST_URI} ^login$
+RewriteRule .? https://%{HTTP_HOST}/index.php/page=%{REQUEST_URI} [L]
