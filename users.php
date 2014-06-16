@@ -20,52 +20,83 @@
 		return preg_match($format, $passwd);
 	}
 
+	session_start();
+
 	$model = new Model();
 
+	/* Handles exception of users entering users.php into URL */
+	if(!isset($_GET['action'])){
+		if(isset($_SESSION['user_id']))
+			$url = "https://";
+		else
+			$url = "http://";
+		$url.=$_SERVER['HTTP_HOST'];
+	}
+
+	/* Handles logout requests */
+	elseif($_GET['action']=="logout"){
+		$_SESSION = array();
+		session_destroy();
+		setcookie('PHPSESSID', '', time()-3600, '/', '', 0, 0);
+		$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=loggedout";
+	}
+
+	/* Subsequent blocks should only be executed if the method is POST */
+	elseif($_SERVER['REQUEST_METHOD']!="POST"){
+		if(isset($_SESSION['user_id']))
+			$url = "https://";
+		else
+			$url = "http://";
+		$url.=$_SERVER['HTTP_HOST'];
+	}
+
 	/* Executes request to sign up as new user */
-	if(isset($_GET['action']) && $_GET['action']=="signup"){
+	elseif($_GET['action']=="signup"){
 		$name = (string)$_POST['name'];
 		$email = (string)$_POST['email'];
 		$passwd = (string)$_POST['passwd'];
 		$passwd2 = (string)$_POST['re-passwd'];
 
-		/* If email is not currently
-		 * used by another user, add the user to database.
-		 * Validity of email address is done on browser
-		 * using Javascript.
-		 */
-		if(is_valid_email($email) && !$model->contains_email($email)){
-
-			/* Password validation */
-			if(is_valid_passwd($passwd) && $passwd===$passwd2){
-				$model->add_user($model->get_user_id(), $name, $passwd, $email);
-				$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signedup";
-			}
-			else{
-				file_put_contents("message.txt", "Invalid password or the 2 passwords do not match.\nPassword should contain only 10 alphanumeric characters.");
-				$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signup";
-			}
+		/* Checks if the username is already taken */
+		if($model->contains_username($name)){
+			file_put_contents("message.txt", "This username is already taken.");
+			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signup";
 		}
 
-		/* Else, return to signup page */
-		else{
+		/* If email is not currently used by another user,
+		 * add the user to database.
+		 */
+		elseif(!is_valid_email($email) || $model->contains_email($email)){
 			file_put_contents("message.txt", "Invalid email or email is used by another user.");
 			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signup";
+		}
+
+		/* Validates password */
+		elseif(!is_valid_passwd($passwd) || !($passwd===$passwd2)){
+			file_put_contents("message.txt", "Invalid password or the 2 passwords do not match.<br/>Password should contain only 10 alphanumeric characters.");
+			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signup";
+		}
+			/* Password validation */
+		else{
+			$model->add_user($model->get_user_id(), $name, $passwd, $email);
+			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signedup";
 		}
 	}
 
 	/* Handles login requests */
-	elseif(isset($_GET['action']) && $_GET['action']=="login"){
+	elseif($_GET['action']=="login"){
+		$email = (string)$_POST['email'];
+		$passwd = (string)$_POST['passwd'];
+
 		/* If login credentials are correct, start a new session.
 		 * Sets the user's ID and username as session variables.
 		 * Else, returns the user to the login page.
 		 */
-		if($model->is_valid_user($_POST['email'], $_POST['passwd'])){
-			session_start();
-			$user = $model->get_user($_POST['email'], $_POST['passwd']);
+		if($model->is_valid_user($email, $passwd)){
+			$user = $model->get_user($email, $passwd);
 			$_SESSION['user_id'] = $user['ID'];
 			$_SESSION['username'] = $user['USERNAME'];
-			$url = "http://".$_SERVER['HTTP_HOST'];
+			$url = "https://".$_SERVER['HTTP_HOST'];
 		}
 		else{
 			file_put_contents("message.txt", "Incorrect email or password");
@@ -73,16 +104,11 @@
 		}
 	}
 
-	/* Handles password change request */
-	elseif(isset($_GET['action']) && $_GET['action']=="changepasswd"){
-		session_start();
-		if(!isset($_SESSION['user_id'])){
-			$url = "https://".$_SERVER['HTTP_HOST'];
-			$_SESSION = array();
-			session_destroy();
-			setcookie('PHPSESSID', '', time()-3600, '/', '', 0, 0);
-		}
-		else{
+	/* Handles password change request.
+	 * Code is executed only if the user is logged in.
+	 */
+	elseif($_GET['action']=="changepasswd"){
+		if(isset($_SESSION['user_id'])){
 			if($model->get_password_by_id($_SESSION['user_id'])==
 				SHA1($_POST['old_passwd'])){
 				$model->set_new_password($_SESSION['user_id'], $_POST['new_passwd']);
@@ -93,22 +119,16 @@
 			}
 			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=change_passwd";
 		}
+		else
+			$url = "http://".$_SERVER['HTTP_HOST'];
 	}
 
-	/* Handles logout requests */
-	elseif(isset($_GET['action']) && $_GET['action']=="logout"){
-		session_start();
+	/* Destroys the session if user is not logged in */
+	if(!isset($_SESSION['user_id'])){
 		$_SESSION = array();
 		session_destroy();
 		setcookie('PHPSESSID', '', time()-3600, '/', '', 0, 0);
-		$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=loggedout";
 	}
-
-	/* Redirects to home page if user tries to access this script directly
-	 * from URL.
-	 */
-	else
-		$url = "http://".$_SERVER['HTTP_HOST'];
 
 	unset($_GET['action']);
 	header("Location: ".$url);

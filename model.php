@@ -92,12 +92,16 @@
 		 * Refer to database design on restrictions on parameters.
 		 * Restrictions to be listed here once finalised.
 		 * $id must be an integer from 0 to 99999.
-		 * $name must be of length 20
-		 * $passwd must be a non-empty string of length 10
+		 * $name is a string of maximum length 20
+		 * $passwd is a string of 10 alphanumeric characters.
 		 * $email must be a valid email address of length 50
 		 */
 		public function add_user($id, $name, $passwd, $email){
-			mysqli_query($this->sql_con, "INSERT INTO USERS VALUES(".(string)$id.", \"".$name."\", \"".SHA1($passwd)."\", \"".$email."\");");
+			$id = mysqli_real_escape_string($this->sql_con, (string)$id);
+			$name = mysqli_real_escape_string($this->sql_con, $name);
+			$passwd = mysqli_real_escape_string($this->sql_con, $passwd);
+			$email = mysqli_real_escape_string($this->sql_con, $email);
+			mysqli_query($this->sql_con, "INSERT INTO USERS VALUES(".$id.", \"".$name."\", \"".SHA1($passwd)."\", \"".$email."\");");
 		}
 
 		/* Removes a user identified by $id from database.
@@ -138,11 +142,18 @@
 		 * given email address
 		 */
 		public function contains_email($email){
+			$email = mysqli_real_escape_string($this->sql_con, (string)$email);
 			$result = mysqli_query($this->sql_con, "SELECT * FROM USERS WHERE EMAIL=\"".$email."\";");
 			$row = mysqli_fetch_assoc($result);
-			if($row==NULL)
-				return false;
-			return true;
+			return ($row!=NULL);
+		}
+
+		/* Checks if the given username is already taken */
+		public function contains_username($name){
+			$name = mysqli_real_escape_string($this->sql_con, (string)$name);
+			$result = mysqli_query($this->sql_con, "SELECT ID FROM USERS WHERE USERNAME=\"".$name."\";");
+			$row = mysqli_fetch_assoc($result);
+			return ($row!=NULL);
 		}
 
 		/* User Login Functions */
