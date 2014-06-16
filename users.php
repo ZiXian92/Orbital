@@ -52,10 +52,10 @@
 
 	/* Executes request to sign up as new user */
 	elseif($_GET['action']=="signup"){
-		$name = (string)$_POST['name'];
-		$email = (string)$_POST['email'];
-		$passwd = (string)$_POST['passwd'];
-		$passwd2 = (string)$_POST['re-passwd'];
+		$name = strip_tags((string)$_POST['name']);
+		$email = strip_tags((string)$_POST['email']);
+		$passwd = strip_tags((string)$_POST['passwd']);
+		$passwd2 = strip_tags((string)$_POST['re-passwd']);
 
 		/* Checks if the username is already taken */
 		if($model->contains_username($name)){
@@ -76,7 +76,6 @@
 			file_put_contents("message.txt", "Invalid password or the 2 passwords do not match.<br/>Password should contain only 10 alphanumeric characters.");
 			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signup";
 		}
-			/* Password validation */
 		else{
 			$model->add_user($model->get_user_id(), $name, $passwd, $email);
 			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signedup";
@@ -85,8 +84,8 @@
 
 	/* Handles login requests */
 	elseif($_GET['action']=="login"){
-		$email = (string)$_POST['email'];
-		$passwd = (string)$_POST['passwd'];
+		$email = strip_tags((string)$_POST['email']);
+		$passwd = strip_tags((string)$_POST['passwd']);
 
 		/* If login credentials are correct, start a new session.
 		 * Sets the user's ID and username as session variables.
