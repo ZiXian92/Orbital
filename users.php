@@ -22,21 +22,22 @@
 
 	/* Executes request to sign up as new user */
 	if(isset($_GET['action']) && $_GET['action']=="signup"){
+		$name = (string)$_POST['name'];
+		$email = (string)$_POST['email'];
+		$passwd = (string)$_POST['passwd'];
+		$passwd2 = (string)$_POST['re-passwd'];
+
 		/* If email is not currently
 		 * used by another user, add the user to database.
 		 * Validity of email address is done on browser
 		 * using Javascript.
 		 */
-		if(is_valid_email($_POST['email']) &&
-			!$model->contains_email($_POST['email'])){
+		if(is_valid_email($email) && !$model->contains_email($email)){
 
 			/* Password validation */
-			/*if(is_valid_passwd((string)$_POST['passwd']) &&
-			$_POST['passwd']===$_POST['re-passwd']){*/
-				$model->add_user($model->get_user_id(),
-				(string)$_POST['name'],
-				(string)$_POST['passwd'], (string)$_POST['email']);
-				$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signedup";
+			/*if(is_valid_passwd($passwd) && $passwd===$passwd2){*/
+			$model->add_user($model->get_user_id(), $name, $passwd, $email);
+			$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=signedup";
 			/*}
 			else{
 				file_put_contents("message.txt", "Invalid password or the 2 passwords do not match.\nPassword should contain only 10 alphanumeric characters.");

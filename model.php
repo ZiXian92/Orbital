@@ -129,7 +129,7 @@
 
 		/* Returns the next user_id to assign to the new user */
 		public function get_user_id(){
-			$result = mysqli_query($this->con, "SELECT MAX(ID) MAX FROM USERS;");
+			$result = mysqli_query($this->sql_con, "SELECT MAX(ID) MAX FROM USERS;");
 			$row = mysqli_fetch_assoc($result);
 			return ((int)$row['MAX'])+1;
 		}
@@ -138,7 +138,7 @@
 		 * given email address
 		 */
 		public function contains_email($email){
-			$result = mysqli_query($this->sql_con, "SELECT * FROM USERS WHERE EMAIL=".$email.";");
+			$result = mysqli_query($this->sql_con, "SELECT * FROM USERS WHERE EMAIL=\"".$email."\";");
 			$row = mysqli_fetch_assoc($result);
 			if($row==NULL)
 				return false;
