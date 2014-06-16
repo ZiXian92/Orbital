@@ -12,7 +12,9 @@
 		return preg_match($format, $email);
 	}
 
-	/* Checks if the given password is valid */
+	/* Checks if the given password is valid
+	 * Password must contain strictly 10 alphanumberic characters
+	 */
 	function is_valid_passwd($passwd){
 		$format = "/^[a-zA-Z0-9]{10}$/";
 		return preg_match($format, $passwd);
@@ -35,14 +37,14 @@
 		if(is_valid_email($email) && !$model->contains_email($email)){
 
 			/* Password validation */
-			/*if(is_valid_passwd($passwd) && $passwd===$passwd2){*/
-			$model->add_user($model->get_user_id(), $name, $passwd, $email);
-			$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=signedup";
-			/*}
+			if(is_valid_passwd($passwd) && $passwd===$passwd2){
+				$model->add_user($model->get_user_id(), $name, $passwd, $email);
+				$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signedup";
+			}
 			else{
 				file_put_contents("message.txt", "Invalid password or the 2 passwords do not match.\nPassword should contain only 10 alphanumeric characters.");
 				$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signup";
-			}*/
+			}
 		}
 
 		/* Else, return to signup page */
@@ -67,7 +69,7 @@
 		}
 		else{
 			file_put_contents("message.txt", "Incorrect email or password");
-			$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=login";
+			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=login";
 		}
 	}
 
@@ -75,7 +77,7 @@
 	elseif(isset($_GET['action']) && $_GET['action']=="changepasswd"){
 		session_start();
 		if(!isset($_SESSION['user_id'])){
-			$url = "http://".$_SERVER['HTTP_HOST'];
+			$url = "https://".$_SERVER['HTTP_HOST'];
 			$_SESSION = array();
 			session_destroy();
 			setcookie('PHPSESSID', '', time()-3600, '/', '', 0, 0);
@@ -89,7 +91,7 @@
 			else{
 				file_put_contents("message.txt", "Failed to change password.");
 			}
-			$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=change_passwd";
+			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=change_passwd";
 		}
 	}
 
