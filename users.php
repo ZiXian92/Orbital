@@ -8,9 +8,14 @@
 
 	/* Checks if the supplied email address is valid */
 	function is_valid_email($email){
-		if(preg_match("/^[a-zA-Z0-9_]+@[a-z]+\.com$/", $email))
-			return true;
-		return false;
+		$format = "/^[a-zA-Z0-9]+[a-zA-Z0-9_]*@[a-z]+\.com$/";
+		return preg_match($format, $email);
+	}
+
+	/* Checks if the given password is valid */
+	function is_valid_passwd($passwd){
+		$format = "/^[a-zA-Z0-9]{10}$/";
+		return preg_match($format, $passwd);
 	}
 
 	$model = new Model();
@@ -24,14 +29,20 @@
 		 * using Javascript.
 		 */
 		if(is_valid_email($_POST['email']) && !$model->contains_email($_POST['email'])){
-			$model->add_user($model->get_user_id(), $_POST['name'], $_POST['passwd'], $_POST['email']);
-			$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=signedup";
+			if(is_valid_passwd((string)$_POST['passwd']) && $_POST['passwd']===$_POST['re-passwd']){
+				$model->add_user($model->get_user_id(), (string)$_POST['name'], (string)$_POST['passwd'], $_POST['email']);
+				$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signedup";
+			}
+			else{
+				file_put_contents("message.txt", "Invalid password or the 2 passwords do not match.\nPassword should contain only 10 alphanumeric characters.");
+				$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signup";
+			}
 		}
 
 		/* Else, return to signup page */
 		else{
 			file_put_contents("message.txt", "Invalid email or email is used by another user.");
-			$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=signup";
+			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signup";
 		}
 	}
 

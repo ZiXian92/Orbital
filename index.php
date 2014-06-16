@@ -17,7 +17,7 @@
 
 	$model = new Model();
 
-	echo $_GET['page'];
+	#echo $_GET['page'];
 	
 	/* Handles page requests using the 'ugly' URLs */
 	/* Initialise to an empty array */
