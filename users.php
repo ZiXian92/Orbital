@@ -57,8 +57,14 @@
 		$passwd = strip_tags((string)$_POST['passwd']);
 		$passwd2 = strip_tags((string)$_POST['re-passwd']);
 
+		/* Checks if $name is still valid after removing tags */
+		if(strlen($name)==0){
+			file_put_contents("message.txt", "Invalid username.");
+			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signup";
+		}
+
 		/* Checks if the username is already taken */
-		if($model->contains_username($name)){
+		elseif($model->contains_username($name)){
 			file_put_contents("message.txt", "This username is already taken.");
 			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signup";
 		}
