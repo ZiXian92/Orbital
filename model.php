@@ -93,7 +93,7 @@
 		 * Restrictions to be listed here once finalised.
 		 * $id must be an integer from 0 to 99999.
 		 * $name must be of length 20
-		 * $passwd must be a non-empty string of length
+		 * $passwd must be a non-empty string of length 10
 		 * $email must be a valid email address of length 50
 		 */
 		public function add_user($id, $name, $passwd, $email){

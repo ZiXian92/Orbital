@@ -24,19 +24,24 @@
 	if(isset($_GET['action']) && $_GET['action']=="signup"){
 		/* If email is not currently
 		 * used by another user, add the user to database.
-		 * Then, redirects to log in page.
 		 * Validity of email address is done on browser
 		 * using Javascript.
 		 */
-		if(is_valid_email($_POST['email']) && !$model->contains_email($_POST['email'])){
-			if(is_valid_passwd((string)$_POST['passwd']) && $_POST['passwd']===$_POST['re-passwd']){
-				$model->add_user($model->get_user_id(), (string)$_POST['name'], (string)$_POST['passwd'], $_POST['email']);
+		if(is_valid_email($_POST['email']) &&
+			!$model->contains_email($_POST['email'])){
+
+			/* Password validation */
+			/*if(is_valid_passwd((string)$_POST['passwd']) &&
+			$_POST['passwd']===$_POST['re-passwd']){*/
+				$model->add_user($model->get_user_id(),
+				(string)$_POST['name'],
+				(string)$_POST['passwd'], (string)$_POST['email']);
 				$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signedup";
-			}
+			/*}
 			else{
 				file_put_contents("message.txt", "Invalid password or the 2 passwords do not match.\nPassword should contain only 10 alphanumeric characters.");
 				$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signup";
-			}
+			}*/
 		}
 
 		/* Else, return to signup page */
