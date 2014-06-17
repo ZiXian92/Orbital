@@ -32,9 +32,11 @@
 		/* Constructor */
 		/* Initialises all variables and sets up the document,
 		 * followed by a call to fill in the contents.
-		 * To-Do: Implement exception handling for moving uploaded file.
+		 * Takes in 4 string parameters: directory path of image file,
+		 * author of the story, title of the story, and the content of
+		 * the story.
 		 */
-		public function __construct(){
+		public function __construct($file, $author, $title, $story){
 			/* Creates a new PDF document */
 			parent::__construct("P", "pt", "A4");
 
@@ -45,12 +47,12 @@
 			parent::SetSubject("My XXX");
 
 			/* Initialise member attributes */
-			$this->_img_file = "../uploads/{$_FILES['img']['name']}";
-			$this->_author = $_POST['author'];
+			$this->_img_file = $file;
+			$this->_author = $author;
 			parent::SetAuthor($this->_author);
-			$this->_title = $_POST['title'];
+			$this->_title = $title;
 			parent::SetTitle($this->_title);
-			$this->_story = $_POST['story'];
+			$this->_story = $story;
 		
 			/* Width and height are in pixels */
 			$this->_img_size = getimagesize($this->_img_file);
