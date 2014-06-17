@@ -1,34 +1,64 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Home-XXX</title>
-	<link rel="stylesheet" type="text/css" href="stylesheets/style.css">
-</head>
+<?php
+	/* Part of the controller of the MVC framework.
+	 * Handles only page requests.
+	 * Form submission requests to be handled by upload_handler.php.
+	 * User login/logout requests to be handled by login.php
+	 * and logout.php respectively.
+	 * More edits to be made upon successful URL rewriting for friendlier
+	 * URLs.
+	 */
 
-<body>
-	<!--Imports the header and navigation links-->
-	<?php 
-	include('includes/header.php');
-	include('includes/nav.php');
-	?>
+	require "view.php";
+	require "model.php";
 
-	<!--The main content of the page-->
-	<div id="content">
-		<p>Do you have photos of any significant life events that you
-		do not wish to forget? Or do you want to share these life events
-		with your friends? Then you have come to the right place! XXX
-		will help you get it done within a few minutes.
-		</p>
+	session_start();
 
-		<h2>New to this site?</h2>
-		<!--Insert image button link to guided process-->
+	header("Content-type: text/html; charset=utf-8");
 
-		<h2>I've done this before</h2>
-		<!--Insert image button link to the standard form-->
-		<p style="text-align: center;"><a href="create_entry.php">Let's Get Started!</a></p>
-	</div>
+	$model = new Model();
 
-	<!--Imports the footer-->
-	<?php include('includes/footer.php'); ?>
-</body>
-</html>
+	#echo $_GET['page'];
+	
+	/* Handles page requests using the 'ugly' URLs */
+	/* Initialise to an empty array */
+	$content_array = array();
+
+	/* When user enters URL of main page, $_GET['page']
+	 * does not hold any value
+	 */
+	if(!isset($_GET['page'])){
+		if(!isset($_SESSION['user_id']) && !empty($_SERVER['HTTPS'])){
+			header("Location: http://".$_SERVER['HTTP_HOST']);
+			exit(0);
+		}
+		$_GET['page'] = "home";
+	}
+
+	/* Assigns values to replace placeholders with into $content_array
+	 * $content_array is passed by reference
+	 */
+	$model->set_template($content_array, $_GET['page']);
+
+	/* Gets the content from the appropriate HTML file based
+	 * on page requested.
+	 */
+	$content_array['content'] = $model->get_page($_GET['page']);
+
+	/* Creates a new View object once all the required information
+	 * are stored in the array.
+	 */
+	$view = new View($content_array);
+	$view->render();
+
+	/* Destroys the session if the user is not logged in */
+	if(!isset($_SESSION['user_id'])){
+		$_SESSION = array();
+		session_destroy();
+		setcookie("PHPSESSID", "", time()-3600, "/", "", 0, 0);
+	}
+
+	/* Clears the $_GET['page'] superglobal variable to
+	 * prevent wrong execution in the future.
+	 */
+	unset($_GET['page']);
+?>

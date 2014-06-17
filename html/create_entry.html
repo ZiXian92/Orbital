@@ -1,0 +1,34 @@
+<!--Form to gather required information for an entry-->
+<!--Lesson learnt: Must include enctype="multipart/form-data in <form> to
+    allow file to be submitted as file"-->
+{{message}}
+<form name="new_entry" action="upload_handler.php" method="post" id="entry" onsubmit="return validate();" enctype="multipart/form-data">
+
+	<!--Image file upload field-->
+	<label for="file">Image File:</label>
+	<!--readURL() function to be implemented. Complicated.-->
+	<input type="file" name="img" id="file"
+	accept="image/gif, image/jpeg, image/png"
+	onchange="validate_file()">*required<br/>
+
+	<!--Handle the preview issue at a later stage-->
+	<!--Image preview-->
+	<img src="#" alt="No preview available"><br/>
+	
+	<label>Author:
+	{{author}}
+	</label><br/>
+
+	<!--Title field-->
+	<label>Title:
+	<input type="text" name="title" size="30" placeholder="Enter a title">*required
+	</label><br/>
+
+	<!--Story field-->
+	<label>Story:</label>
+	<textarea name="story" rows="20" cols="80" form="entry" placeholder="Write your story here..."></textarea>*required<br/>
+
+	<!--Submit button-->
+	<input type="submit" name="submit" value="Submit">
+	</label>
+</form>
