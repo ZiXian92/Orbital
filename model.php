@@ -159,46 +159,76 @@
 
 		/* Returns the next user_id to assign to the new user */
 		public function get_user_id(){
-			$result = mysqli_query($this->sql_con, "SELECT MAX(ID) MAX FROM USERS;");
-			$row = mysqli_fetch_assoc($result);
-			return ((int)$row['MAX'])+1;
+			$q = "SELECT MAX(ID) MAX FROM USERS";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_bind_result($stmt, $next_id);
+			mysqli_stmt_fetch($stmt);
+			mysqli_stmt_close($stmt);
+			return (int)$next_id+1;
 		}
 
 		/* Checks if the database contains a user with the
 		 * given email address
 		 */
 		public function contains_email($email){
-			$email = mysqli_real_escape_string($this->sql_con, (string)$email);
-			$result = mysqli_query($this->sql_con, "SELECT * FROM USERS WHERE EMAIL=\"".$email."\";");
-			$row = mysqli_fetch_assoc($result);
-			return ($row!=NULL);
+			$email = mysqli_real_escape_string($this->sql_con, $email);
+			$q = "SELECT ID FROM USERS WHERE EMAIL=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "s", $email);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_bind_result($stmt, $id);
+			return mysqli_stmt_fetch($stmt)!=NULL;
 		}
 
 		/* Checks if the given username is already taken */
 		public function contains_username($name){
-			$name = mysqli_real_escape_string($this->sql_con, (string)$name);
-			$result = mysqli_query($this->sql_con, "SELECT ID FROM USERS WHERE USERNAME=\"".$name."\";");
-			$row = mysqli_fetch_assoc($result);
-			return ($row!=NULL);
+			$name = mysqli_real_escape_string($this->sql_con, $name);
+			$q = "SELECT ID FROM USERS WHERE USERNAME=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "s", $name);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_bind_result($stmt, $id);
+			return mysqli_stmt_fetch($stmt)!=NULL;
 		}
 
 		/* User Login Functions */
 
 		/* Checks if the user credentials are valid */
 		public function is_valid_user($email, $passwd){
-			$result = mysqli_query($this->sql_con, "SELECT * FROM USERS WHERE EMAIL=\"".$email."\" AND PASSWD=\"".SHA1($passwd)."\";");
-			$row = mysqli_fetch_assoc($result);
-			if($row==NULL)
-				return false;
-			return true;
+			$email = mysqli_real_escape_string($this->sql_con, $email);
+			$passwd = mysqli_real_escape_string($this->sql_con, $passwd);
+			$passwd = SHA1($passwd);
+			$q = "SELECT ID FROM USERS WHERE EMAIL=? AND PASSWD=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "ss", $email, $passwd);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_bind_result($stmt, $id);
+			return mysqli_stmt_fetch($stmt)!=NULL;
 		}
 
 		/* Returns the user id and username based on the given
-		 * email and password
+		 * email and password.
+		 * Query Result will never be NULL as email and passwrod
+		 * should be verified before calling this function.
 		 */
 		public function get_user($email, $passwd){
-			$result = mysqli_query($this->sql_con, "SELECT ID, USERNAME from USERS WHERE EMAIL=\"".$email."\" AND PASSWD=\"".SHA1($passwd)."\";");
-			return mysqli_fetch_assoc($result);
+			$email = mysqli_real_escape_string($this->sql_con, $email);
+			$passwd = mysqli_real_escape_string($this->sql_con, $passwd);
+			$passwd = SHA1($passwd);
+			$q = "SELECT ID, USERNAME FROM USERS WHERE EMAIL=? AND PASSWD=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "ss", $email, $passwd);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_bind_result($stmt, $id, $name);
+			$arr = array();
+			if(mysqli_stmt_fetch($stmt)==NULL)
+				$arr['ID'] = $arr['USERNAME'] = NULL;
+			else{
+				$arr['ID'] = $id;
+				$arr['USERNAME'] = $name;
+			}
+			return $arr;
 		}
 
 		/* Entries-related Administrative Functions */
