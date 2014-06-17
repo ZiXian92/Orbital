@@ -29,6 +29,8 @@ June 2014(target)
 + Implement viewing and deleting of entries for logged in users
 + Implement form input validation of entry, signup and login forms using
   Javascript(to be updated by Yulong)
++ Implement some security features to signup, login, password change
+  and entry form
 - Refine entries listing to list only 10 entries each time.
 - Implement administrative front-end
 - Integration with social media(ideal target)

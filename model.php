@@ -100,8 +100,16 @@
 			$id = mysqli_real_escape_string($this->sql_con, (string)$id);
 			$name = mysqli_real_escape_string($this->sql_con, $name);
 			$passwd = mysqli_real_escape_string($this->sql_con, $passwd);
+			$passwd = SHA1($passwd);
 			$email = mysqli_real_escape_string($this->sql_con, $email);
-			mysqli_query($this->sql_con, "INSERT INTO USERS VALUES(".$id.", \"".$name."\", \"".SHA1($passwd)."\", \"".$email."\");");
+
+			/* Using prepared statement for security purpose */
+			$q = "INSERT INTO USERS VALUES(?, ?, ?, ?)";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "isss", $id, $name, $passwd, $email);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_close($stmt);
+			#mysqli_query($this->sql_con, "INSERT INTO USERS VALUES(".$id.", \"".$name."\", \"".SHA1($passwd)."\", \"".$email."\");");
 		}
 
 		/* Removes a user identified by $id from database.
