@@ -1,4 +1,5 @@
 Main(updated as of 10 June 2014):
+0. Fine-tune deletion of users
 1. Complete model.php(Majority completed. Left with digging out more
    information from database based on needs, as well as touching up and
    cleaning up)

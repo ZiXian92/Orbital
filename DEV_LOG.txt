@@ -31,6 +31,7 @@ June 2014(target)
   Javascript(to be updated by Yulong)
 + Implement some security features to signup, login, password change
   and entry form
++ Enhance database sequrity using prepared statements in PHP scripts
 - Refine entries listing to list only 10 entries each time.
 - Implement administrative front-end
 - Integration with social media(ideal target)
