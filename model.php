@@ -228,6 +228,7 @@
 				$arr['ID'] = $id;
 				$arr['USERNAME'] = $name;
 			}
+			mysqli_stmt_close($stmt);
 			return $arr;
 		}
 
@@ -235,8 +236,14 @@
 
 		/* AUthenticates if the given entry request is valid */
 		public function authenticate_entry_request($user_id, $entry_id){
-			$result = mysqli_query($this->sql_con, "SELECT ENTRY_ID FROM ENTRIES WHERE AUTHOR=".(string)$user_id." AND ENTRY_ID=".(string)$entry_id.";");
-			return ($result!=null);
+			$user_id = (int)mysqli_real_escape_string($this->sql_con, (string)$user_id);
+			$entry_id = (int)mysqli_real_escape_string($this->sql_con, (string)$entry_id);
+			$q = "SELECT ENTRY_ID FROM ENTRIES WHERE AUTHOR=? AND ENTRY_ID=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "ii", $user_id, $entry_id);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_bind_result($stmt, $e_id);
+			return mysqli_stmt_fetch($stmt)!=NULL;
 		}
 
 		/* Adds a new entry to the database.
@@ -247,39 +254,59 @@
 		 * $file must be a string of length
 		 */
 		public function add_entry($entry_id, $title, $user_id, $date, $file){
-			mysqli_query($this->sql_con, "INSERT INTO ENTRIES VALUES(".(string)$entry_id.", \"".$title."\", ".(string)$user_id.", \"".$date."\", \"".$file."\");");
+			$entry_id = (int)mysqli_real_escape_string($this->sql_con, (string)$entry_id);
+			$title = mysqli_real_escape_string($this->sql_con, $title);
+			$user_id = (int)mysqli_real_escape_string($this->sql_con, (string)$user_id);
+			$q = "INSERT INTO ENTRIES VALUES(?, ?, ?, ?, ?)";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "isiss", $entry_id, $title, $user_id, $date, $file);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_close($stmt);
 		}
 		
 		/* Removes an entry from the database.
 		 * $id must be an integer between 0 to 99999.
 		 */
 		public function remove_entry($id){
-			mysqli_query($this->sql_con, "DELETE FROM ENTRIES WHERE ENTRY_ID=".(string)$id.";");
+			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
+			$q = "DELETE FROM ENTRIES WHERE ENTRY_ID=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "i", $id);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_close($stmt);
 		}
 
 		/* Returns a table of entries by the user of the given $id */
 		private function list_entries_by_id($id){
-			$result = mysqli_query($this->sql_con, "SELECT ENTRY_ID, DATE, TITLE FROM ENTRIES WHERE AUTHOR=".(string)$id." ORDER BY ENTRY_ID DESC;");
+			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
+			$q = "SELECT ENTRY_ID, DATE, TITLE FROM ENTRIES WHERE AUTHOR=? ORDER BY ENTRY_ID DESC";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "i", $id);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_bind_result($stmt, $e_id, $date, $title);
 			$table = "<table border=\"1\">
 				<tr><th>Date</th><th>Title</th>
 				<th>Action</th><tr>";
-			$row = mysqli_fetch_assoc($result);
-			while($row!=NULL){
-				$table.="<tr><td>".$row['DATE']."</td>
-					<td>".$row['TITLE']."</td>
-					<td><a href=\"entries_handler.php?action=view&id=".$row['ENTRY_ID']."\">View</a>
-					<a href=\"entries_handler.php?action=delete&id=".$row['ENTRY_ID']."\">Delete</a></td></tr>";
-				$row = mysqli_fetch_assoc($result);
+			while(mysqli_stmt_fetch($stmt)){
+				$table.="<tr><td>".$date."</td>
+					<td>".$title."</td>
+					<td><a href=\"entries_handler.php?action=view&id=".$e_id."\">View</a>
+					<a href=\"entries_handler.php?action=delete&id=".$e_id."\">Delete</a></td></tr>";
 			}
 			$table.="</table>";
+			mysqli_stmt_close($stmt);
 			return $table;
 		}
 
 		/* Returns the next entry_id to assign to the new entry */
 		public function get_entry_id(){
-			$result = mysqli_query($this->sql_con, "SELECT MAX(ENTRY_ID) MAX FROM ENTRIES;");
-			$row = mysqli_fetch_assoc($result);
-			return ((int)$row['MAX'])+1;
+			$q = "SELECT MAX(ENTRY_ID) MAX FROM ENTRIES";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_bind_result($stmt, $e_id);
+			mysqli_stmt_fetch($stmt);
+			mysqli_stmt_close($stmt);
+			return (int)$e_id+1;
 		}
 
 		/* Returns the path to the entry file
@@ -287,11 +314,15 @@
 		 * Returns NULL if the query returns nothing.
 		 */
 		public function get_entry_file($id){
-			$result = mysqli_query($this->sql_con, "SELECT FILE FROM ENTRIES WHERE ENTRY_ID=".(string)$id.";");
-			if($result==null)
-				return null;
-			$result = mysqli_fetch_assoc($result);
-			return $result['FILE'];
+			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
+			$q = "SELECT FILE FROM ENTRIES WHERE ENTRY_ID=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "i", $id);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_bind_result($stmt, $file);
+			mysqli_stmt_fetch($stmt);
+			mysqli_stmt_close($stmt);
+			return $file;
 		}
 	}
 ?>

@@ -63,7 +63,7 @@
 
 		/* Enter entry information to database */
 		if(isset($_SESSION['user_id'])){
-			$model->add_entry($_POST['entry_id'], $_POST['title'], $_SESSION['user_id'], date("Y-m-d"), "../entries/".(string)$_POST['entry_id'].".pdf");
+			$model->add_entry($_POST['entry_id'], $title, $_SESSION['user_id'], date("Y-m-d"), "../entries/".(string)$_POST['entry_id'].".pdf");
 		}
 		else{
 			$_SESSION = array();
