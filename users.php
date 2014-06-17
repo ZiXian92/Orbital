@@ -113,14 +113,21 @@
 	 * Code is executed only if the user is logged in.
 	 */
 	elseif($_GET['action']=="changepasswd"){
+		$old_passwd = strip_tags((string)$_POST['old_passwd']);
+		$new_passwd = strip_tags((string)$_POST['new_passwd']);
+		$new_passwd2 = strip_tags((string)$_POST['re-new_passwd']);
 		if(isset($_SESSION['user_id'])){
-			if($model->get_password_by_id($_SESSION['user_id'])==
-				SHA1($_POST['old_passwd'])){
-				$model->set_new_password($_SESSION['user_id'], $_POST['new_passwd']);
-				file_put_contents("message.txt", "Success!");
-			}
+			if(!is_valid_passwd($old_passwd) ||
+			$model->get_password_by_id($_SESSION['user_id'])!=
+			SHA1($old_passwd))
+				file_put_contents("message.txt", "Incorrect current password.");
+			elseif(!is_valid_passwd($new_passwd))
+				file_put_contents("message.txt", "Invalid new password.");
+			elseif($new_passwd!=$new_passwd2)
+				file_put_contents("message.txt", "The 2 new passwords do not match.");
 			else{
-				file_put_contents("message.txt", "Failed to change password.");
+				$model->set_new_password($_SESSION['user_id'], $new_passwd);
+				file_put_contents("message.txt", "Success!");
 			}
 			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=change_passwd";
 		}

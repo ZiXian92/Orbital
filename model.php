@@ -97,7 +97,7 @@
 		 * $email must be a valid email address of length 50
 		 */
 		public function add_user($id, $name, $passwd, $email){
-			$id = mysqli_real_escape_string($this->sql_con, (string)$id);
+			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
 			$name = mysqli_real_escape_string($this->sql_con, $name);
 			$passwd = mysqli_real_escape_string($this->sql_con, $passwd);
 			$passwd = SHA1($passwd);
@@ -109,7 +109,6 @@
 			mysqli_stmt_bind_param($stmt, "isss", $id, $name, $passwd, $email);
 			mysqli_stmt_execute($stmt);
 			mysqli_stmt_close($stmt);
-			#mysqli_query($this->sql_con, "INSERT INTO USERS VALUES(".$id.", \"".$name."\", \"".SHA1($passwd)."\", \"".$email."\");");
 		}
 
 		/* Removes a user identified by $id from database.
@@ -119,22 +118,41 @@
 		 * the database client.
 		 */
 		public function remove_user($id){
+			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
+			$q = "DELETE FROM USERS WHERE ID=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "i", $id);
 			if($id!=0)
-				mysqli_query($this->sql_con, "DELETE FROM USERS WHERE ID=".(string)$id.";");
+				mysqli_stmt_execute($stmt);
+			mysqli_stmt_close($stmt);
+				#mysqli_query($this->sql_con, "DELETE FROM USERS WHERE ID=".(string)$id.";");
 		}
 
 		/* Returns the encrypted password of the user
 		 * identified by $id
 		 */
 		public function get_password_by_id($id){
-			$result = mysqli_query($this->sql_con, "SELECT PASSWD FROM USERS WHERE ID=".(string)$id.";");
-			$result = mysqli_fetch_assoc($result);
-			return $result['PASSWD'];
+			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
+			$q = "SELECT PASSWD FROM USERS WHERE ID=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "i", $id);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_bind_result($stmt, $passwd);
+			mysqli_stmt_fetch($stmt);
+			mysqli_stmt_close($stmt);
+			return $passwd;
 		}
 
 		/* Changes the password of a user identified by $id */
 		public function set_new_password($id, $passwd){
-			mysqli_query($this->sql_con, "UPDATE USERS SET PASSWD=\"".SHA1($passwd)."\" WHERE ID=".(string)$id.";");
+			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
+			$passwd = mysqli_real_escape_string($this->sql_con, $passwd);
+			$passwd = SHA1($passwd);
+			$q = "UPDATE USERS SET PASSWD=? WHERE ID=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "si", $passwd, $id);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_close($stmt);
 		}
 
 		/* User signup-related functions */
