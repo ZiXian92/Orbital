@@ -30,9 +30,10 @@ June 2014(target)
 + Implement form input validation of entry, signup and login forms using
   Javascript(to be updated by Yulong)
 + Implement some security features to signup, login, password change
-  and entry form
+  and entry form(input validation, HTTPS, strip tags to prevent XSS attacks
+  and SQL prepared statements)
 + Enhance database sequrity using prepared statements in PHP scripts
-- Refine entries listing to list only 10 entries each time.
+- Refine entries listing to list only 10 entries each time.(in progress)
 - Implement administrative front-end
 - Integration with social media(ideal target)
 
