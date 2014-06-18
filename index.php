@@ -34,6 +34,20 @@
 		$_GET['page'] = "home";
 	}
 
+	/* Switch to HTTP for about page if user is not logged in */
+	if($_GET['page']=="about" && !isset($_SESSION['user_id']) &&
+		!empty($_SERVER['HTTPS'])){
+		header("Location: http://".$_SERVER['HTTP_HOST']."/index.php?page=".$_GET['page']);
+		exit(0);
+	}
+
+	/* Ensure signup and login pages always use HTTPS */
+	if(($_GET['page']=="signup" || $_GET['page']=="login") &&
+		empty($_SERVER['HTTPS'])){
+		header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=".$_GET['page']);
+		exit(0);
+	}
+
 	/* Assigns values to replace placeholders with into $content_array
 	 * $content_array is passed by reference
 	 */
