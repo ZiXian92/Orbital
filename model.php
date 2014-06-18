@@ -286,11 +286,20 @@
 			mysqli_stmt_bind_result($stmt, $e_id, $date, $title);
 			$table = file_get_contents("html/entries_table.html");
 			$list = "";
-			while(mysqli_stmt_fetch($stmt)){
+			for($counter=1;;$counter++){
+				if(!mysqli_stmt_fetch($stmt)){
+					if(preg_match("/<\/tr>$/", $list))
+						$list.="</span>";
+					break;
+				}
+				if($counter%10==1)
+					$list.="<span class=\"section\" id=\"".(string)(floor($counter/10)+1)."\">";
 				$list.="<tr><td>".$date."</td>
 					<td>".$title."</td>
 					<td><a href=\"entries_handler.php?action=view&id=".$e_id."\">View</a>
 					<a href=\"entries_handler.php?action=delete&id=".$e_id."\">Delete</a></td></tr>";
+				if($counter%10==0)
+					$list.="</span>";
 			}
 			$table = str_replace("{{list}}", $list, $table);
 			mysqli_stmt_close($stmt);
