@@ -284,16 +284,15 @@
 			mysqli_stmt_bind_param($stmt, "i", $id);
 			mysqli_stmt_execute($stmt);
 			mysqli_stmt_bind_result($stmt, $e_id, $date, $title);
-			$table = "<table border=\"1\">
-				<tr><th>Date</th><th>Title</th>
-				<th>Action</th><tr>";
+			$table = file_get_contents("html/entries_table.html");
+			$list = "";
 			while(mysqli_stmt_fetch($stmt)){
-				$table.="<tr><td>".$date."</td>
+				$list.="<tr><td>".$date."</td>
 					<td>".$title."</td>
 					<td><a href=\"entries_handler.php?action=view&id=".$e_id."\">View</a>
 					<a href=\"entries_handler.php?action=delete&id=".$e_id."\">Delete</a></td></tr>";
 			}
-			$table.="</table>";
+			$table = str_replace("{{list}}", $list, $table);
 			mysqli_stmt_close($stmt);
 			return $table;
 		}
