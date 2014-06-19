@@ -33,8 +33,8 @@ June 2014(target)
   and entry form(input validation, HTTPS, strip tags to prevent XSS attacks
   and SQL prepared statements)
 + Enhance database sequrity using prepared statements in PHP scripts
-- Refine entries listing to list only 10 entries each time.(in progress)
-- Implement administrative front-end
+- Refine entries listing to list only 10 entries each time.(W.I.P)
+- Implement administrative front-end(W.I.P)
 - Integration with social media(ideal target)
 
 July 2014(tentative)

@@ -1,9 +1,9 @@
-Main(updated as of 18 June 2014):
+Main(updated as of 19 June 2014):
 1. Fine-tune deletion of users
 2. Complete model.php(Majority completed. Left with digging out more
    information from database based on needs)
 3. Implement password reset for users who forgot their passwords
-4. Implement admin login and front-end administrative functionalities
+4. Implement admin login and front-end administrative functionalities(W.I.P)
 5. Improve on Javascript form validation(to be done by Yulong)
 6. Implement guided interface for 1st-time users(to be done by Yulong)
 7. Create buttons to use as link for both types of users
