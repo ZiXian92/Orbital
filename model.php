@@ -264,13 +264,23 @@
 
 		/* Entries-related Administrative Functions */
 
-		/* AUthenticates if the given entry request is valid */
+		/* Authenticates if the given entry request is valid.
+		 * Admin ID will have overriding authority to deal with any
+		 * valid entry
+		 */
 		public function authenticate_entry_request($user_id, $entry_id){
 			$user_id = (int)mysqli_real_escape_string($this->sql_con, (string)$user_id);
 			$entry_id = (int)mysqli_real_escape_string($this->sql_con, (string)$entry_id);
-			$q = "SELECT ENTRY_ID FROM ENTRIES WHERE AUTHOR=? AND ENTRY_ID=?";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_bind_param($stmt, "ii", $user_id, $entry_id);
+			if($user_id===0){
+				$q = "SELECT ENTRY_ID FROM ENTRIES WHERE ENTRY_ID=?";
+				$stmt = mysqli_prepare($this->sql_con, $q);
+				mysqli_stmt_bind_param($stmt, $entry_id);
+			}
+			else{
+				$q = "SELECT ENTRY_ID FROM ENTRIES WHERE AUTHOR=? AND ENTRY_ID=?";
+				$stmt = mysqli_prepare($this->sql_con, $q);
+				mysqli_stmt_bind_param($stmt, "ii", $user_id, $entry_id);
+			}
 			mysqli_stmt_execute($stmt);
 			mysqli_stmt_bind_result($stmt, $e_id);
 			return mysqli_stmt_fetch($stmt)!=NULL;
