@@ -62,8 +62,9 @@
 		 */
 		public function get_page($page){
 			if(isset($_SESSION['user_id']) && $page=="home"){
-				return "<p>Welcome, ".$_SESSION['username']."</p>".$this->list_entries_by_id($_SESSION['user_id']);
-				
+				if($_SESSION['user_id']!=0)
+					return "<p>Welcome, ".$_SESSION['username']."</p>".$this->list_entries_by_id($_SESSION['user_id']);
+				return "<p>Welcome, ".$_SESSION['username']."</p>".$this->list_users();
 			}
 
 			/* For logged in users, requests to any other pages
@@ -153,6 +154,35 @@
 			mysqli_stmt_bind_param($stmt, "si", $passwd, $id);
 			mysqli_stmt_execute($stmt);
 			mysqli_stmt_close($stmt);
+		}
+
+		/* Returns a table list of registered users */
+		public function list_users(){
+			$table = file_get_contents("html/users_table.html");
+			$q = "SELECT ID, USERNAME, EMAIL FROM USERS WHERE ID!=0";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_bind_result($stmt, $id, $name, $email);
+			$list = "";
+			for($counter=1;;$counter++){
+				if(!mysqli_stmt_fetch($stmt)){
+					if(preg_match("/<\/tr>$/", $list))
+						$list.="</span>";
+					break;
+				}
+				if($counter%10==1)
+					$list.="<span class=\"section\" id=\"".(string)(floor($counter/10)+1)."\">";
+				$list.="<tr><td>".$id."</td>
+					<td>".$name."</td>
+					<td>".$email."</td>
+					<td><a href=\"#\">View</a>
+					<a href=\"#\">Delete</a></td></tr>";
+				if($counter%10==0)
+					$list.="</span>";
+			}
+			$table = str_replace("{{list}}", $list, $table);
+			mysqli_stmt_close($stmt);
+			return $table;
 		}
 
 		/* User signup-related functions */
