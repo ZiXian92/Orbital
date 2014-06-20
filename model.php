@@ -129,6 +129,19 @@
 				#mysqli_query($this->sql_con, "DELETE FROM USERS WHERE ID=".(string)$id.";");
 		}
 
+		/* Checks if the given id exists in the database.
+		 * $id must be an integer between 0 and 99999
+		 */
+		public function contains_id($id){
+			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
+			$q = "SELECT ID FROM USERS WHERE ID=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "i", $id);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_bind_result($stmt, $res);
+			return mysqli_stmt_fetch($stmt);
+		}
+
 		/* Returns the encrypted password of the user
 		 * identified by $id
 		 */
@@ -271,10 +284,10 @@
 		public function authenticate_entry_request($user_id, $entry_id){
 			$user_id = (int)mysqli_real_escape_string($this->sql_con, (string)$user_id);
 			$entry_id = (int)mysqli_real_escape_string($this->sql_con, (string)$entry_id);
-			if($user_id===0){
+			if($user_id==0){
 				$q = "SELECT ENTRY_ID FROM ENTRIES WHERE ENTRY_ID=?";
 				$stmt = mysqli_prepare($this->sql_con, $q);
-				mysqli_stmt_bind_param($stmt, $entry_id);
+				mysqli_stmt_bind_param($stmt, "i", $entry_id);
 			}
 			else{
 				$q = "SELECT ENTRY_ID FROM ENTRIES WHERE AUTHOR=? AND ENTRY_ID=?";
@@ -283,7 +296,7 @@
 			}
 			mysqli_stmt_execute($stmt);
 			mysqli_stmt_bind_result($stmt, $e_id);
-			return mysqli_stmt_fetch($stmt)!=NULL;
+			return mysqli_stmt_fetch($stmt);
 		}
 
 		/* Adds a new entry to the database.
@@ -317,7 +330,7 @@
 		}
 
 		/* Returns a table of entries by the user of the given $id */
-		private function list_entries_by_id($id){
+		public function list_entries_by_id($id){
 			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
 			$q = "SELECT ENTRY_ID, DATE, TITLE FROM ENTRIES WHERE AUTHOR=? ORDER BY ENTRY_ID DESC";
 			$stmt = mysqli_prepare($this->sql_con, $q);
