@@ -34,29 +34,38 @@
 		$_GET['page'] = "home";
 	}
 
+	$page = strip_tags($_GET['page']);
+
 	/* Switch to HTTP for about page if user is not logged in */
-	if($_GET['page']=="about" && !isset($_SESSION['user_id']) &&
+	if($page=="about" && !isset($_SESSION['user_id']) &&
 		!empty($_SERVER['HTTPS'])){
-		header("Location: http://".$_SERVER['HTTP_HOST']."/index.php?page=".$_GET['page']);
+		header("Location: http://".$_SERVER['HTTP_HOST']."/index.php?page=".$page);
 		exit(0);
 	}
 
 	/* Ensure signup and login pages always use HTTPS */
-	if(($_GET['page']=="signup" || $_GET['page']=="login") &&
+	if(($page=="signup" || $page=="login") &&
 		empty($_SERVER['HTTPS'])){
-		header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=".$_GET['page']);
+		header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=".$page);
+		exit(0);
+	}
+
+	/* Admins don't create any entries */
+	if($page=="create_entry" && isset($_SESSION['user_id']) &&
+	$_SESSION['user_id']==0){
+		header("Location: https://".$_SERVER['HTTP_HOST']);
 		exit(0);
 	}
 
 	/* Assigns values to replace placeholders with into $content_array
 	 * $content_array is passed by reference
 	 */
-	$model->set_template($content_array, $_GET['page']);
+	$model->set_template($content_array, $page);
 
 	/* Gets the content from the appropriate HTML file based
 	 * on page requested.
 	 */
-	$content_array['content'] = $model->get_page($_GET['page']);
+	$content_array['content'] = $model->get_page($page);
 
 	/* Creates a new View object once all the required information
 	 * are stored in the array.

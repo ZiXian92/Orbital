@@ -33,7 +33,10 @@
 			else
 				$arr['javascript'] = "";
 			if(isset($_SESSION['username'])){
-				$arr['usrmenu'] = file_get_contents("html/loggedinmenu.html");
+				if($_SESSION['user_id']==0)
+					$arr['usrmenu'] = file_get_contents("html/admin_menu.html");
+				else
+					$arr['usrmenu'] = file_get_contents("html/loggedinmenu.html");
 				$arr['author'] = "<input type=\"text\" 
 					name=\"author\" size=\"20\" 
 					value=\"".$_SESSION['username'].
@@ -79,7 +82,7 @@
 					$page!="change_passwd")) ||
 				(!isset($_SESSION['user_id']) &&
 					$page=="change_passwd")){
-				header("Location: http://".$_SERVER['HTTP_HOST']."/index.php?page=home");
+				header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=home");
 				exit(0);
 			}
 			if(file_exists("html/".$page.".html"))
