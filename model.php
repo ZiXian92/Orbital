@@ -120,13 +120,37 @@
 		 */
 		public function remove_user($id){
 			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
+			/* Gets the file paths of all entries authored by
+			 * the user with the given user ID and removes
+			 * these files
+			 */
+			$q = "SELECT FILE FROM ENTRIES WHERE AUTHOR=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "i", $id);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_bind_result($stmt, $file);
+			while(mysqli_stmt_fetch($stmt))
+				unlink($file);
+			mysqli_stmt_close($stmt);
+
+			/* Remove all records of entries related to the user
+			 * identified by the given user ID
+			 */
+			$q = "DELETE FROM ENTRIES WHERE AUTHOR=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "i", $id);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_close($stmt);
+
+			/* Delete information about the user identified
+			 * by the given user ID
+			 */
 			$q = "DELETE FROM USERS WHERE ID=?";
 			$stmt = mysqli_prepare($this->sql_con, $q);
 			mysqli_stmt_bind_param($stmt, "i", $id);
 			if($id!=0)
 				mysqli_stmt_execute($stmt);
 			mysqli_stmt_close($stmt);
-				#mysqli_query($this->sql_con, "DELETE FROM USERS WHERE ID=".(string)$id.";");
 		}
 
 		/* Checks if the given id exists in the database.
@@ -188,8 +212,8 @@
 				$list.="<tr><td>".$id."</td>
 					<td>".$name."</td>
 					<td>".$email."</td>
-					<td><a href=\"#\">View</a>
-					<a href=\"#\">Delete</a></td></tr>";
+					<td><a href=\"admin.php?action=view&id=".(string)$id."\">View</a>
+					<a href=\"admin.php?action=delete&id=".(string)$id."\">Delete</a></td></tr>";
 				if($counter%10==0)
 					$list.="</span>";
 			}
