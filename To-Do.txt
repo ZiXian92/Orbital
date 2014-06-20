@@ -1,20 +1,19 @@
-Main(updated as of 19 June 2014):
+Main(updated as of 20 June 2014):
 1. Fine-tune deletion of users
 2. Complete model.php(Majority completed. Left with digging out more
    information from database based on needs)
 3. Implement password reset for users who forgot their passwords
-4. Implement admin login and front-end administrative functionalities(W.I.P)
-5. Improve on Javascript form validation(to be done by Yulong)
-6. Implement guided interface for 1st-time users(to be done by Yulong)
-7. Create buttons to use as link for both types of users
+4. Improve on Javascript form validation(to be done by Yulong)
+5. Implement guided interface for 1st-time users(to be done by Yulong)
+6. Create buttons to use as link for both types of users
 	- Created a normal text link as stand in to test functionality
-8. Make changes in the CSS file so that pages render nicely even when browser
+7. Make changes in the CSS file so that pages render nicely even when browser
    window size is adjusted
-9. Add user/session management functionality(left with that for 6.)
-10. Thorough testing of all functionalities and identifying all possible
+8. Add user/session management functionality(left with that for 6.)
+9. Thorough testing of all functionalities and identifying all possible
    exceptional scenarios(ie. hack our own website!)
-11. Decorate the webpages
-12. Remove the borders
+10. Decorate the webpages
+11. Remove the borders
 
 Optional stuff:
 1. Use .htaccess file for URL rewriting for user-friendly URLs
