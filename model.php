@@ -102,7 +102,7 @@
 		 * $passwd is a string of 10 alphanumeric characters.
 		 * $email must be a valid email address of length 50
 		 */
-		public function add_user($id, $name, $passwd, $email){
+		public function add_user($id, $name, $passwd, $email, $code){
 			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
 			$name = mysqli_real_escape_string($this->sql_con, $name);
 			$passwd = mysqli_real_escape_string($this->sql_con, $passwd);
@@ -110,9 +110,9 @@
 			$email = mysqli_real_escape_string($this->sql_con, $email);
 
 			/* Using prepared statement for security purpose */
-			$q = "INSERT INTO USERS VALUES(?, ?, ?, ?)";
+			$q = "INSERT INTO USERS VALUES(?, ?, ?, ?, ?)";
 			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_bind_param($stmt, "isss", $id, $name, $passwd, $email);
+			mysqli_stmt_bind_param($stmt, "issss", $id, $name, $passwd, $email, $code);
 			mysqli_stmt_execute($stmt);
 			mysqli_stmt_close($stmt);
 		}
