@@ -3,13 +3,18 @@
 	 * web pages or data from database.
 	 */
 
+	DEFINE('DB_HOST', 'localhost');
+	DEFINE('DB_USER', 'zixian');
+	DEFINE('PASSWD', 'NanaMizuki');
+	DEFINE('DB_NAME', "ORBITAL");
+
 	class Model{
 		/* Variable holding connection with database */
 		private $sql_con;
 
 		/* Constructor. Establishes database connection. */
 		public function __construct(){
-			$this->sql_con = mysqli_connect("localhost", "zixian", "NanaMizuki", "ORBITAL");
+			$this->sql_con = mysqli_connect(DB_HOST, DB_USER, PASSWD, DB_NAME);
 			if(mysqli_connect_errno()){
 				echo "Unable to connect to database. Error: ".mysqli_connect_error()."<br/>";
 				$this->__destruct();
