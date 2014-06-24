@@ -82,14 +82,17 @@
 			file_put_contents("message.txt", "Invalid password or the 2 passwords do not match.<br/>Password should contain only 10 alphanumeric characters.");
 			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signup";
 		}
+		//On successful registration
 		else{
+			//Generate activation code
 			$code = md5(uniqid(rand(), true));
 			$model->add_user($model->get_user_id(), $name, $passwd, $email, $code);
 			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signedup";
-			$code = md5(uniqid(rand(), true));
 			$subject = "Account Activation";
 			$message = "Thank you for signing up. To get started, please click on the link below to activate your account.\nhttps://".$_SERVER['HTTP_HOST']."/activate.php?x=".urlencode($email)."&y=".$code;
 			header("Location: ".$url);
+
+			//Sends email with activation link to the user
 			mail($email, $subject, $message, "From: admin@".$_SERVER['HTTP_HOST']);
 			exit(0);
 		}
