@@ -271,7 +271,7 @@
 			$email = mysqli_real_escape_string($this->sql_con, $email);
 			$passwd = mysqli_real_escape_string($this->sql_con, $passwd);
 			$passwd = SHA1($passwd);
-			$q = "SELECT ID FROM USERS WHERE EMAIL=? AND PASSWD=?";
+			$q = "SELECT ID FROM USERS WHERE EMAIL=? AND PASSWD=? AND ACTIVE IS NULL";
 			$stmt = mysqli_prepare($this->sql_con, $q);
 			mysqli_stmt_bind_param($stmt, "ss", $email, $passwd);
 			mysqli_stmt_execute($stmt);

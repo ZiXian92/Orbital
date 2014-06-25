@@ -87,13 +87,19 @@
 			//Generate activation code
 			$code = md5(uniqid(rand(), true));
 			$model->add_user($model->get_user_id(), $name, $passwd, $email, $code);
-			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signedup";
+			#$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signedup";
 			$subject = "Account Activation";
 			$message = "Thank you for signing up. To get started, please click on the link below to activate your account.\nhttps://".$_SERVER['HTTP_HOST']."/activate.php?x=".urlencode($email)."&y=".$code;
-			header("Location: ".$url);
+			#header("Location: ".$url);
 
 			//Sends email with activation link to the user
-			mail($email, $subject, $message, "From: admin@".$_SERVER['HTTP_HOST']);
+			#mail($email, $subject, $message, "From: admin@".$_SERVER['HTTP_HOST']);
+
+			/* Stud. To make sure that activation process is
+			 * correctly implemented.
+			 * To be removed once the email issue has been resolved
+			 */
+			echo $message;
 			exit(0);
 		}
 	}
@@ -114,7 +120,7 @@
 			$url = "https://".$_SERVER['HTTP_HOST'];
 		}
 		else{
-			file_put_contents("message.txt", "Incorrect email or password");
+			file_put_contents("message.txt", "Incorrect email or password or account is not activated.");
 			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=login";
 		}
 	}
