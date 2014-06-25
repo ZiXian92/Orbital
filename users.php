@@ -41,6 +41,20 @@
 		$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=loggedout";
 	}
 
+	/* Activates the appropriate account if the email and
+	 * activation code matches. Else, redirects to page not found
+	 */
+	elseif($_GET['action']=="activate" && isset($_GET['x']) && isset($_GET['y'])){
+		$email = urldecode(strip_tags($_GET['x']));
+		$code = strip_tags($_GET['y']);
+		if($model->activate($email, $code)){
+			file_put_contents("message.txt", "Account activated! Please proceed to log in.");
+			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=login";
+		}
+		else
+			$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=404";
+	}
+
 	/* Subsequent blocks should only be executed if the method is POST */
 	elseif($_SERVER['REQUEST_METHOD']!="POST"){
 		if(isset($_SESSION['user_id']))
