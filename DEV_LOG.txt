@@ -34,6 +34,8 @@ June 2014(target)
 + Enhance database sequrity using prepared statements in PHP scripts
 + Implement administrative front-end(view general user data, view any user's
   list of entries and any entry, delete user and any user's entry)
+- Adds account activation mechanism to the signup process(emailing of
+  activation code to be implemented)
 - Guided entry form for new users(interface to be done by Yulong, session
   details to be discussed)
 - Adds form for users who forgot their passwords(backend not implemented)
