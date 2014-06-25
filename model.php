@@ -264,6 +264,24 @@
 			return mysqli_stmt_fetch($stmt)!=NULL;
 		}
 
+		/* Activates a new user account. Returns true on successful
+		 * activation and false otherwise
+		 */
+		public function activate($email, $code){
+			$email = mysqli_real_escape_string($this->sql_con, $email);
+			$code = mysqli_real_escape_string($this->sql_con, $code);
+			$q = "UPDATE USERS SET ACTIVE=NULL WHERE EMAIL=? AND ACTIVE=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "ss", $email, $code);
+			mysqli_stmt_execute($stmt);
+			if(mysqli_stmt_affected_rows($stmt)==1){
+				mysqli_stmt_close($stmt);
+				return true;
+			}
+			mysqli_stmt_close($stmt);
+			return false;
+		}
+
 		/* User Login Functions */
 
 		/* Checks if the user credentials are valid */
