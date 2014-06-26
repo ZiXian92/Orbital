@@ -1,7 +1,10 @@
 <?php
 	/* Handles all user account-related requests, such as signup,
 	 * login, logout, change and forgot password.
-	 * To-Do: Handle forgot password.
+	 * To-Do: Touch up password reset and signup portions once emailing is
+	 * resolved.
+	 * Modify account activation to allow for manual activation by
+	 * administrator.
 	 */
 
 	require "model.php";
@@ -66,7 +69,7 @@
 		if($_SERVER['REQUEST_METHOD']=="POST")
 			$email = strip_tags($_POST['email']);
 		elseif(isset($_GET['email']))
-			$email = strip_tags($_GET['email']);
+			$email = strip_tags(urldecode($_GET['email']));
 		else{
 			header("Location: https://".$_SERVER['HTTP_HOST']);
 			exit(0);
@@ -85,7 +88,7 @@
 		}
 		else
 			file_put_contents("message.txt", "Invalid email");
-		if($_SERVER['REQUEST_METHOD']="POST")
+		if($_SERVER['REQUEST_METHOD']=="POST")
 			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=reset_passwd";
 		else
 			$url = "https://".$_SERVER['HTTP_HOST'];

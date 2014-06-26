@@ -84,7 +84,7 @@
 					$page!="change_passwd")) ||
 				(!isset($_SESSION['user_id']) &&
 					$page=="change_passwd")){
-				header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=home");
+				header("Location: https://".$_SERVER['HTTP_HOST']);
 				exit(0);
 			}
 			if(file_exists("html/".$page.".html"))
@@ -240,7 +240,7 @@
 					<td>".$email."</td>
 					<td><a href=\"admin.php?action=view&id=".(string)$id."\">View</a>
 					<a href=\"#\">Activate</a>
-					<a href=\"#\">Reset Password</a>
+					<a href=\"users.php?action=reset_passwd&email=".urlencode($email)."\">Reset Password</a>
 					<a href=\"admin.php?action=delete&id=".(string)$id."\">Delete</a></td></tr>";
 				if($counter%10==0)
 					$list.="</span>";

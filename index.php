@@ -45,14 +45,14 @@
 	/* Switch to HTTP for about page if user is not logged in */
 	if($page=="about" && !isset($_SESSION['user_id']) &&
 		!empty($_SERVER['HTTPS'])){
-		header("Location: http://".$_SERVER['HTTP_HOST']."/index.php?page=".$page);
+		header("Location: http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 		exit(0);
 	}
 
 	/* Ensure signup and login pages always use HTTPS */
 	if(($page=="signup" || $page=="login" || $page=="reset_passwd") &&
 		empty($_SERVER['HTTPS'])){
-		header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=".$page);
+		header("Location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 		exit(0);
 	}
 
