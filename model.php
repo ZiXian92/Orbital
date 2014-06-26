@@ -193,9 +193,9 @@
 		 */
 		public function reset_password($email){
 			$email = mysqli_real_escape_string($this->sql_con, $email);
-			$passwd = md5(uniqid(rand(), true));
+			$passwd = substr(md5(uniqid(rand(), true)), 0, 10);
 			$enc_passwd = SHA1($passwd);
-			$q = "UPDATE USERS SET PASSWD=? WHERE EMAIL=?";
+			$q = "UPDATE USERS SET PASSWD=? WHERE EMAIL=? AND ACTIVE IS NULL";
 			$stmt = mysqli_prepare($this->sql_con, $q);
 			mysqli_stmt_bind_param($stmt, "ss", $enc_passwd, $email);
 			mysqli_stmt_execute($stmt);
