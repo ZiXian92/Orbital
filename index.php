@@ -23,6 +23,12 @@
 	/* Initialise to an empty array */
 	$content_array = array();
 
+	/* Ensure that HTTPS is always used if the user is logged in */
+	if(isset($_SESSION['user_id']) && empty($_SERVER['HTTPS'])){
+		header("Location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+		exit(0);
+	}
+
 	/* When user enters URL of main page, $_GET['page']
 	 * does not hold any value
 	 */
@@ -44,7 +50,7 @@
 	}
 
 	/* Ensure signup and login pages always use HTTPS */
-	if(($page=="signup" || $page=="login") &&
+	if(($page=="signup" || $page=="login" || $page=="reset_passwd") &&
 		empty($_SERVER['HTTPS'])){
 		header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=".$page);
 		exit(0);
