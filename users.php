@@ -55,6 +55,36 @@
 			$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=404";
 	}
 
+	/* Handles password reset requests */
+	elseif($_GET['action']=="reset_passwd"){
+		if($_SERVER['REQUEST_METHOD']=="POST")
+			$email = strip_tags($_POST['email']);
+		elseif(isset($_GET['email']))
+			$email = strip_tags($_GET['email']);
+		else{
+			header("Location: https://".$_SERVER['HTTP_HOST']);
+			exit(0);
+		}
+		if(is_valid_email($email)){
+			$passwd = $model->reset_password($email);
+			if($passwd){
+				/* Edit this line before publishing */
+				file_put_contents("message.txt", "Password successfully reset. Please check your email for your new password. Your new password is ".$passwd."<br/>Please change your password upon logging in.");
+
+				/* Uncomment once emailing is settled */
+				#mail($email, "Reset Password", "Your new password is: ".$passwd, "From: admin@localhost");
+			}
+			else
+				file_put_contents("message.txt", "No such user with this email registered or this account is not activated.");
+		}
+		else
+			file_put_contents("message.txt", "Invalid email");
+		if($_SERVER['REQUEST_METHOD']="POST")
+			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=reset_passwd";
+		else
+			$url = "https://".$_SERVER['HTTP_HOST'];
+	}
+
 	/* Subsequent blocks should only be executed if the method is POST */
 	elseif($_SERVER['REQUEST_METHOD']!="POST"){
 		if(isset($_SESSION['user_id']))
