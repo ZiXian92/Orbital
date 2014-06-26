@@ -20,6 +20,12 @@
 		return preg_match($format, $passwd);
 	}
 
+	/* Ensure that the rest of the script is accessed via HTTPS */
+	if(empty($_SERVER['HTTPS'])){
+		header("Location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+		exit(0);
+	}
+
 	session_start();
 
 	$model = new Model();
