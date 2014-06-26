@@ -186,6 +186,27 @@
 			return $passwd;
 		}
 
+		/* Resets the password of the user identified by the given
+		 * email address to a random password.
+		 * Returns the new random password if such a user can be
+		 * found and false otherwise.
+		 */
+		public function reset_password($email){
+			$email = mysqli_real_escape_string($this->sql_con, $email);
+			$passwd = md5(uniqid(rand(), true));
+			$enc_passwd = SHA1($passwd);
+			$q = "UPDATE USERS SET PASSWD=? WHERE EMAIL=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "ss", $enc_passwd, $email);
+			mysqli_stmt_execute($stmt);
+			if(mysqli_stmt_affected_rows($stmt)==1){
+				mysqli_stmt_close($stmt);
+				return $passwd;
+			}
+			mysqli_stmt_close($stmt);
+			return false;
+		}
+
 		/* Changes the password of a user identified by $id */
 		public function set_new_password($id, $passwd){
 			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
@@ -218,6 +239,8 @@
 					<td>".$name."</td>
 					<td>".$email."</td>
 					<td><a href=\"admin.php?action=view&id=".(string)$id."\">View</a>
+					<a href=\"#\">Activate</a>
+					<a href=\"#\">Reset Password</a>
 					<a href=\"admin.php?action=delete&id=".(string)$id."\">Delete</a></td></tr>";
 				if($counter%10==0)
 					$list.="</span>";
