@@ -81,7 +81,7 @@
 	elseif($_GET['action']=="reset_passwd"){
 		if($_SERVER['REQUEST_METHOD']=="POST")
 			$email = strip_tags($_POST['email']);
-		elseif(isset($_GET['email']))
+		elseif($_SESSION['user_id']==0 && isset($_GET['email']))
 			$email = strip_tags(urldecode($_GET['email']));
 		else{
 			header("Location: https://".$_SERVER['HTTP_HOST']);
