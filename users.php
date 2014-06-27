@@ -46,19 +46,32 @@
 	elseif($_GET['action']=="logout"){
 		$_SESSION = array();
 		session_destroy();
-		setcookie('PHPSESSID', '', time()-3600, '/', '', 0, 0);
+		setcookie('PHPSESSID'
+, '', time()-3600, '/', '', 0, 0);
 		$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=loggedout";
 	}
 
 	/* Activates the appropriate account if the email and
 	 * activation code matches. Else, redirects to page not found
 	 */
-	elseif($_GET['action']=="activate" && isset($_GET['x']) && isset($_GET['y'])){
-		$email = urldecode(strip_tags($_GET['x']));
-		$code = strip_tags($_GET['y']);
-		if($model->activate($email, $code)){
-			file_put_contents("message.txt", "Account activated! Please proceed to log in.");
-			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=login";
+	elseif($_GET['action']=="activate"){
+		/* If activation script is called manually by user */
+		if(isset($_GET['x']) && isset($_GET['y'])){
+			$email = urldecode(strip_tags($_GET['x']));
+			$code = strip_tags($_GET['y']);
+			if($model->activate($email, $code)){
+				file_put_contents("message.txt", "Account activated! Please proceed to log in.");
+				$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=login";
+			}
+			else
+				$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=404";
+		}
+
+		/* If activation script is called by administrator*/
+		elseif($_SESSION['user_id']==0 && isset($_GET['id'])){
+			$id = (int)strip_tags((string)$_GET['id']);
+			$model->admin_activate($id);
+			$url = "https://".$_SERVER['HTTP_HOST'];
 		}
 		else
 			$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=404";

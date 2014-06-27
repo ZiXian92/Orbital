@@ -74,5 +74,5 @@
 		/* Removes the image file from ..uploads folder */
 		unlink("../uploads/{$_FILES['img']['name']}");
 	}
-	header("Location: http://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
+	header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
 ?>

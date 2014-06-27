@@ -207,10 +207,10 @@
 		/* Returns a table list of registered users */
 		public function list_users(){
 			$table = file_get_contents("html/users_table.html");
-			$q = "SELECT ID, USERNAME, EMAIL FROM USERS WHERE ID!=0";
+			$q = "SELECT ID, USERNAME, EMAIL, ACTIVE IS NULL FROM USERS WHERE ID!=0";
 			$stmt = mysqli_prepare($this->sql_con, $q);
 			mysqli_stmt_execute($stmt);
-			mysqli_stmt_bind_result($stmt, $id, $name, $email);
+			mysqli_stmt_bind_result($stmt, $id, $name, $email, $activated);
 			$list = "";
 			for($counter=1;;$counter++){
 				if(!mysqli_stmt_fetch($stmt)){
@@ -218,15 +218,24 @@
 						$list.="</span>";
 					break;
 				}
+
+		/* Every 1st user should be the start of a new group of 10 */
 				if($counter%10==1)
 					$list.="<span class=\"section\" id=\"".(string)(floor($counter/10)+1)."\">";
+
+		/* Gets all the elements of each row(user) */
 				$list.="<tr><td>".$id."</td>
 					<td>".$name."</td>
 					<td>".$email."</td>
-					<td><a href=\"admin.php?action=view&id=".(string)$id."\">View</a>
-					<a href=\"#\">Activate</a>
-					<a href=\"users.php?action=reset_passwd&email=".urlencode($email)."\">Reset Password</a>
-					<a href=\"admin.php?action=delete&id=".(string)$id."\">Delete</a></td></tr>";
+					<td><a href=\"admin.php?action=view&id=".(string)$id."\">View</a></td>";
+					if($activated)
+						$list.="<td>Activated</td>";
+					else
+						$list.="<td><a href=\"users.php?action=activate&id=".$id."\">Activate</a></td>";
+					$list.="<td><a href=\"users.php?action=reset_passwd&email=".urlencode($email)."\">Reset Password</a></td>
+					<td><a href=\"admin.php?action=delete&id=".(string)$id."\">Delete</a></td></tr>";
+
+		/* Every 10th user is the last of the group of 10 */
 				if($counter%10==0)
 					$list.="</span>";
 			}
@@ -288,6 +297,16 @@
 			}
 			mysqli_stmt_close($stmt);
 			return false;
+		}
+
+		/* Activates any account with administrative privileges */
+		public function admin_activate($id){
+			$id =  (int)mysqli_real_escape_string($this->sql_con, (string)$id);
+			$q = "UPDATE USERS SET ACTIVE=NULL WHERE ID=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "i", $id);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_close($stmt);
 		}
 
 		/* User Login Functions */

@@ -50,8 +50,8 @@
 	}
 
 	/* Ensure signup and login pages always use HTTPS */
-	if(($page=="signup" || $page=="login" || $page=="reset_passwd") &&
-		empty($_SERVER['HTTPS'])){
+	if(($page=="signup" || $page=="login" || $page=="reset_passwd" ||
+	$page=="create_entry") && empty($_SERVER['HTTPS'])){
 		header("Location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 		exit(0);
 	}
