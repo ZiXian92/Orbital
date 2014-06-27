@@ -60,7 +60,7 @@
 	 * navigation links available to them will be redirected to the
 	 * home page
 	 */
-	if(isset($_SESSION['user_id']) && ($page!="about" &&
+	if(isset($_SESSION['user_id']) && ($page!="home" && $page!="about" &&
 	$page!="create_entry" && $page!="change_passwd")){
 		header("Location: https://".$_SERVER['HTTP_HOST']);
 		exit(0);
