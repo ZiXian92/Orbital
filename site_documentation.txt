@@ -1,0 +1,17 @@
+Security and Exception Handling Documentation
+
+Home page:
+- If user is logged in, script will always ensure that HTTPS is used. 
+  Also, home page will display a list of the user's entries.
+- For admin user, home page will display a list of registered users.
+- For users that are not logged in, HTTP will always be used and
+  users will see the usual home page content.
+
+Signup, Login, and Forgot Password Pages
+- Only accessible to users who are not logged in
+- Logged in users who try to access these pages directly via URL will be
+  redirected to their home page.
+
+Change Password Page
+- Only accessible to logged in users
+- Users who are not logged in will be redirected to home page.

@@ -56,6 +56,24 @@
 		exit(0);
 	}
 
+	/* Logged in users who try to access pages not specified in the
+	 * navigation links available to them will be redirected to the
+	 * home page
+	 */
+	if(isset($_SESSION['user_id']) && ($page!="about" &&
+	$page!="create_entry" && $page!="change_passwd")){
+		header("Location: https://".$_SERVER['HTTP_HOST']);
+		exit(0);
+	}
+
+	/* Users who are not logged in will be sent to the home page
+	 * when they try to access the change password page
+	 */
+	if(!isset($_SESSION['user_id']) && $page=="change_passwd"){
+		header("Location: http://".$_SERVER['HTTP_HOST']);
+		exit(0);
+	}
+
 	/* Admins don't create any entries */
 	if($page=="create_entry" && isset($_SESSION['user_id']) &&
 	$_SESSION['user_id']==0){

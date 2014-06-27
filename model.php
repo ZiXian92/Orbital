@@ -72,21 +72,6 @@
 				return "<p>Welcome, ".$_SESSION['username']."</p>".$this->list_users();
 			}
 
-			/* For logged in users, requests to any other pages
-			 * are prohibited.
-			 * If the page requested is to change password, only
-			 * logged is users are allowed.
-			 * All prohibited access are redirected to
-			 * the home page.
-			 */
-			if((isset($_SESSION['user_id']) && ($page!="about" &&
-					$page!="create_entry" &&
-					$page!="change_passwd")) ||
-				(!isset($_SESSION['user_id']) &&
-					$page=="change_passwd")){
-				header("Location: https://".$_SERVER['HTTP_HOST']);
-				exit(0);
-			}
 			if(file_exists("html/".$page.".html"))
 				return file_get_contents("html/".$page.".html");
 			return file_get_contents("html/404.html");
