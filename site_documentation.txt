@@ -70,7 +70,7 @@ Signup
 - Once the account is created, an activation code is generated and emailed to
   the user's specified email address(email and SMTP issue to be settled)
 - User enters the link into the URL and activates the account.
-- Users cannot log in if their accounts are not activated.
+- Users cannot log in or reset their passwords if their accounts are not activated.
 
 URL attacks
 - Code is added to each script to deal with invalid URI by redirecting to a
