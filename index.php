@@ -119,8 +119,6 @@
 	
 	$view->render();
 
-	$view->render();
-
 	/* Clears the $_GET['page'] superglobal variable to
 	 * prevent wrong execution in the future.
 	 */
