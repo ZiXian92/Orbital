@@ -109,7 +109,6 @@
 	 * are stored in the array.
 	 */
 	$view = new View($content_array);
-	$view->render();
 
 	/* Destroys the session if the user is not logged in */
 	if(!isset($_SESSION['user_id'])){
@@ -117,6 +116,8 @@
 		session_destroy();
 		setcookie("PHPSESSID", "", time()-3600, "/", "", 0, 0);
 	}
+	
+	$view->render();
 
 	/* Clears the $_GET['page'] superglobal variable to
 	 * prevent wrong execution in the future.
