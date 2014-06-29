@@ -3,10 +3,10 @@
 	 * web pages or data from database.
 	 */
 
-	DEFINE('DB_HOST', 'localhost');
-	DEFINE('DB_USER', 'zixian');
-	DEFINE('PASSWD', 'NanaMizuki');
-	DEFINE('DB_NAME', "ORBITAL");
+	DEFINE('DB_HOST', 'ec2-54-204-45-196.compute-1.amazonaws.com');
+	DEFINE('DB_USER', 'eezfjtkvtwfmit');
+	DEFINE('PASSWD', 'PX4sbKmc0b1tzPvsy7S5I7QFi7');
+	DEFINE('DB_NAME', "dc9a8t2d574l2j");
 
 	class Model{
 		/* Variable holding connection with database */
@@ -14,11 +14,12 @@
 
 		/* Constructor. Establishes database connection. */
 		public function __construct(){
-			$this->sql_con = mysqli_connect(DB_HOST, DB_USER, PASSWD, DB_NAME);
+			$this->sql_con = mysql_connect(DB_HOST, DB_USER, PASSWD);
 			if(mysqli_connect_errno()){
 				echo "Unable to connect to database. Error: ".mysqli_connect_error()."<br/>";
 				$this->__destruct();
 			}
+			mysql_select_db(DB_NAME);
 		}
 
 		/* Destructor. Closes database connection. */
