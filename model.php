@@ -4,9 +4,9 @@
 	 */
 
 	DEFINE('DB_HOST', 'localhost');
-	DEFINE('DB_USER', 'reliveth_admin');
-	DEFINE('PASSWD', 'orbital36');
-	DEFINE('DB_NAME', "reliveth_orbital");
+	DEFINE('DB_USER', 'zixian');
+	DEFINE('PASSWD', 'NanaMizuki');
+	DEFINE('DB_NAME', "ORBITAL");
 
 	class Model{
 		/* Variable holding connection with database */
