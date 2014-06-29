@@ -50,10 +50,24 @@
 	}
 
 	/* Ensure signup and login pages always use HTTPS */
-	if(($page=="signup" || $page=="login" || $page=="reset_passwd" ||
-	$page=="create_entry") && empty($_SERVER['HTTPS'])){
+	if(($page=="signup" || $page=="login" || $page=="reset_passwd") && 
+	empty($_SERVER['HTTPS'])){
 		header("Location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 		exit(0);
+	}
+
+	/* Use HTTPS for create entry page if user is logged in and
+	 * otherwise HTTP
+	 */
+	if($page=="create_entry"){
+		if(isset($_SESSION['user_id']) && empty($_SERVER['HTTPS'])){
+			header("Location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+			exit(0);
+		}
+		elseif(!isset($_SESSION['user_id']) && !empty($_SERVER['HTTPS'])){
+			header("Location: http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+			exit(0);
+		}
 	}
 
 	/* Logged in users who try to access pages not specified in the
