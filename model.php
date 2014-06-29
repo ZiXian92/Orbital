@@ -17,7 +17,7 @@
 			$this->sql_con = mysql_connect(DB_HOST, DB_USER, PASSWD);
 			if(mysqli_connect_errno()){
 				echo "Unable to connect to database. Error: ".mysqli_connect_error()."<br/>";
-				$this->__destruct();
+				#$this->__destruct();
 			}
 			mysql_select_db(DB_NAME);
 		}
