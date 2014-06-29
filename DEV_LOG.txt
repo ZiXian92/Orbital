@@ -35,10 +35,10 @@ June 2014(target)
 + Implement administrative front-end(view general user data, view any user's
   list of entries and any entry, delete user and any user's entry,
   password reset for any account)
-- Guided entry form for new users(interface to be done by Yulong, session
-  details to be discussed)
 
 July 2014(tentative)
+- Guided entry form for new users(interface to be done by Yulong, session
+  details to be discussed)
 - Integration with social media(ideal target)
 - Refine entries listing to list only 10 entries each time.(W.I.P)
 - Touch up on look and design of website.
