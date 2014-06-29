@@ -52,12 +52,8 @@
 					maxlength=\"20\">*required";
 			}
 
-			if(file_exists("message.txt")){
-				$arr['message'] = file_get_contents("message.txt");
-				unlink("message.txt");
-			}
-			else
-				$arr['message'] = "";
+			$arr['message'] = file_get_contents("message.txt");
+			file_put_contents("message.txt", "");
 		}
 
 		/* Returns the contents of the HTML file referred
