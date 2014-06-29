@@ -17,10 +17,9 @@
 		$fileinfo = finfo_open(FILEINFO_MIME_TYPE);
 		$filetype = finfo_file($fileinfo, $_FILES['img']['tmp_name']);
 		finfo_close($fileinfo);
-		if($filetype!="image/jpg" &&
-		$filetype!="image/jpeg" &&
-		$filetype!="image/png"){
-			file_put_contents("message.txt", "Please use only JPEG or PNG files");
+		if($filetype!="image/jpg" && $filetype!="image/jpeg" &&
+		$filetype!="image/png" && $filetype!="image/bmp"){
+			file_put_contents("message.txt", "Please use only JPEG, BMP or PNG files");
 			header("Location: http://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
 			exit(0);
 		}
