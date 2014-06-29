@@ -32,7 +32,7 @@ function validate_signup(){
 	var email = document.forms["signup"]['email'].value;
 	var pass1 = document.forms["signup"]["passwd"].value;
 	var pass2 = document.forms["signup"]["re-passwd"].value;
-	var email_format = /^[a-zA-Z0-9]+[a-zA-Z0-9_]*@[a-z]+\.com$/;
+	var email_format = /^[a-zA-Z0-9]+[a-zA-Z0-9_]*@[a-z\.]+\.com$/;
 
 	if(name.length==0 || email.length==0 ||
 		pass1.length==0 || pass2.length==0){
