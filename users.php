@@ -11,7 +11,7 @@
 
 	/* Checks if the supplied email address is valid */
 	function is_valid_email($email){
-		$format = "/^[a-zA-Z0-9]+[a-zA-Z0-9_]*@[a-z]+\.com$/";
+		$format = "/^[a-zA-Z0-9]+[a-zA-Z0-9_]*@.+\..+$/";
 		return preg_match($format, $email);
 	}
 
