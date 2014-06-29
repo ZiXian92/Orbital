@@ -57,7 +57,7 @@ function validate_signup(){
 function validate_login(){
 	var email = document.forms["login_form"]["email"].value;
 	var pass = document.forms["login_form"]["passwd"].value;
-	var email_format = /^[a-zA-Z0-9]+[a-zA-Z0-9_]*@[a-z]+\.com$/;
+	var email_format = /^[a-zA-Z0-9]+[a-zA-Z0-9_]*@.+\..+$/;
 
 	if(email.length==0 || pass.length==0){
 		alert("Please fill out all required fields.");
