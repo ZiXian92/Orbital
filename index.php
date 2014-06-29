@@ -116,6 +116,8 @@
 		session_destroy();
 		setcookie("PHPSESSID", "", time()-3600, "/", "", 0, 0);
 	}
+	
+	$view->render();
 
 	$view->render();
 
