@@ -4,9 +4,18 @@
 	 */
 
 	DEFINE('DB_HOST', 'localhost');
+
+	/* For use on local server only */
+	/*
 	DEFINE('DB_USER', 'zixian');
 	DEFINE('PASSWD', 'NanaMizuki');
 	DEFINE('DB_NAME', "ORBITAL");
+	*/
+
+	/* For use on published host */
+	DEFINE('DB_USER', 'reliveth_admin');
+	DEFINE('PASSWD', 'orbital36');
+	DEFINE('DB_NAME', "reliveth_orbital");
 
 	class Model{
 		/* Variable holding connection with database */

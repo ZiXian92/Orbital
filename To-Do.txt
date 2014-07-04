@@ -1,3 +1,17 @@
-1. Create button to use as link for 1st time users
-2. Create button to use as link for more experienced users
-3. Create page with standard form to create entry.
+Main(updated as of 26 June 2014):
+1. Complete model.php(Majority completed. Left with digging out more
+   information from database based on needs)
+2. Improve on Javascript form validation(to be done by Yulong)
+3. Implement guided interface for 1st-time users(to be done by Yulong)
+4. Create buttons to use as link for both types of users
+	- Created a normal text link as stand in to test functionality
+5. Make changes in the CSS file so that pages render nicely even when browser
+   window size is adjusted
+6. Add user/session management functionality(left with that for 6.)
+7. Thorough testing of all functionalities and identifying all possible
+   exceptional scenarios(ie. hack our own website!)
+8. Decorate the webpages
+9. Remove the borders
+
+Optional stuff:
+1. Use .htaccess file for URL rewriting for user-friendly URLs
