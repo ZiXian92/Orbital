@@ -13,19 +13,21 @@
 	 */
 	if($_SERVER['REQUEST_METHOD']=="POST"){
 
-		/* Check for invalid file types */
+		/* Redirects back to form if file type is invalid */
 		$fileinfo = finfo_open(FILEINFO_MIME_TYPE);
 		$filetype = finfo_file($fileinfo, $_FILES['img']['tmp_name']);
 		finfo_close($fileinfo);
 		if($filetype!="image/jpg" && $filetype!="image/jpeg" &&
 		$filetype!="image/png" && $filetype!="image/bmp"){
 			file_put_contents("message.txt", "Please use only JPEG, BMP or PNG files");
-			header("Location: http://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
+			header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
 			exit(0);
 		}
 			
-	
-		session_start();	
+	/* Start a session to use session variables */
+		session_start();
+
+	/* $model contains database connection */
 		$model = new Model();
 
 	/* Moves image to uploads folder in server for use in PDF.
@@ -45,7 +47,7 @@
 			$_POST['entry_id'] = $model->get_entry_id();
 		}
 
-		/*Prevent any possible XSS injection by removing tags */
+		/* Prevent any possible XSS injection by removing tags */
 		$file = "../uploads/{$_FILES['img']['name']}";
 		$author = strip_tags((string)$_POST['author']);
 		$title = strip_tags((string)$_POST['title']);
@@ -60,10 +62,17 @@
 	 	*/
 		unset($pdf);
 
-		/* Enter entry information to database */
+		/* Enter entry information to database if the user
+		 * is logged in
+		 */
 		if(isset($_SESSION['user_id'])){
 			$model->add_entry($_POST['entry_id'], $title, $_SESSION['user_id'], date("Y-m-d"), "../entries/".(string)$_POST['entry_id'].".pdf");
 		}
+
+		/* Destroys the session if the user is not logged in.
+		 * This is to maintain integrity of session data should
+		 * the user decide to log in afterwards.
+		 */
 		else{
 			$_SESSION = array();
 			session_destroy();
