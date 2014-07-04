@@ -23,9 +23,11 @@
 
 	$model = new Model();
 
+	/* Check for and remove any tags in the query string parameters */
 	$action = strip_tags($_GET['action']);
 	$id = strip_tags($_GET['id']);
 
+	/* Apply the action only if the ID to act on is valid */
 	if($model->contains_id($id)){
 		switch($action){
 			case "view": $arr = array();
