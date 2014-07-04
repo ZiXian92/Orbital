@@ -1,0 +1,77 @@
+Security and Exception Handling Documentation
+
+General:
+- Checking if a user is logged in is done by checking session variables.
+- Each time a session is started, a session cookie is sent to the browser.
+
+Database
+- model.php file will be placed outside of web directory(if possible) to prevent
+  unauthorised access to database due to leak of database login details.
+- All database queries are executed using prepared statements to prevent
+  information about the database being leaked through error messages displayed
+  should any unexpected error occur when executing queries.
+
+Home page
+- If user is logged in, script will always ensure that HTTPS is used. 
+  Also, home page will display a list of the user's entries.
+- For admin user, home page will display a list of registered users.
+- For users that are not logged in, HTTP will always be used and
+  users will see the usual home page content.
+
+Signup, Login, and Reset Password Pages
+- Only accessible to users who are not logged in.
+- Always use HTTPS.
+- Logged in users who try to access these pages directly via URL will be
+  redirected to their home page.
+- Email address must be a valid form, checked using Perl-Compatible Regular
+  Expression(PCRE)
+- Password must be made up of strictly 10 alphanumeric characters.
+- Hashed version of the password using SHA1() function is stored into the
+  database instead of the original version.
+- Field values will have all HTML, PHP or any script tags removed before use for
+  additional security(preventing XSS attacks).
+- 1st level form validation done on client-side by Javascript for better
+  performance due to removing unnecessary access to PHP script.
+
+Change Password Page
+- Only accessible to logged in users
+- Users who are not logged in will be redirected to home page.
+- 1st level form validation done on client-side by Javascript for better
+  performance due to removing unnecessary access to PHP script.
+
+Entry Creation Form
+- Users who are not logged in can use any name they like.
+- Author field set to username for logged in users.
+- For logged in users, a copy of the entry will be saved in the server as
+  part of the user's collection for future viewing.
+- 1st level form validation done on client-side by Javascript for better
+  performance due to removing unnecessary access to PHP script.
+- On submission, a PDF file will be created and users will receive a download
+  prompt to download their created entries.
+
+Normal User
+- Home page displays a list of the user's entries.
+- User can view any of the entries or delete any of them.
+- User can change password whenever necessary.
+
+Admin Interface
+- Admin user's ID is set to 0(to be done directly in the database)
+- Admin's home page is a list of registered users and actions that can be
+  applied to any user.
+- Actions include viewing the user's entries list, viewing/deleting any entries
+  of any user(should it contain any inappropriate content), manual activation
+  of user account(should any new user face any trouble activating their account)
+  , reset user's password(if users are unable to reset their passwords on their
+  own), delete any user account(and all that user's entries in the process)
+- Not allowed to create any entry as it is only for administrative tasks.
+
+Signup
+- Name, email and password are validated.
+- Once the account is created, an activation code is generated and emailed to
+  the user's specified email address(email and SMTP issue to be settled)
+- User enters the link into the URL and activates the account.
+- Users cannot log in or reset their passwords if their accounts are not activated.
+
+URL attacks
+- Code is added to each script to deal with invalid URI by redirecting to a
+  safe and valid page.

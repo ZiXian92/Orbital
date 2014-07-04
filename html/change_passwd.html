@@ -1,0 +1,14 @@
+<!--Form to change password-->
+{{message}}
+<form name="change_passwd" action="users.php?action=changepasswd" method="POST">
+<label>Current Password:
+<input type="password" name="old_passwd" size="10" maxlength="10">
+</label><br/>
+<label>New Password:
+<input type="password" name="new_passwd" size="10" maxlength="10">
+</label><br/>
+<label>Re-enter New Password:
+<input type="password" name="re-new_passwd" size="10" maxlength="10">
+</label><br/>
+<input type="submit" name="submit" value="Change Password">
+</form>

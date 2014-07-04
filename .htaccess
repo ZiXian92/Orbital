@@ -1,0 +1,7 @@
+AddType text/css css .css
+
+RewriteEngine off
+
+RewriteBase /
+
+RewriteRule ^/?(.+) index.php?page=$1 [L]

@@ -1,0 +1,45 @@
+********************************************************************************
+		Documentation of what has been implemented
+********************************************************************************
+
+Legend: + represents completed and - represents To-Do
+
+May 2014
++ Skeletal template of each web page
++ Contents for each of the basic pages, including entry form.
++ Implemented a simplae MVC framework, currently only the View and Control
+  components.
++ Implements each view as an object that renders each page using the template
+  and loading contents into the template.
++ Directs all page queries to index.php, which serves as the controller for
+  the website.
++ Completes 1 main functionality of filling out the form contents into a story
+  entry in downloadable PDF format, while keeping a local copy in server.
+
+June 2014(target)
++ Creates Login and signup forms for users
++ Implements signup, login, logout, password change, account activation, and
+  password reset, with some exception handling, such as preventing
+  users from running PHP scripts directly through URL.
++ Display error messages for failed signups or login.
++ Implements storing of PDF file directory in database.
++ Implements user sessions for users who want to have compiled collection
+  of stories.
++ Implement viewing and deleting of entries for logged in users
++ Implement form input validation of entry, signup and login forms using
+  Javascript(to be updated by Yulong)
++ Implement some security features to signup, login, password change
+  and entry form(input validation, HTTPS, strip tags to prevent XSS attacks
+  and SQL prepared statements)
++ Enhance database sequrity using prepared statements in PHP scripts
++ Implement administrative front-end(view general user data, view any user's
+  list of entries and any entry, delete user and any user's entry,
+  password reset for any account)
+
+July 2014(tentative)
+- Guided entry form for new users(interface to be done by Yulong, session
+  details to be discussed)
+- Integration with social media(ideal target)
+- Refine entries listing to list only 10 entries each time.(W.I.P)
+- Touch up on look and design of website.
+- Publishing on online server.
