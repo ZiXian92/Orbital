@@ -64,8 +64,8 @@
 		public function get_page($page){
 			if(isset($_SESSION['user_id']) && $page=="home"){
 				if($_SESSION['user_id']!=0)
-					return "<p>Welcome, ".$_SESSION['username']."</p>".$this->list_entries_by_id($_SESSION['user_id']);
-				return "<p>Welcome, ".$_SESSION['username']."</p>".$this->list_users();
+					return "{{message}}<p>Welcome, ".$_SESSION['username']."</p>".$this->list_entries_by_id($_SESSION['user_id']);
+				return "{{message}}<p>Welcome, ".$_SESSION['username']."</p>".$this->list_users();
 			}
 
 			if(file_exists("html/".$page.".html"))
@@ -172,13 +172,14 @@
 		 * Returns the new random password if such a user can be
 		 * found and false otherwise.
 		 */
-		public function reset_password($email){
+		public function reset_password($name, $email){
+			$name = mysqli_real_escape_string($this->sql_con, $name);
 			$email = mysqli_real_escape_string($this->sql_con, $email);
 			$passwd = substr(md5(uniqid(rand(), true)), 0, 10);
 			$enc_passwd = SHA1($passwd);
-			$q = "UPDATE USERS SET PASSWD=? WHERE EMAIL=? AND ACTIVE IS NULL";
+			$q = "UPDATE USERS SET PASSWD=? WHERE USERNAME=? AND EMAIL=? AND ACTIVE IS NULL";
 			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_bind_param($stmt, "ss", $enc_passwd, $email);
+			mysqli_stmt_bind_param($stmt, "sss", $enc_passwd, $name, $email);
 			mysqli_stmt_execute($stmt);
 			if(mysqli_stmt_affected_rows($stmt)==1){
 				mysqli_stmt_close($stmt);
@@ -228,7 +229,7 @@
 						$list.="<td>Activated</td>";
 					else
 						$list.="<td><a href=\"users.php?action=activate&id=".$id."\">Activate</a></td>";
-					$list.="<td><a href=\"users.php?action=reset_passwd&email=".urlencode($email)."\">Reset Password</a></td>
+					$list.="<td><a href=\"users.php?action=reset_passwd&name=".$name."&email=".urlencode($email)."\">Reset Password</a></td>
 					<td><a href=\"admin.php?action=delete&id=".(string)$id."\">Delete</a></td></tr>";
 
 		/* Every 10th user is the last of the group of 10 */

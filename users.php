@@ -42,7 +42,10 @@
 		$url.=$_SERVER['HTTP_HOST'];
 	}
 
-	/* Handles logout requests */
+	/* Handles logout requests
+	 * Logout is done by erasing all the session variables and destroying
+	 * the cookie witht he session ID
+	 */
 	elseif($_GET['action']=="logout"){
 		$_SESSION = array();
 		session_destroy();
@@ -79,28 +82,37 @@
 
 	/* Handles password reset requests */
 	elseif($_GET['action']=="reset_passwd"){
-		if($_SERVER['REQUEST_METHOD']=="POST")
+		/* Initialise $name and $email, whether the information
+		 * is submitted by user through form or directly by
+		 * admin's link
+		 */
+		if($_SERVER['REQUEST_METHOD']=="POST"){
+			$name = strip_tags($_POST['name']);
 			$email = strip_tags($_POST['email']);
-		elseif($_SESSION['user_id']==0 && isset($_GET['email']))
+		}
+		elseif($_SESSION['user_id']==0 && isset($_GET['email'])){
+			$name = strip_tags($_GET['name']);
 			$email = strip_tags(urldecode($_GET['email']));
+		}
+		/* Prevent any prankster attempt */
 		else{
 			header("Location: https://".$_SERVER['HTTP_HOST']);
 			exit(0);
 		}
-		if(is_valid_email($email)){
-			$passwd = $model->reset_password($email);
-			if($passwd){
-				/* Edit this line before publishing */
-				file_put_contents("message.txt", "Password successfully reset. Please check your email for your new password. Your new password is ".$passwd."<br/>Please change your password upon logging in.");
 
-				/* Uncomment once emailing is settled */
-				#mail($email, "Reset Password", "Your new password is: ".$passwd, "From: admin@localhost");
-			}
-			else
-				file_put_contents("message.txt", "No such user with this email registered or this account is not activated.");
+		/* Attempts to reset the password given the name and email
+		 * and retrieves the new password on successful attempt
+		 */
+		$passwd = $model->reset_password($name, $email);
+		if($passwd){
+			/* Edit this line before publishing */
+			file_put_contents("message.txt", "Password successfully reset. Please check your email for your new password. Your new password is ".$passwd."<br/>Please change your password upon logging in.");
+
+			/* Uncomment once emailing is settled */
+			#mail($email, "Reset Password", "Your new password is: ".$passwd, "From: admin@localhost");
 		}
 		else
-			file_put_contents("message.txt", "Invalid email");
+			file_put_contents("message.txt", "Your request could not be processed.");
 		if($_SERVER['REQUEST_METHOD']=="POST")
 			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=reset_passwd";
 		else
