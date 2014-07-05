@@ -232,8 +232,8 @@
 	/* Destroys the session if user is not logged in */
 	if(!isset($_SESSION['user_id'])){
 		$_SESSION = array();
-		session_destroy();
-		setcookie('PHPSESSID', '', time()-3600, '/', '', 0, 0);
+		#session_destroy();
+		#setcookie('PHPSESSID', '', time()-3600, '/', '', 0, 0);
 	}
 
 	unset($_GET['action']);
