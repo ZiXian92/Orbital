@@ -15,6 +15,14 @@
 
 	header("Content-type: text/html; charset=utf-8");
 
+	/* Only for use when deployed on Heroku due to the way Heroku handles
+	 * HTTPS requests
+	 */
+	if($_SERVER['HTTP_X_FORWARDED_PROTO']=="https")
+		$_SERVER['HTTPS'] = "on";
+	else
+		$_SERVER['HTTPS'] = NULL;
+	
 	$model = new Model();
 
 	#echo $_GET['page'];
