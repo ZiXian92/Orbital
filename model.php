@@ -3,7 +3,7 @@
 	 * web pages or data from database.
 	 */
 
-	DEFINE('DB_HOST', 'localhost');
+	DEFINE('DB_HOST', 'ec2-54-197-241-78.compute-1.amazonaws.com');
 
 	/* For use on local server only */
 	/*
@@ -13,9 +13,9 @@
 	*/
 
 	/* For use on published host */
-	DEFINE('DB_USER', 'reliveth_admin');
-	DEFINE('PASSWD', 'orbital36');
-	DEFINE('DB_NAME', "reliveth_orbital");
+	DEFINE('DB_USER', 'vacqgprnhsyssb');
+	DEFINE('PASSWD', 'OWMCv8W43TfzTdJIr6zYmJmnCo');
+	DEFINE('DB_NAME', 'd40ddfk5v02ilm');
 
 	class Model{
 		/* Variable holding connection with database */
