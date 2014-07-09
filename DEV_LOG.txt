@@ -42,4 +42,4 @@ July 2014(tentative)
 - Integration with social media(ideal target)
 - Refine entries listing to list only 10 entries each time.(W.I.P)
 - Touch up on look and design of website.
-- Publishing on online server.
++ Publishing on online server.
