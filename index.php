@@ -15,7 +15,7 @@
 
 	header("Content-type: text/html; charset=utf-8");
 
-	echo $_SERVER['HTTPS'];
+	var_dump($_SERVER['HTTPS']);
 	
 	$model = new Model();
 
