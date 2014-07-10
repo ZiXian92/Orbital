@@ -25,15 +25,15 @@
 		public function __construct(){
 			#$this->sql_con = mysqli_connect(DB_HOST, DB_USER, PASSWD, DB_NAME);
 			$this->sql_con = pg_connect("host=".DB_HOST." user=".DB_USER." password=".PASSWD." port=5432 dbname=".DB_NAME);
-			if(mysqli_connect_errno()){
-				echo "Unable to connect to database. Error: ".mysqli_connect_error()."<br/>";
-				$this->__destruct();
+			if(!$this->sql_con){
+				echo "Unable to connect to database.";
+				exit(0);
 			}
 		}
 
 		/* Destructor. Closes database connection. */
 		public function __destruct(){
-			mysqli_close($this->sql_con);
+			pg_close($this->sql_con);
 		}
 
 		/* Page Content-related Functions */
