@@ -280,7 +280,6 @@
 			$code = pg_escape_string($this->sql_con, $code);
 			$q = "UPDATE USERS SET ACTIVE=NULL WHERE EMAIL=$1 AND ACTIVE=$2";
 			pg_prepare($this->sql_con, "", $q);
-			mysqli_stmt_bind_param($stmt, "ss", $email, $code);
 			$result = pg_execute($this->sql_con, "", array($email, $code));
 			if(pg_affected_rows($result)==1)
 				return true;
@@ -289,12 +288,10 @@
 
 		/* Activates any account with administrative privileges */
 		public function admin_activate($id){
-			$id =  (int)mysqli_real_escape_string($this->sql_con, (string)$id);
-			$q = "UPDATE USERS SET ACTIVE=NULL WHERE ID=?";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_bind_param($stmt, "i", $id);
-			mysqli_stmt_execute($stmt);
-			mysqli_stmt_close($stmt);
+			$id =  (int)pg_escape_string($this->sql_con, (string)$id);
+			$q = "UPDATE USERS SET ACTIVE=NULL WHERE ID=$1";
+			pg_prepare($this->sql_con, "", $q);
+			pg_execute($this->sql_con, "", array($id));
 		}
 
 		/* User Login Functions */
@@ -306,13 +303,13 @@
 			$passwd = SHA1($passwd);
 			$q = "SELECT ID FROM USERS WHERE EMAIL=$1 AND PASSWD=$2 AND ACTIVE IS NULL";
 			pg_prepare($this->sql_con, "", $q);
-			$result = pg_execute($this->sql_con, "", array($email, $password));
+			$result = pg_execute($this->sql_con, "", array($email, $passwd));
 			return pg_fetch_row($result);
 		}
 
 		/* Returns the user id and username based on the given
 		 * email and password.
-		 * Query Result will never be NULL as email and passwrod
+		 * Query result will never be NULL as email and password
 		 * should be verified before calling this function.
 		 */
 		public function get_user($email, $passwd){
@@ -326,10 +323,10 @@
 			if($row = pg_fetch_assoc($result)){
 				#$arr['ID'] = $row['ID'];
 				#$arr['USERNAME'] = $row['USERNAME'];
-				return $arr;
+				return $row;
 			}
 			pg_free_result($result);
-			return false;;
+			return false;
 		}
 
 		/* Entries-related Administrative Functions */
