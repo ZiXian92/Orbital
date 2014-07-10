@@ -145,13 +145,11 @@
 		 * $id must be an integer between 0 and 99999
 		 */
 		public function contains_id($id){
-			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
-			$q = "SELECT ID FROM USERS WHERE ID=?";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_bind_param($stmt, "i", $id);
-			mysqli_stmt_execute($stmt);
-			mysqli_stmt_bind_result($stmt, $res);
-			return mysqli_stmt_fetch($stmt);
+			$id = (int)pg_escape_string($this->sql_con, (string)$id);
+			$q = "SELECT ID FROM USERS WHERE ID=$1";
+			pg_prepare($this->sql_con, "", $q);
+			$result = pg_execute($this->sql_con, "", array($id));
+			return pg_fetch_row($result);
 		}
 
 		/* Returns the encrypted password of the user
@@ -278,17 +276,14 @@
 		 * activation and false otherwise
 		 */
 		public function activate($email, $code){
-			$email = mysqli_real_escape_string($this->sql_con, $email);
-			$code = mysqli_real_escape_string($this->sql_con, $code);
-			$q = "UPDATE USERS SET ACTIVE=NULL WHERE EMAIL=? AND ACTIVE=?";
-			$stmt = mysqli_prepare($this->sql_con, $q);
+			$email = pg_escape_string($this->sql_con, $email);
+			$code = pg_escape_string($this->sql_con, $code);
+			$q = "UPDATE USERS SET ACTIVE=NULL WHERE EMAIL=$1 AND ACTIVE=$2";
+			pg_prepare($this->sql_con, "", $q);
 			mysqli_stmt_bind_param($stmt, "ss", $email, $code);
-			mysqli_stmt_execute($stmt);
-			if(mysqli_stmt_affected_rows($stmt)==1){
-				mysqli_stmt_close($stmt);
+			$result = pg_execute($this->sql_con, "", array($email, $code));
+			if(pg_affected_rows($result)==1)
 				return true;
-			}
-			mysqli_stmt_close($stmt);
 			return false;
 		}
 
