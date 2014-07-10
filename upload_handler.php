@@ -36,7 +36,7 @@
 	 * ../uploads and ../entries requires permission setting of 777
 	 * instead of 755 or 766. Why?
 	 */
-		move_uploaded_file($_FILES['img']['tmp_name'], "../uploads/{$_FILES['img']['name']}");
+		move_uploaded_file($_FILES['img']['tmp_name'], "uploads/{$_FILES['img']['name']}");
 
 		/* Somehow, having the author field disabled for
 		 * logged in users prevent the field value from
@@ -66,7 +66,7 @@
 		 * is logged in
 		 */
 		if(isset($_SESSION['user_id'])){
-			$model->add_entry($_POST['entry_id'], $title, $_SESSION['user_id'], date("Y-m-d"), "../entries/".(string)$_POST['entry_id'].".pdf");
+			$model->add_entry($_POST['entry_id'], $title, $_SESSION['user_id'], date("Y-m-d"), "entries/".(string)$_POST['entry_id'].".pdf");
 		}
 
 		/* Destroys the session if the user is not logged in.
@@ -80,7 +80,7 @@
 		}
 
 		/* Removes the image file from ..uploads folder */
-		unlink("../uploads/{$_FILES['img']['name']}");
+		unlink("uploads/{$_FILES['img']['name']}");
 	}
 	header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
 ?>
