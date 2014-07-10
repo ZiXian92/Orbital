@@ -156,15 +156,12 @@
 		 * identified by $id
 		 */
 		public function get_password_by_id($id){
-			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
-			$q = "SELECT PASSWD FROM USERS WHERE ID=?";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_bind_param($stmt, "i", $id);
-			mysqli_stmt_execute($stmt);
-			mysqli_stmt_bind_result($stmt, $passwd);
-			mysqli_stmt_fetch($stmt);
-			mysqli_stmt_close($stmt);
-			return $passwd;
+			$id = (int)pg_escape_string($this->sql_con, (string)$id);
+			$q = "SELECT PASSWD FROM USERS WHERE ID=$1";
+			pg_prepare($this->sql_con, "", $q);
+			$result = pg_execute($this->sql_con, "", array($id));
+			$row = pg_fetch_assoc($result);
+			return $row['passwd'];
 		}
 
 		/* Resets the password of the user identified by the given
@@ -311,6 +308,8 @@
 		 * email and password.
 		 * Query result will never be NULL as email and password
 		 * should be verified before calling this function.
+		 * PostgreSQL converts all field names to lowercase,
+		 * so associative contains indices 'id' and 'username'.
 		 */
 		public function get_user($email, $passwd){
 			$email = pg_escape_string($this->sql_con, $email);
@@ -319,11 +318,8 @@
 			$q = "SELECT ID, USERNAME FROM USERS WHERE EMAIL=$1 AND PASSWD=$2";
 			pg_prepare($this->sql_con, "", $q);
 			$result = pg_execute($this->sql_con, "", array($email, $passwd));
-			if($row = pg_fetch_assoc($result)){
-				#$arr['ID'] = $row['ID'];
-				#$arr['USERNAME'] = $row['USERNAME'];
+			if($row = pg_fetch_assoc($result))
 				return $row;
-			}
 			pg_free_result($result);
 			return false;
 		}
@@ -398,10 +394,10 @@
 				}
 				if($counter%10==1)
 					$list.="<span class=\"section\" id=\"".(string)(floor($counter/10)+1)."\">";
-				$list.="<tr><td>".$row['DATE']."</td>
-					<td>".$row['TITLE']."</td>
-					<td><a href=\"entries_handler.php?action=view&id=".$row['ENTRY_ID']."\">View</a>
-					<a href=\"entries_handler.php?action=delete&id=".$row['ENTRY_ID']."\">Delete</a></td></tr>";
+				$list.="<tr><td>".$row['date']."</td>
+					<td>".$row['title']."</td>
+					<td><a href=\"entries_handler.php?action=view&id=".$row['entry_id']."\">View</a>
+					<a href=\"entries_handler.php?action=delete&id=".$row['entry_id']."\">Delete</a></td></tr>";
 				if($counter%10==0)
 					$list.="</span>";
 			}
@@ -413,12 +409,12 @@
 		/* Returns the next entry_id to assign to the new entry */
 		public function get_entry_id(){
 			$q = "SELECT MAX(ENTRY_ID) MAX FROM ENTRIES";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_execute($stmt);
+			pg_prepare($this->sql_con, "", $q);
+			$result = pg_execute($this->sql_con, "", array());
 			mysqli_stmt_bind_result($stmt, $e_id);
-			mysqli_stmt_fetch($stmt);
-			mysqli_stmt_close($stmt);
-			return (int)$e_id+1;
+			$row = pg_fetch_assoc($result);
+			pg_free_result($result);
+			return (int)$row['max']+1;
 		}
 
 		/* Returns the path to the entry file
@@ -426,15 +422,13 @@
 		 * Returns NULL if the query returns nothing.
 		 */
 		public function get_entry_file($id){
-			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
-			$q = "SELECT FILE FROM ENTRIES WHERE ENTRY_ID=?";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_bind_param($stmt, "i", $id);
-			mysqli_stmt_execute($stmt);
-			mysqli_stmt_bind_result($stmt, $file);
-			mysqli_stmt_fetch($stmt);
-			mysqli_stmt_close($stmt);
-			return $file;
+			$id = (int)pg_escape_string($this->sql_con, (string)$id);
+			$q = "SELECT FILE FROM ENTRIES WHERE ENTRY_ID=$1";
+			pg_prepare($this->sql_con, "", $q);
+			$result = pg_execute($this->sql_con, "", array($id));
+			$row = pg_fetch_assoc($result);
+			pg_free_result($result);
+			return $row['file'];
 		}
 	}
 ?>
