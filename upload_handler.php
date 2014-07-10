@@ -53,7 +53,11 @@
 		$title = strip_tags((string)$_POST['title']);
 		$story = strip_tags((string)$_POST['story']);
 
-		echo $file;
+		if(file_exists($file))
+			echo "OK";
+		else
+			echo "Missing file";
+		exit(0);
 
 		/* Creates and loads form contents into a new PDF document */
 		$pdf = new PDF($file, $author, $title, $story);
