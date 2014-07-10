@@ -94,18 +94,16 @@
 		 * $email must be a valid email address of length 50
 		 */
 		public function add_user($id, $name, $passwd, $email, $code){
-			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
-			$name = mysqli_real_escape_string($this->sql_con, $name);
-			$passwd = mysqli_real_escape_string($this->sql_con, $passwd);
+			$id = (int)pg_escape_string($this->sql_con, (string)$id);
+			$name = pg_escape_string($this->sql_con, $name);
+			$passwd = pg_escape_string($this->sql_con, $passwd);
 			$passwd = SHA1($passwd);
-			$email = mysqli_real_escape_string($this->sql_con, $email);
+			$email = pg_escape_string($this->sql_con, $email);
 
 			/* Using prepared statement for security purpose */
-			$q = "INSERT INTO USERS VALUES(?, ?, ?, ?, ?)";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_bind_param($stmt, "issss", $id, $name, $passwd, $email, $code);
-			mysqli_stmt_execute($stmt);
-			mysqli_stmt_close($stmt);
+			$q = "INSERT INTO USERS VALUES($1, $2, $3, $4, $5)";
+			pg_prepare($this->sql_con, "query", $q);
+			pg_execute($this->sql_con, "query", array($id, $name, $passwd, $email, $code));
 		}
 
 		/* Removes a user identified by $id from database.
@@ -115,38 +113,33 @@
 		 * the database client.
 		 */
 		public function remove_user($id){
-			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
+			$id = (int)pg_escape_string($this->sql_con, (string)$id);
 			/* Gets the file paths of all entries authored by
 			 * the user with the given user ID and removes
 			 * these files
 			 */
-			$q = "SELECT FILE FROM ENTRIES WHERE AUTHOR=?";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_bind_param($stmt, "i", $id);
-			mysqli_stmt_execute($stmt);
-			mysqli_stmt_bind_result($stmt, $file);
-			while(mysqli_stmt_fetch($stmt))
-				unlink($file);
-			mysqli_stmt_close($stmt);
+			$q = "SELECT FILE FROM ENTRIES WHERE AUTHOR=$1";
+			pg_prepare($this->sql_con, "get_file", $q);
+			$result = pg_execute($this->sql_con, "get_file", array($id));
+			while($row = pg_fetch_assoc($result))
+				unlink($row['FILE']);
+			pg_free_result($result);
 
 			/* Remove all records of entries related to the user
 			 * identified by the given user ID
 			 */
-			$q = "DELETE FROM ENTRIES WHERE AUTHOR=?";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_bind_param($stmt, "i", $id);
-			mysqli_stmt_execute($stmt);
-			mysqli_stmt_close($stmt);
+			$q = "DELETE FROM ENTRIES WHERE AUTHOR=$1";
+			pg_prepare($this->sql_con, "delete_entries", $q);
+			pg_execute($this->sql_con, "delete_entries", array($id));
 
 			/* Delete information about the user identified
 			 * by the given user ID
 			 */
-			$q = "DELETE FROM USERS WHERE ID=?";
-			$stmt = mysqli_prepare($this->sql_con, $q);
+			$q = "DELETE FROM USERS WHERE ID=$1";
+			pg_prepare($this->sql_con, "delet_user", $q);
 			mysqli_stmt_bind_param($stmt, "i", $id);
 			if($id!=0)
-				mysqli_stmt_execute($stmt);
-			mysqli_stmt_close($stmt);
+				pg_execute($this->sql_con, "delete_user", array($id));
 		}
 
 		/* Checks if the given id exists in the database.
