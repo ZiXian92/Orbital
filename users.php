@@ -23,6 +23,11 @@
 		return preg_match($format, $passwd);
 	}
 
+	if($_SERVER['HTTP_X_FORWARDED_PROTO']=="https")
+		$_SERVER['HTTPS'] = "on";
+	else
+		$_SERVER['HTTPS'] = NULL;
+
 	/* Ensure that the rest of the script is accessed via HTTPS */
 	if(empty($_SERVER['HTTPS'])){
 		header("Location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
@@ -169,12 +174,12 @@
 			file_put_contents("message.txt", "https://".$_SERVER['HTTP_HOST']."/users.php?action=activate&x=".urlencode($email)."&y=".$code);
 			#$subject = "Account Activation";
 			#$message = "Thank you for signing up. To get started, please click on the link below to activate your account.\nhttps://".$_SERVER['HTTP_HOST']."/users.php?action=activate&x=".urlencode($email)."&y=".$code;
-			header("Location: ".$url);
+			#header("Location: ".$url);
 
 			//Sends email with activation link to the user
 			#mail($email, $subject, $message, "From: admin@".$_SERVER['HTTP_HOST']);
 
-			exit(0);
+			#exit(0);
 		}
 	}
 
@@ -232,7 +237,6 @@
 		#setcookie('PHPSESSID', '', time()-3600, '/', '', 0, 0);
 	}
 
-	unset($_GET['action']);
 	header("Location: ".$url);
 	exit(0);
 ?>
