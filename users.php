@@ -192,8 +192,8 @@
 		 */
 		if($model->is_valid_user($email, $passwd)){
 			$user = $model->get_user($email, $passwd);
-			$_SESSION['user_id'] = $user['ID'];
-			$_SESSION['username'] = $user['USERNAME'];
+			$_SESSION['user_id'] = $user['id'];
+			$_SESSION['username'] = $user['username'];
 			$url = "https://".$_SERVER['HTTP_HOST'];
 		}
 		else{
