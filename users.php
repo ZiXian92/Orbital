@@ -174,12 +174,10 @@
 			file_put_contents("message.txt", "https://".$_SERVER['HTTP_HOST']."/users.php?action=activate&x=".urlencode($email)."&y=".$code);
 			#$subject = "Account Activation";
 			#$message = "Thank you for signing up. To get started, please click on the link below to activate your account.\nhttps://".$_SERVER['HTTP_HOST']."/users.php?action=activate&x=".urlencode($email)."&y=".$code;
-			#header("Location: ".$url);
 
 			//Sends email with activation link to the user
 			#mail($email, $subject, $message, "From: admin@".$_SERVER['HTTP_HOST']);
 
-			#exit(0);
 		}
 	}
 

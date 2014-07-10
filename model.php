@@ -301,15 +301,13 @@
 
 		/* Checks if the user credentials are valid */
 		public function is_valid_user($email, $passwd){
-			$email = mysqli_real_escape_string($this->sql_con, $email);
-			$passwd = mysqli_real_escape_string($this->sql_con, $passwd);
+			$email = pg_escape_string($this->sql_con, $email);
+			$passwd = pg_escape_string($this->sql_con, $passwd);
 			$passwd = SHA1($passwd);
-			$q = "SELECT ID FROM USERS WHERE EMAIL=? AND PASSWD=? AND ACTIVE IS NULL";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_bind_param($stmt, "ss", $email, $passwd);
-			mysqli_stmt_execute($stmt);
-			mysqli_stmt_bind_result($stmt, $id);
-			return mysqli_stmt_fetch($stmt)!=NULL;
+			$q = "SELECT ID FROM USERS WHERE EMAIL=$1 AND PASSWD=$2 AND ACTIVE IS NULL";
+			pg_prepare($this->sql_con, "", $q);
+			$result = pg_execute($this->sql_con, "", array($email, $password));
+			return pg_fetch_row($result);
 		}
 
 		/* Returns the user id and username based on the given
@@ -318,23 +316,20 @@
 		 * should be verified before calling this function.
 		 */
 		public function get_user($email, $passwd){
-			$email = mysqli_real_escape_string($this->sql_con, $email);
-			$passwd = mysqli_real_escape_string($this->sql_con, $passwd);
+			$email = pg_escape_string($this->sql_con, $email);
+			$passwd = pg_escape_string($this->sql_con, $passwd);
 			$passwd = SHA1($passwd);
-			$q = "SELECT ID, USERNAME FROM USERS WHERE EMAIL=? AND PASSWD=?";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_bind_param($stmt, "ss", $email, $passwd);
-			mysqli_stmt_execute($stmt);
-			mysqli_stmt_bind_result($stmt, $id, $name);
+			$q = "SELECT ID, USERNAME FROM USERS WHERE EMAIL=$1 AND PASSWD=$2";
+			pg_prepare($this->sql_con, "", $q);
+			$result = pg_execute($this->sql_con, "", array($email, $password));
 			$arr = array();
-			if(mysqli_stmt_fetch($stmt)==NULL)
-				$arr['ID'] = $arr['USERNAME'] = NULL;
-			else{
-				$arr['ID'] = $id;
-				$arr['USERNAME'] = $name;
+			if($row = pg_fetch_assoc($result)){
+				#$arr['ID'] = $row['ID'];
+				#$arr['USERNAME'] = $row['USERNAME'];
+				return $arr;
 			}
-			mysqli_stmt_close($stmt);
-			return $arr;
+			pg_free_result($result);
+			return false;;
 		}
 
 		/* Entries-related Administrative Functions */
