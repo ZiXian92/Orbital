@@ -323,8 +323,7 @@
 				#$arr['ID'] = $row['ID'];
 				#$arr['USERNAME'] = $row['USERNAME'];
 				#return $row;
-				var_dump($row);
-				exit(0);
+				file_put_contents("error.json", json_encode($row));
 			}
 			pg_free_result($result);
 			return false;
