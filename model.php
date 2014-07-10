@@ -102,8 +102,8 @@
 
 			/* Using prepared statement for security purpose */
 			$q = "INSERT INTO USERS VALUES($1, $2, $3, $4, $5)";
-			pg_prepare($this->sql_con, "query", $q);
-			pg_execute($this->sql_con, "query", array($id, $name, $passwd, $email, $code));
+			pg_prepare($this->sql_con, "", $q);
+			pg_execute($this->sql_con, "", array($id, $name, $passwd, $email, $code));
 		}
 
 		/* Removes a user identified by $id from database.
@@ -119,8 +119,8 @@
 			 * these files
 			 */
 			$q = "SELECT FILE FROM ENTRIES WHERE AUTHOR=$1";
-			pg_prepare($this->sql_con, "get_file", $q);
-			$result = pg_execute($this->sql_con, "get_file", array($id));
+			pg_prepare($this->sql_con, "", $q);
+			$result = pg_execute($this->sql_con, "", array($id));
 			while($row = pg_fetch_assoc($result))
 				unlink($row['FILE']);
 			pg_free_result($result);
@@ -129,17 +129,16 @@
 			 * identified by the given user ID
 			 */
 			$q = "DELETE FROM ENTRIES WHERE AUTHOR=$1";
-			pg_prepare($this->sql_con, "delete_entries", $q);
-			pg_execute($this->sql_con, "delete_entries", array($id));
+			pg_prepare($this->sql_con, "", $q);
+			pg_execute($this->sql_con, "", array($id));
 
 			/* Delete information about the user identified
 			 * by the given user ID
 			 */
 			$q = "DELETE FROM USERS WHERE ID=$1";
-			pg_prepare($this->sql_con, "delet_user", $q);
-			mysqli_stmt_bind_param($stmt, "i", $id);
+			pg_prepare($this->sql_con, "", $q);
 			if($id!=0)
-				pg_execute($this->sql_con, "delete_user", array($id));
+				pg_execute($this->sql_con, "", array($id));
 		}
 
 		/* Checks if the given id exists in the database.
@@ -249,36 +248,30 @@
 		/* Returns the next user_id to assign to the new user */
 		public function get_user_id(){
 			$q = "SELECT MAX(ID) MAX FROM USERS";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_execute($stmt);
-			mysqli_stmt_bind_result($stmt, $next_id);
-			mysqli_stmt_fetch($stmt);
-			mysqli_stmt_close($stmt);
-			return (int)$next_id+1;
+			pg_prepare($this->sql_con, "", $q);
+			$result = pg_execute($this->sql_con, "", array());
+			$row = pg_fetch_assoc($result);
+			return (int)$row['MAX']+1;
 		}
 
 		/* Checks if the database contains a user with the
 		 * given email address
 		 */
 		public function contains_email($email){
-			$email = mysqli_real_escape_string($this->sql_con, $email);
-			$q = "SELECT ID FROM USERS WHERE EMAIL=?";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_bind_param($stmt, "s", $email);
-			mysqli_stmt_execute($stmt);
-			mysqli_stmt_bind_result($stmt, $id);
-			return mysqli_stmt_fetch($stmt)!=NULL;
+			$email = pg_escape_string($this->sql_con, $email);
+			$q = "SELECT ID FROM USERS WHERE EMAIL=$1";
+			pg_prepare($this->sql_con, "", $q);
+			$result = pg_execute($this->sql_con, "", array($email));
+			return pg_fetch_row($result);
 		}
 
 		/* Checks if the given username is already taken */
 		public function contains_username($name){
-			$name = mysqli_real_escape_string($this->sql_con, $name);
-			$q = "SELECT ID FROM USERS WHERE USERNAME=?";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_bind_param($stmt, "s", $name);
-			mysqli_stmt_execute($stmt);
-			mysqli_stmt_bind_result($stmt, $id);
-			return mysqli_stmt_fetch($stmt)!=NULL;
+			$name = pg_escape_string($this->sql_con, $name);
+			$q = "SELECT ID FROM USERS WHERE USERNAME=$1";
+			pg_prepare($this->sql_con, "", $q);
+			pg_execute($this->sql_con, "", array($name));
+			return pg_fetch_row($stmt);
 		}
 
 		/* Activates a new user account. Returns true on successful
