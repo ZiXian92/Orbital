@@ -42,10 +42,9 @@
 			echo "Uploaded file is missing.";
 		*/
 		#$file = "uploads/{$_FILES['img']['name']}";
-		$file = $_FILES['img']['tmp_name'];
-		echo $file;
+		$file = "uploads/".$_FILES['img']['name'];
+		echo move_uploaded_file($_FILES['img']['tmp_name'], $file);
 		exit(0);
-		#move_uploaded_file($_FILES['img']['tmp_name'], $file);
 
 		/* Somehow, having the author field disabled for
 		 * logged in users prevent the field value from
