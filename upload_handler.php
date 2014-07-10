@@ -36,7 +36,8 @@
 	 * ../uploads and ../entries requires permission setting of 777
 	 * instead of 755 or 766. Why?
 	 */
-		move_uploaded_file($_FILES['img']['tmp_name'], "uploads/{$_FILES['img']['name']}");
+		$file = "uploads/{$_FILES['img']['name']}";
+		move_uploaded_file($_FILES['img']['tmp_name'], $file);
 
 		/* Somehow, having the author field disabled for
 		 * logged in users prevent the field value from
@@ -48,10 +49,11 @@
 		}
 
 		/* Prevent any possible XSS injection by removing tags */
-		$file = "uploads/{$_FILES['img']['name']}";
 		$author = strip_tags((string)$_POST['author']);
 		$title = strip_tags((string)$_POST['title']);
 		$story = strip_tags((string)$_POST['story']);
+
+		echo $file;
 
 		/* Creates and loads form contents into a new PDF document */
 		$pdf = new PDF($file, $author, $title, $story);
