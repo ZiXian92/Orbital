@@ -388,31 +388,29 @@
 
 		/* Returns a table of entries by the user of the given $id */
 		public function list_entries_by_id($id){
-			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
-			$q = "SELECT ENTRY_ID, DATE, TITLE FROM ENTRIES WHERE AUTHOR=? ORDER BY ENTRY_ID DESC";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_bind_param($stmt, "i", $id);
-			mysqli_stmt_execute($stmt);
-			mysqli_stmt_bind_result($stmt, $e_id, $date, $title);
+			$id = (int)pg_escape_string($this->sql_con, (string)$id);
+			$q = "SELECT ENTRY_ID, DATE, TITLE FROM ENTRIES WHERE AUTHOR=$1 ORDER BY ENTRY_ID DESC";
+			pg_prepare($this->sql_con, "", $q);
+			$result = pg_execute($this->sql_con, "", array($id));
 			$table = file_get_contents("html/entries_table.html");
 			$list = "";
 			for($counter=1;;$counter++){
-				if(!mysqli_stmt_fetch($stmt)){
+				if(!$row = pg_fetch_assoc($result)){
 					if(preg_match("/<\/tr>$/", $list))
 						$list.="</span>";
 					break;
 				}
 				if($counter%10==1)
 					$list.="<span class=\"section\" id=\"".(string)(floor($counter/10)+1)."\">";
-				$list.="<tr><td>".$date."</td>
-					<td>".$title."</td>
-					<td><a href=\"entries_handler.php?action=view&id=".$e_id."\">View</a>
-					<a href=\"entries_handler.php?action=delete&id=".$e_id."\">Delete</a></td></tr>";
+				$list.="<tr><td>".$row['DATE']."</td>
+					<td>".$row['TITLE']."</td>
+					<td><a href=\"entries_handler.php?action=view&id=".$row['ENTRY_ID']."\">View</a>
+					<a href=\"entries_handler.php?action=delete&id=".$row['ENTRY_ID']."\">Delete</a></td></tr>";
 				if($counter%10==0)
 					$list.="</span>";
 			}
 			$table = str_replace("{{list}}", $list, $table);
-			mysqli_stmt_close($stmt);
+			pg_free_result($result);
 			return $table;
 		}
 
