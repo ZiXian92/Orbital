@@ -36,10 +36,11 @@
 	 * ../uploads and ../entries requires permission setting of 777
 	 * instead of 755 or 766. Why?
 	 */
-		if(file_exists($_FILES['img']['tmp_name']))
+		/*if(file_exists($_FILES['img']['tmp_name']))
 			echo "Uploaded file exists";
 		else
 			echo "Uploaded file is missing.";
+		*/
 		#$file = "uploads/{$_FILES['img']['name']}";
 		$file = $_FILES['img']['tmp_name'];
 		#move_uploaded_file($_FILES['img']['tmp_name'], $file);
@@ -58,11 +59,11 @@
 		$title = strip_tags((string)$_POST['title']);
 		$story = strip_tags((string)$_POST['story']);
 
-		if(file_exists($file))
+		/*if(file_exists($file))
 			echo "OK";
 		else
 			echo "Missing file";
-		exit(0);
+		exit(0);*/
 
 		/* Creates and loads form contents into a new PDF document */
 		$pdf = new PDF($file, $author, $title, $story);
