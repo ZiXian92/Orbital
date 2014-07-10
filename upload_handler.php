@@ -36,6 +36,10 @@
 	 * ../uploads and ../entries requires permission setting of 777
 	 * instead of 755 or 766. Why?
 	 */
+		if(file_exists($_FILES['img']['tmp_name']))
+			echo "Uploaded file exists";
+		else
+			echo "Uploaded file is missing.";
 		$file = "uploads/{$_FILES['img']['name']}";
 		move_uploaded_file($_FILES['img']['tmp_name'], $file);
 
