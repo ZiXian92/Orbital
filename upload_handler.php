@@ -43,7 +43,7 @@
 		*/
 		#$file = "uploads/{$_FILES['img']['name']}";
 		$file = "uploads/".$_FILES['img']['name'];
-		var_dump(move_uploaded_file($_FILES['img']['tmp_name'], $file));
+		var_dump(rename($_FILES['img']['tmp_name'], $file));
 		exit(0);
 
 		/* Somehow, having the author field disabled for
