@@ -319,11 +319,12 @@
 			$q = "SELECT ID, USERNAME FROM USERS WHERE EMAIL=$1 AND PASSWD=$2";
 			pg_prepare($this->sql_con, "", $q);
 			$result = pg_execute($this->sql_con, "", array($email, $password));
-			$arr = array();
 			if($row = pg_fetch_assoc($result)){
 				#$arr['ID'] = $row['ID'];
 				#$arr['USERNAME'] = $row['USERNAME'];
-				return $row;
+				#return $row;
+				var_dump($row);
+				exit(0);
 			}
 			pg_free_result($result);
 			return false;
