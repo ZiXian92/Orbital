@@ -154,6 +154,7 @@
 
 		/* Returns the encrypted password of the user
 		 * identified by $id
+		 * What's the purpose of having this?
 		 */
 		public function get_password_by_id($id){
 			$id = (int)pg_escape_string($this->sql_con, (string)$id);
@@ -170,44 +171,37 @@
 		 * found and false otherwise.
 		 */
 		public function reset_password($name, $email){
-			$name = mysqli_real_escape_string($this->sql_con, $name);
-			$email = mysqli_real_escape_string($this->sql_con, $email);
+			$name = pg_escape_string($this->sql_con, $name);
+			$email = pg_escape_string($this->sql_con, $email);
 			$passwd = substr(md5(uniqid(rand(), true)), 0, 10);
 			$enc_passwd = SHA1($passwd);
-			$q = "UPDATE USERS SET PASSWD=? WHERE USERNAME=? AND EMAIL=? AND ACTIVE IS NULL";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_bind_param($stmt, "sss", $enc_passwd, $name, $email);
-			mysqli_stmt_execute($stmt);
-			if(mysqli_stmt_affected_rows($stmt)==1){
-				mysqli_stmt_close($stmt);
+			$q = "UPDATE USERS SET PASSWD=$1 WHERE USERNAME=$2 AND EMAIL=$3 AND ACTIVE IS NULL";
+			pg_prepare($this->sql_con, "", $q);
+			$result = pg_execute($this->sql_con, "", array($enc_passwd, $name, $email));
+			if(pg_affected_rows($result)==1)
 				return $passwd;
-			}
-			mysqli_stmt_close($stmt);
 			return false;
 		}
 
 		/* Changes the password of a user identified by $id */
 		public function set_new_password($id, $passwd){
-			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
-			$passwd = mysqli_real_escape_string($this->sql_con, $passwd);
+			$id = (int)pg_escape_string($this->sql_con, (string)$id);
+			$passwd = pg_escape_string($this->sql_con, $passwd);
 			$passwd = SHA1($passwd);
-			$q = "UPDATE USERS SET PASSWD=? WHERE ID=?";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_bind_param($stmt, "si", $passwd, $id);
-			mysqli_stmt_execute($stmt);
-			mysqli_stmt_close($stmt);
+			$q = "UPDATE USERS SET PASSWD=$1 WHERE ID=$2";
+			pg_prepare($this->sql_con, "", $q);
+			pg_execute($this->sql_con, "", array($passwd, $id));
 		}
 
 		/* Returns a table list of registered users */
 		public function list_users(){
 			$table = file_get_contents("html/users_table.html");
-			$q = "SELECT ID, USERNAME, EMAIL, ACTIVE IS NULL FROM USERS WHERE ID!=0";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_execute($stmt);
-			mysqli_stmt_bind_result($stmt, $id, $name, $email, $activated);
+			$q = "SELECT ID, USERNAME, EMAIL, ACTIVE IS NULL ACTIVATED FROM USERS WHERE ID!=0";
+			pg_prepare($this->sql_con, "", $q);
+			$result = pg_execute($this->sql_con, "", array());
 			$list = "";
 			for($counter=1;;$counter++){
-				if(!mysqli_stmt_fetch($stmt)){
+				if(!$row = pg_fetch_assoc($result)){
 					if(preg_match("/<\/tr>$/", $list))
 						$list.="</span>";
 					break;
@@ -219,22 +213,22 @@
 
 		/* Gets all the elements of each row(user) */
 				$list.="<tr><td>".$id."</td>
-					<td>".$name."</td>
-					<td>".$email."</td>
-					<td><a href=\"admin.php?action=view&id=".(string)$id."\">View</a></td>";
-					if($activated)
+					<td>".$row['username']."</td>
+					<td>".$row['email']."</td>
+					<td><a href=\"admin.php?action=view&id=".(string)$row['id']."\">View</a></td>";
+					if($row['activated'])
 						$list.="<td>Activated</td>";
 					else
-						$list.="<td><a href=\"users.php?action=activate&id=".$id."\">Activate</a></td>";
-					$list.="<td><a href=\"users.php?action=reset_passwd&name=".$name."&email=".urlencode($email)."\">Reset Password</a></td>
-					<td><a href=\"admin.php?action=delete&id=".(string)$id."\">Delete</a></td></tr>";
+						$list.="<td><a href=\"users.php?action=activate&id=".$row['id']."\">Activate</a></td>";
+					$list.="<td><a href=\"users.php?action=reset_passwd&name=".$row['username']."&email=".urlencode($row['email'])."\">Reset Password</a></td>
+					<td><a href=\"admin.php?action=delete&id=".(string)$row['id']."\">Delete</a></td></tr>";
 
 		/* Every 10th user is the last of the group of 10 */
 				if($counter%10==0)
 					$list.="</span>";
 			}
 			$table = str_replace("{{list}}", $list, $table);
-			mysqli_stmt_close($stmt);
+			pg_free_result($result);
 			return $table;
 		}
 
@@ -331,21 +325,19 @@
 		 * valid entry
 		 */
 		public function authenticate_entry_request($user_id, $entry_id){
-			$user_id = (int)mysqli_real_escape_string($this->sql_con, (string)$user_id);
-			$entry_id = (int)mysqli_real_escape_string($this->sql_con, (string)$entry_id);
+			$user_id = (int)pg_escape_string($this->sql_con, (string)$user_id);
+			$entry_id = (int)pg_escape_string($this->sql_con, (string)$entry_id);
 			if($user_id==0){
-				$q = "SELECT ENTRY_ID FROM ENTRIES WHERE ENTRY_ID=?";
-				$stmt = mysqli_prepare($this->sql_con, $q);
-				mysqli_stmt_bind_param($stmt, "i", $entry_id);
+				$q = "SELECT ENTRY_ID FROM ENTRIES WHERE ENTRY_ID=$1";
+				$params = array($entry_id);
 			}
 			else{
-				$q = "SELECT ENTRY_ID FROM ENTRIES WHERE AUTHOR=? AND ENTRY_ID=?";
-				$stmt = mysqli_prepare($this->sql_con, $q);
-				mysqli_stmt_bind_param($stmt, "ii", $user_id, $entry_id);
+				$q = "SELECT ENTRY_ID FROM ENTRIES WHERE AUTHOR=$1 AND ENTRY_ID=$2";
+				$params = array($user_id, $entry_id);
 			}
-			mysqli_stmt_execute($stmt);
-			mysqli_stmt_bind_result($stmt, $e_id);
-			return mysqli_stmt_fetch($stmt);
+			pg_prepare($this->sql_con, "", $q);
+			$result = pg_execute($this->sql_con, "", $params);
+			return pg_fetch_row($stmt);
 		}
 
 		/* Adds a new entry to the database.
@@ -356,26 +348,22 @@
 		 * $file must be a string of length
 		 */
 		public function add_entry($entry_id, $title, $user_id, $date, $file){
-			$entry_id = (int)mysqli_real_escape_string($this->sql_con, (string)$entry_id);
-			$title = mysqli_real_escape_string($this->sql_con, $title);
-			$user_id = (int)mysqli_real_escape_string($this->sql_con, (string)$user_id);
-			$q = "INSERT INTO ENTRIES VALUES(?, ?, ?, ?, ?)";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_bind_param($stmt, "isiss", $entry_id, $title, $user_id, $date, $file);
-			mysqli_stmt_execute($stmt);
-			mysqli_stmt_close($stmt);
+			$entry_id = (int)pg_escape_string($this->sql_con, (string)$entry_id);
+			$title = pg_escape_string($this->sql_con, $title);
+			$user_id = (int)pg_escape_string($this->sql_con, (string)$user_id);
+			$q = "INSERT INTO ENTRIES VALUES($1, $2, $3, $4, $5)";
+			pg_prepare($this->sql_con, "", $q);
+			pg_execute($this->sql_con, "", array($entry_id, $title, $user_id, $date, $file));
 		}
 		
 		/* Removes an entry from the database.
 		 * $id must be an integer between 0 to 99999.
 		 */
 		public function remove_entry($id){
-			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
-			$q = "DELETE FROM ENTRIES WHERE ENTRY_ID=?";
-			$stmt = mysqli_prepare($this->sql_con, $q);
-			mysqli_stmt_bind_param($stmt, "i", $id);
-			mysqli_stmt_execute($stmt);
-			mysqli_stmt_close($stmt);
+			$id = (int)pg_escape_string($this->sql_con, (string)$id);
+			$q = "DELETE FROM ENTRIES WHERE ENTRY_ID=$1";
+			pg_prepare($this->sql_con, "", $q);
+			pg_execute($this->sql_con, "", array($id));
 		}
 
 		/* Returns a table of entries by the user of the given $id */
