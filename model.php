@@ -322,8 +322,7 @@
 			if($row = pg_fetch_assoc($result)){
 				#$arr['ID'] = $row['ID'];
 				#$arr['USERNAME'] = $row['USERNAME'];
-				#return $row;
-				file_put_contents("error.json", json_encode($row));
+				return $row;
 			}
 			pg_free_result($result);
 			return false;
