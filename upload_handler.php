@@ -48,7 +48,7 @@
 		}
 
 		/* Prevent any possible XSS injection by removing tags */
-		$file = "../uploads/{$_FILES['img']['name']}";
+		$file = "uploads/{$_FILES['img']['name']}";
 		$author = strip_tags((string)$_POST['author']);
 		$title = strip_tags((string)$_POST['title']);
 		$story = strip_tags((string)$_POST['story']);
