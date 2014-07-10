@@ -318,7 +318,7 @@
 			$passwd = SHA1($passwd);
 			$q = "SELECT ID, USERNAME FROM USERS WHERE EMAIL=$1 AND PASSWD=$2";
 			pg_prepare($this->sql_con, "", $q);
-			$result = pg_execute($this->sql_con, "", array($email, $password));
+			$result = pg_execute($this->sql_con, "", array($email, $passwd));
 			if($row = pg_fetch_assoc($result)){
 				#$arr['ID'] = $row['ID'];
 				#$arr['USERNAME'] = $row['USERNAME'];
