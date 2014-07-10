@@ -246,7 +246,7 @@
 			pg_prepare($this->sql_con, "", $q);
 			$result = pg_execute($this->sql_con, "", array());
 			$row = pg_fetch_assoc($result);
-			return (int)$row['MAX']+1;
+			return (int)$row['max']+1;
 		}
 
 		/* Checks if the database contains a user with the
