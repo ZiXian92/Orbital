@@ -154,7 +154,8 @@
 
 		/* Returns the encrypted password of the user
 		 * identified by $id
-		 * What's the purpose of having this?
+		 * For checking that the original password is correct and
+		 * hence authorises the change of password.
 		 */
 		public function get_password_by_id($id){
 			$id = (int)pg_escape_string($this->sql_con, (string)$id);
