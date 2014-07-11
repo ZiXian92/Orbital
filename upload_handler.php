@@ -7,6 +7,7 @@
 	/* FPDF class definition is in the specified file */
 	require 'PDF.php';
 	require 'model.php';
+	require_once 'dropbox-sdk/Dropbox/autoload.php';
 
 	/* The only condition when this code should be executed is when
 	 * a form is submitted. Entering the URL directly will not work.
@@ -29,6 +30,9 @@
 
 	/* $model contains database connection */
 		$model = new Model();
+
+	/* Loads Dropbox API configuration */
+		$appInfo = dbx\AppInfo::loadFromJsonFile("config.json");
 
 	/* Moves image to uploads folder in server for use in PDF.
 	 * Please create the destination folder called uploads with the same
