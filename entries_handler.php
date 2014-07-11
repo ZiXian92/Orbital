@@ -21,9 +21,6 @@
 	 */
 	$model = new Model();
 
-	#var_dump($model->authenticate_entry_request($_SESSION['user_id'], $_GET['id']));
-	#exit(0);
-
 	if($model->authenticate_entry_request($_SESSION['user_id'], $_GET['id'])){
 		/* Gets the file path since the file will be
 		 * dealt with anyway.
@@ -42,7 +39,7 @@
 				header("Content-disposition: inline; filename=\"entry.pdf\"");
 				$f = fopen("/tmp/".$file, "wb");
 
-		/* Displays the file if it exists in the storage */
+		/* Download and display the file if it exists in the storage */
 				if($dbxClient->getFile("/".$file, $f)!=null){
 					readfile("/tmp/".$file);
 					fclose($f);
