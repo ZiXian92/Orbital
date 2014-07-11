@@ -71,3 +71,8 @@ function validate_login(){
 
 	return true;
 }
+
+/* Prompts user for confirmation of delete action */
+function confirm_delete(){
+	return confirm("Proceed with delete?");
+}
