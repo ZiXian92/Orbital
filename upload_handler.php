@@ -7,7 +7,7 @@
 	/* FPDF class definition is in the specified file */
 	require 'PDF.php';
 	require 'model.php';
-	require_once "dropbox-sdk/Dropbox/autoload.php";
+	require_once 'dropbox-sdk/Dropbox/autoload.php';
 	use \Dropbox as dbx;
 
 	/* The only condition when this code should be executed is when
@@ -32,14 +32,8 @@
 	/* $model contains database connection */
 		$model = new Model();
 
-	/* Gets access token for Dropbox account */
+	/* Loads Dropbox access token */
 		$accessToken = file_get_contents("accessToken.txt");
-		$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
-
-		$f = fopen($_FILES['img']['tmp_name'], "rb");
-		$dbxClient->uploadFile("/".$_FILES['img']['name'], dbx\WriteMode::add(), $f);
-		fclose($f);
-		exit(0);
 
 	/* Moves image to uploads folder in server for use in PDF.
 	 * Please create the destination folder called uploads with the same
@@ -47,17 +41,17 @@
 	 * ../uploads and ../entries requires permission setting of 777
 	 * instead of 755 or 766. Why?
 	 */
-		/*if(file_exists($_FILES['img']['tmp_name']))
-			echo "Uploaded file exists";
-		else
-			echo "Uploaded file is missing.";
-		*/
-		#$file = "uploads/{$_FILES['img']['name']}";
-		$file = "uploads/".$_FILES['img']['name'];
+		#move_uploaded_file($_FILES['img']['tmp_name'], "../uploads/{$_FILES['img']['name']}");
 
-		move_uploaded_file($_FILES['img']['tmp_name'], $file);
-
-		$
+	/* Creates a new Dropbox client to access API */
+		$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
+		$f = fopen($_FILES['img']['tmp_name'], "rb");
+		$dbxClient->uploadFile("/".$_FILES['img']['name'], dbx\WriteMode::add(), $f);
+		fclose($f);
+		#$f = fopen($_FILES['img']['name'], "wb");
+		#$dbxClient->getFile("/".$_FILES['img']['name'], $f);
+		#fclose($f);
+		exit(0);
 
 		/* Somehow, having the author field disabled for
 		 * logged in users prevent the field value from
@@ -69,6 +63,7 @@
 		}
 
 		/* Prevent any possible XSS injection by removing tags */
+		$file = "../uploads/{$_FILES['img']['name']}";
 		$author = strip_tags((string)$_POST['author']);
 		$title = strip_tags((string)$_POST['title']);
 		$story = strip_tags((string)$_POST['story']);
@@ -86,7 +81,7 @@
 		 * is logged in
 		 */
 		if(isset($_SESSION['user_id'])){
-			$model->add_entry($_POST['entry_id'], $title, $_SESSION['user_id'], date("Y-m-d"), "entries/".(string)$_POST['entry_id'].".pdf");
+			$model->add_entry($_POST['entry_id'], $title, $_SESSION['user_id'], date("Y-m-d"), "../entries/".(string)$_POST['entry_id'].".pdf");
 		}
 
 		/* Destroys the session if the user is not logged in.
@@ -100,7 +95,7 @@
 		}
 
 		/* Removes the image file from ..uploads folder */
-		unlink("uploads/{$_FILES['img']['name']}");
+		unlink("../uploads/{$_FILES['img']['name']}");
 	}
 	header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
 ?>
