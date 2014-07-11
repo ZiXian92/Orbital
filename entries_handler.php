@@ -2,6 +2,8 @@
 	/* Handles entry view and delete requests */
 
 	require 'model.php';
+	require_once 'dropbox-sdk/Dropbox/autoload.php';
+	use \Dropbox as dbx;
 
 	session_start();
 	
@@ -19,6 +21,12 @@
 	 */
 	$model = new Model();
 
+	/* Gets the access token to access Dropbox API */
+	#$accessToken = file_get_contents("accessToken.txt");
+
+	/* Creates Dropbox client to access files */
+	#$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
+
 	if($model->authenticate_entry_request($_SESSION['user_id'], $_GET['id'])){
 		/* Gets the file path since the file will be
 		 * dealt with anyway.
@@ -28,12 +36,28 @@
 		/* Applies the appropriate action based on the request */
 		switch($_GET['action']){
 			case "view": header("Content-type: application/pdf");
-					header("Content-disposition: inline; filename=\"entry.pdf\"");
-					readfile($file);
-					exit(0);
+				header("Content-disposition: inline; filename=\"entry.pdf\"");
+				/* Downloads the PDF file into /tmp folder */
+				#$f = fopen("/tmp/".$file, "wb");
+				#try{
+					#$dbxClient->getFile("/".$file, $f);
+					#readfile("/tmp/".$file);
+					#fclose($f);
+					#unlink("/tmp/".$file);
+					#exit(0);
+				#}
+				#catch(Exception $e){
+					#file_put_contents("message.txt", "Entry does not exist. Please delete t from the records.");
+				}
+				#break;
+				readfile($file);
 			case "delete": unlink($file);
-					$model->remove_entry($_GET['id']);
-					break;
+				#try{
+					#$dbxClient->delete("/".$file);
+				#}
+				#catch(Exception $e){}
+				$model->remove_entry($_GET['id']);
+				break;
 		}
 	}
 
