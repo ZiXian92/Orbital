@@ -21,8 +21,9 @@
 	 */
 	$model = new Model();
 
-	var_dump($model->authenticate_entry_request($_SESSION['user_id'], $_GET['id']));
-	exit(0);
+	#var_dump($model->authenticate_entry_request($_SESSION['user_id'], $_GET['id']));
+	#exit(0);
+
 	if($model->authenticate_entry_request($_SESSION['user_id'], $_GET['id'])){
 		/* Gets the file path since the file will be
 		 * dealt with anyway.

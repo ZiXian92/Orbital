@@ -337,7 +337,7 @@
 			}
 			pg_prepare($this->sql_con, "", $q);
 			$result = pg_execute($this->sql_con, "", $params);
-			return pg_fetch_row($stmt);
+			return pg_fetch_row($result);
 		}
 
 		/* Adds a new entry to the database.
