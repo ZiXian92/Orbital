@@ -125,7 +125,7 @@
 			pg_prepare($this->sql_con, "", $q);
 			$result = pg_execute($this->sql_con, "", array($id));
 			while($row = pg_fetch_assoc($result))
-				$dbxClient->delete("/".$row['FILE']);
+				$dbxClient->delete("/".$row['file']);
 			pg_free_result($result);
 
 			/* Remove all records of entries related to the user
