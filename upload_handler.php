@@ -33,23 +33,25 @@
 		$model = new Model();
 
 	/* Loads Dropbox access token */
-		$accessToken = file_get_contents("accessToken.txt");
+		#$accessToken = file_get_contents("accessToken.txt");
 
-		#move_uploaded_file($_FILES['img']['tmp_name'], "../uploads/{$_FILES['img']['name']}");
+		move_uploaded_file($_FILES['img']['tmp_name'], "/tmp/{$_FILES['img']['name']}");
+		if(file_exists("/tmp/".$_FILES['img']['name']))
+			echo "File renamed.";
 
 	/* Creates a new Dropbox client to access API */
-		$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
+		#$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
 
 	/* Uploads the image to Dropbox temporarily */
-		$f = fopen($_FILES['img']['tmp_name'], "rb");
-		$dbxClient->uploadFile("/".$_FILES['img']['name'], dbx\WriteMode::add(), $f);
-		fclose($f);
-		$f = fopen($_FILES['img']['name'], "wb");
-		$dbxClient->getFile("/".$_FILES['img']['name'], $f);
-		fclose($f);
+		#$f = fopen($_FILES['img']['tmp_name'], "rb");
+		#$dbxClient->uploadFile("/".$_FILES['img']['name'], dbx\WriteMode::add(), $f);
+		#fclose($f);
+		#$f = fopen($_FILES['img']['name'], "wb");
+		#$dbxClient->getFile("/".$_FILES['img']['name'], $f);
+		#fclose($f);
 
 	/* Gets URL to the image file */
-		$file = $dbxClient->createShareableLink("/".$_FILES['img']['name']);
+		#$file = $dbxClient->createShareableLink("/".$_FILES['img']['name']);
 		#header("Location: ".$imgUrl);
 		exit(0);
 
