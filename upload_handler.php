@@ -42,6 +42,10 @@
 
 		#move_uploaded_file($_FILES['img']['tmp_name'], "/tmp/".$_FILES['img']['name']);
 
+		/* Sets the file path */
+		#$file = "/tmp/".$_FILES['img']['name'];
+		$file = "../uploads/{$_FILES['img']['name']}";
+
 		/* Somehow, having the author field disabled for
 		 * logged in users prevent the field value from
 		 * being submitted
@@ -52,8 +56,6 @@
 		}
 
 		/* Prevent any possible XSS injection by removing tags */
-		#$file = "/tmp/".$_FILES['img']['name'];
-		$file = "../uploads/{$_FILES['img']['name']}";
 		$author = strip_tags((string)$_POST['author']);
 		$title = strip_tags((string)$_POST['title']);
 		$story = strip_tags((string)$_POST['story']);
@@ -78,8 +80,8 @@
 			#$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
 
 		/* Uploads the PDF file to Dropbox */
-			#$f = fopen("/tmp/".$_POST['entry_id'].".pdf", "rb");
-			#$dbxClient->uploadFile("/".$_POST['entry_id'].".pdf", dbx\WriteMode::add(), $f);
+			#$f = fopen("/tmp/".(string)$_POST['entry_id'].".pdf", "rb");
+			#$dbxClient->uploadFile("/".(string)$_POST['entry_id'].".pdf", dbx\WriteMode::add(), $f);
 			#fclose($f);
 
 		/* Adds entry information to database */
@@ -87,7 +89,7 @@
 			$model->add_entry($_POST['entry_id'], $title, $_SESSION['user_id'], date("Y-m-d"), "../entries/".(string)$_POST['entry_id'].".pdf");
 
 		/* Removes the PDF file from the temporary storage */
-			#unlink("/tmp/".$_POST['entry_id'].".pdf");
+			#unlink("/tmp/".(string)$_POST['entry_id'].".pdf");
 		}
 
 		/* Destroys the session if the user is not logged in.
