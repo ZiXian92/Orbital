@@ -36,8 +36,11 @@
 		#$accessToken = file_get_contents("accessToken.txt");
 
 		move_uploaded_file($_FILES['img']['tmp_name'], "/tmp/{$_FILES['img']['name']}");
-		if(file_exists("/tmp/".$_FILES['img']['name']))
+		/*if(file_exists("/tmp/".$_FILES['img']['name']))
 			echo "File renamed.";
+		 */
+
+	$file = "/tmp/".$_FILES['img']['name'];
 
 	/* Creates a new Dropbox client to access API */
 		#$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
@@ -53,7 +56,7 @@
 	/* Gets URL to the image file */
 		#$file = $dbxClient->createShareableLink("/".$_FILES['img']['name']);
 		#header("Location: ".$imgUrl);
-		exit(0);
+		#exit(0);
 
 		/* Somehow, having the author field disabled for
 		 * logged in users prevent the field value from
