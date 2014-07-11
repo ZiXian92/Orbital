@@ -1,4 +1,5 @@
 <?php
+	require_once "dropbox-sdk/Dropbox/autoload.php";
 	use \Dropbox as dbx;
 	#mail("zixian1992@hotmail.com", "Hello", "Mizuki Nana desu~", "From: admin@relivethemoment.host-ed.me\r\n");
 
