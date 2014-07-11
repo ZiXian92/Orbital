@@ -1,7 +1,7 @@
 <!--Form to gather required information for an entry-->
 <!--Lesson learnt: Must include enctype="multipart/form-data in <form> to
     allow file to be submitted as file"-->
-<p>Please log in if you want your entry to be part of your online collection.</p>
+<p>This entry will only be part of your online collection if you are logged in.</p>
 {{message}}
 <form name="new_entry" action="upload_handler.php" method="post" id="entry" onsubmit="return validate();" enctype="multipart/form-data">
 
