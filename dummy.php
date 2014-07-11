@@ -11,11 +11,8 @@
 		return new dbx\WebAuth($appInfo, $clientIdentifier, $redirectUri, $csrfTokenStore);
 	}
 
-	$authorizeUrl = getWebAuth()->start();
-	header("Location: ".$authorizeUrl);
-
-	list($accessToken, $userId, $urlState) = getWebAuth()->finish($_GET);
-	assert($urlState===null);
-
-	file_put_contents("accessToken.txt", $accessToken);
+	$accessToken = file_get_contents("accessToken.txt");
+	$dbxClient = new dbx\Client($accessToken, "PHP-Example/1.0");
+	$accountInfo = $dbxClient->getAccountInfo();
+	print_r($accountInfo);
 ?>
