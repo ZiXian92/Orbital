@@ -7,6 +7,8 @@
 	/* FPDF class definition is in the specified file */
 	require 'PDF.php';
 	require 'model.php';
+	require_once "dropbox-sdk/Dropbox/autoload.php";
+	use \Dropbox as dbx;
 
 	/* The only condition when this code should be executed is when
 	 * a form is submitted. Entering the URL directly will not work.
@@ -30,7 +32,14 @@
 	/* $model contains database connection */
 		$model = new Model();
 
-		error_reporting(E_ALL);
+	/* Gets access token for Dropbox account */
+		$accessToken = file_get_contents("accessToken.txt");
+		$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
+
+		$f = fopen($_FILES['img']['tmp_name'], "rb");
+		$dbxClient->uploadFile("/".$_FILES['img']['name'], dbx\WriteMode::add(), $f);
+		fclose($f);
+		exit(0);
 
 	/* Moves image to uploads folder in server for use in PDF.
 	 * Please create the destination folder called uploads with the same
@@ -48,6 +57,8 @@
 
 		move_uploaded_file($_FILES['img']['tmp_name'], $file);
 
+		$
+
 		/* Somehow, having the author field disabled for
 		 * logged in users prevent the field value from
 		 * being submitted
@@ -61,12 +72,6 @@
 		$author = strip_tags((string)$_POST['author']);
 		$title = strip_tags((string)$_POST['title']);
 		$story = strip_tags((string)$_POST['story']);
-
-		if(file_exists($file))
-			echo "OK";
-		else
-			echo "Missing file";
-		exit(0);
 
 		/* Creates and loads form contents into a new PDF document */
 		$pdf = new PDF($file, $author, $title, $story);
