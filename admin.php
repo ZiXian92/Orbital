@@ -7,6 +7,8 @@
 
 	require "model.php";
 	require "view.php";
+	require_once 'dropbox-sdk/Dropbox/autoload.php';
+	use \Dropbox as dbx;
 
 	session_start();
 
@@ -36,7 +38,9 @@
 					$view = new View($arr);
 					$view->render();
 					exit(0);
-			case "delete": $model->remove_user($id);
+			case "delete": $accessToken = file_get_contents("accessToken.txt");
+					$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
+					$model->remove_user($id, $dbxClient);
 					break;
 		}
 	}

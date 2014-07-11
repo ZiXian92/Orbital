@@ -1,4 +1,7 @@
 <?php
+	require_once 'dropbox-sdk/Dropbox/autoload.php';
+	use \Dropbox as dbx;
+
 	/* Defines the Model class, which is responsible for retrieving
 	 * web pages or data from database.
 	 */
@@ -112,7 +115,7 @@
 		 * deleted manually through an admin script or through
 		 * the database client.
 		 */
-		public function remove_user($id){
+		public function remove_user($id, $dbxClient){
 			$id = (int)pg_escape_string($this->sql_con, (string)$id);
 			/* Gets the file paths of all entries authored by
 			 * the user with the given user ID and removes
@@ -122,7 +125,7 @@
 			pg_prepare($this->sql_con, "", $q);
 			$result = pg_execute($this->sql_con, "", array($id));
 			while($row = pg_fetch_assoc($result))
-				unlink($row['FILE']);
+				$dbxClient->delete("/".$row['FILE']);
 			pg_free_result($result);
 
 			/* Remove all records of entries related to the user
