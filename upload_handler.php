@@ -49,9 +49,9 @@
 		#fclose($f);
 
 	/* Gets URL to the image file */
-		$imgUrl = $dbxClient->createShareableLink("/".$_FILES['img']['name']);
-		header("Location: ".$imgUrl);
-		exit(0);
+		$file = $dbxClient->createShareableLink("/".$_FILES['img']['name']);
+		#header("Location: ".$imgUrl);
+		#exit(0);
 
 		/* Somehow, having the author field disabled for
 		 * logged in users prevent the field value from
@@ -63,7 +63,6 @@
 		}
 
 		/* Prevent any possible XSS injection by removing tags */
-		$file = "../uploads/{$_FILES['img']['name']}";
 		$author = strip_tags((string)$_POST['author']);
 		$title = strip_tags((string)$_POST['title']);
 		$story = strip_tags((string)$_POST['story']);
@@ -95,7 +94,7 @@
 		}
 
 		/* Removes the image file from ..uploads folder */
-		unlink("../uploads/{$_FILES['img']['name']}");
+		#unlink("../uploads/{$_FILES['img']['name']}");
 	}
 	header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
 ?>
