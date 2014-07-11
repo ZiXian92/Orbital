@@ -32,31 +32,11 @@
 	/* $model contains database connection */
 		$model = new Model();
 
-	/* Loads Dropbox access token */
-		#$accessToken = file_get_contents("accessToken.txt");
-
+	/* Renames the uploaded image for use by PDF object */
 		move_uploaded_file($_FILES['img']['tmp_name'], "/tmp/{$_FILES['img']['name']}");
-		/*if(file_exists("/tmp/".$_FILES['img']['name']))
-			echo "File renamed.";
-		 */
 
-	$file = "/tmp/".$_FILES['img']['name'];
-
-	/* Creates a new Dropbox client to access API */
-		#$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
-
-	/* Uploads the image to Dropbox temporarily */
-		#$f = fopen($_FILES['img']['tmp_name'], "rb");
-		#$dbxClient->uploadFile("/".$_FILES['img']['name'], dbx\WriteMode::add(), $f);
-		#fclose($f);
-		#$f = fopen($_FILES['img']['name'], "wb");
-		#$dbxClient->getFile("/".$_FILES['img']['name'], $f);
-		#fclose($f);
-
-	/* Gets URL to the image file */
-		#$file = $dbxClient->createShareableLink("/".$_FILES['img']['name']);
-		#header("Location: ".$imgUrl);
-		#exit(0);
+	/* Sets the file path of the uploaded image */
+		$file = "/tmp/".$_FILES['img']['name'];
 
 		/* Somehow, having the author field disabled for
 		 * logged in users prevent the field value from
@@ -85,7 +65,21 @@
 		 * is logged in
 		 */
 		if(isset($_SESSION['user_id'])){
-			$model->add_entry($_POST['entry_id'], $title, $_SESSION['user_id'], date("Y-m-d"), "../entries/".(string)$_POST['entry_id'].".pdf");
+		/* Loads Dropbox access token */
+			$accessToken = file_get_contents("accessToken.txt");
+
+		/* Creates a new Dropbox client to access API */
+			$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
+		/* Uploads the entry to Dropbox */
+			$f = fopen("/tmp/".(string)$_POST['entry_id'].".pdf", "rb");
+			$dbxClient->uploadFile("/".(string)$_POST['entry_id'].".pdf", dbx\WriteMode::add(), $f);
+			fclose($f);
+
+		/* Adds the entry information to database */
+			$model->add_entry($_POST['entry_id'], $title, $_SESSION['user_id'], date("Y-m-d"), (string)$_POST['entry_id'].".pdf");
+
+		/* Destroys the PDF file in ./tmp folder */
+			unlink("/tmp/".(string)$_POST['entry_id'].".pdf");
 		}
 
 		/* Destroys the session if the user is not logged in.
@@ -98,8 +92,8 @@
 			setcookie('PHPSESSID', '', time()-3600, '/', '', 0, 0);
 		}
 
-		/* Removes the image file from ..uploads folder */
-		#unlink("../uploads/{$_FILES['img']['name']}");
+		/* Removes the image file from /tmp folder */
+		unlink("/tmp/{$_FILES['img']['name']}");
 	}
 	header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
 ?>
