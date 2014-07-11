@@ -32,7 +32,7 @@
 		$model = new Model();
 
 	/* Loads Dropbox API configuration */
-		$appInfo = dbx\AppInfo::loadFromJsonFile("config.json");
+		$appInfo = dbx\AppInfo::loadFromJsonFile("app-info.json");
 
 	/* Moves image to uploads folder in server for use in PDF.
 	 * Please create the destination folder called uploads with the same
