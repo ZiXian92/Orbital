@@ -221,7 +221,7 @@
 					else
 						$list.="<td><a href=\"users.php?action=activate&id=".$row['id']."\">Activate</a></td>";
 					$list.="<td><a href=\"users.php?action=reset_passwd&name=".$row['username']."&email=".urlencode($row['email'])."\">Reset Password</a></td>
-					<td><a href=\"admin.php?action=delete&id=".(string)$row['id']."\">Delete</a></td></tr>";
+					<td><a href=\"admin.php?action=delete&id=".(string)$row['id']."\" onclick=\"return confirm_delete();\">Delete</a></td></tr>";
 
 		/* Every 10th user is the last of the group of 10 */
 				if($counter%10==0)
@@ -385,7 +385,7 @@
 				$list.="<tr><td>".$row['date']."</td>
 					<td>".$row['title']."</td>
 					<td><a href=\"entries_handler.php?action=view&id=".$row['entry_id']."\">View</a>
-					<a href=\"entries_handler.php?action=delete&id=".$row['entry_id']."\">Delete</a></td></tr>";
+					<a href=\"entries_handler.php?action=delete&id=".$row['entry_id']."\" onclick=\"return confirm_delete();\">Delete</a></td></tr>";
 				if($counter%10==0)
 					$list.="</span>";
 			}
