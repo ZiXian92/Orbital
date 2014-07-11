@@ -212,7 +212,7 @@
 					$list.="<span class=\"section\" id=\"".(string)(floor($counter/10)+1)."\">";
 
 		/* Gets all the elements of each row(user) */
-				$list.="<tr><td>".$id."</td>
+				$list.="<tr><td>".$row['id']."</td>
 					<td>".$row['username']."</td>
 					<td>".$row['email']."</td>
 					<td><a href=\"admin.php?action=view&id=".(string)$row['id']."\">View</a></td>";
