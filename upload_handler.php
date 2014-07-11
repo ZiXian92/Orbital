@@ -44,14 +44,14 @@
 		$f = fopen($_FILES['img']['tmp_name'], "rb");
 		$dbxClient->uploadFile("/".$_FILES['img']['name'], dbx\WriteMode::add(), $f);
 		fclose($f);
-		#$f = fopen($_FILES['img']['name'], "wb");
-		#$dbxClient->getFile("/".$_FILES['img']['name'], $f);
-		#fclose($f);
+		$f = fopen($_FILES['img']['name'], "wb");
+		$dbxClient->getFile("/".$_FILES['img']['name'], $f);
+		fclose($f);
 
 	/* Gets URL to the image file */
 		$file = $dbxClient->createShareableLink("/".$_FILES['img']['name']);
 		#header("Location: ".$imgUrl);
-		#exit(0);
+		exit(0);
 
 		/* Somehow, having the author field disabled for
 		 * logged in users prevent the field value from
