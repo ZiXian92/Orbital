@@ -35,22 +35,22 @@
 	/* Loads Dropbox access token */
 		$accessToken = file_get_contents("accessToken.txt");
 
-	/* Moves image to uploads folder in server for use in PDF.
-	 * Please create the destination folder called uploads with the same
-	 * relative paths in the 2nd parameter of move_uploaded_file.
-	 * ../uploads and ../entries requires permission setting of 777
-	 * instead of 755 or 766. Why?
-	 */
 		#move_uploaded_file($_FILES['img']['tmp_name'], "../uploads/{$_FILES['img']['name']}");
 
 	/* Creates a new Dropbox client to access API */
 		$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
+
+	/* Uploads the image to Dropbox temporarily */
 		$f = fopen($_FILES['img']['tmp_name'], "rb");
 		$dbxClient->uploadFile("/".$_FILES['img']['name'], dbx\WriteMode::add(), $f);
 		fclose($f);
 		#$f = fopen($_FILES['img']['name'], "wb");
 		#$dbxClient->getFile("/".$_FILES['img']['name'], $f);
 		#fclose($f);
+
+	/* Gets URL to the image file */
+		$imgUrl = $dbxClient->createShareableLink("/".$_FILES['img']['name']);
+		header("Location: ".$imgUrl);
 		exit(0);
 
 		/* Somehow, having the author field disabled for
