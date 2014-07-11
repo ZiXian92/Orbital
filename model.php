@@ -221,7 +221,7 @@
 					else
 						$list.="<td><a href=\"users.php?action=activate&id=".$row['id']."\">Activate</a></td>";
 					$list.="<td><a href=\"users.php?action=reset_passwd&name=".$row['username']."&email=".urlencode($row['email'])."\">Reset Password</a></td>
-					<td><a href=\"admin.php?action=delete&id=".(string)$row['id']."\" onclick=\"return confirm_delete();\">Delete</a></td></tr>";
+					<td><a href=\"admin.php?action=delete&id=".(string)$row['id']."\" onclick=\"return confirm('Proceed to delete?');\">Delete</a></td></tr>";
 
 		/* Every 10th user is the last of the group of 10 */
 				if($counter%10==0)
