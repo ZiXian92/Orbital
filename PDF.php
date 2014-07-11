@@ -43,8 +43,8 @@
 			/* Sets document settings */
 			parent::SetDisplayMode("real", "default");
 			parent::SetMargins(50, 50, 50);
-			parent::SetCreator("XXX");
-			parent::SetSubject("My XXX");
+			parent::SetCreator("Relive That Moment");
+			parent::SetSubject("A Memorable Moment");
 
 			/* Initialise member attributes */
 			$this->_img_file = $file;
