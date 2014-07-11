@@ -93,7 +93,7 @@
 		}
 
 		/* Removes the image file from /tmp folder */
-		unlink("/tmp/{$_FILES['img']['name']}");
+		unlink("/tmp/".$_FILES['img']['name']);
 	}
 	header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
 ?>

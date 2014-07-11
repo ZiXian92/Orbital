@@ -51,9 +51,13 @@
 				}
 				file_put_contents("message.txt", "File does not exist.");
 				break;
-			case "delete": unlink($file);
-					$model->remove_entry($_GET['id']);
-					break;
+			case "delete": 
+				try{
+					$dbxClient->delete("/".$file);
+				}
+				catch(Exception $e){}
+				$model->remove_entry($_GET['id']);
+				break;
 		}
 	}
 
