@@ -7,6 +7,9 @@
 
 	session_start();
 	
+	var_dump($_SESSION['user_id']);
+	exit(0);
+
 	/* Block out all unauthorised execution of this script */
 	if(!isset($_SESSION['user_id'])){
 		$_SESSION = array();
