@@ -8,6 +8,7 @@
 	require 'PDF.php';
 	require 'model.php';
 	require_once 'dropbox-sdk/Dropbox/autoload.php';
+	use \Dropbox as dbx;
 
 	/* The only condition when this code should be executed is when
 	 * a form is submitted. Entering the URL directly will not work.
@@ -31,8 +32,8 @@
 	/* $model contains database connection */
 		$model = new Model();
 
-	/* Loads Dropbox API configuration */
-		$appInfo = dbx\AppInfo::loadFromJsonFile("app-info.json");
+	/* Loads Dropbox access token */
+		$accessToken = file_get_contents("accessToken.txt");
 
 	/* Moves image to uploads folder in server for use in PDF.
 	 * Please create the destination folder called uploads with the same
@@ -40,7 +41,17 @@
 	 * ../uploads and ../entries requires permission setting of 777
 	 * instead of 755 or 766. Why?
 	 */
-		move_uploaded_file($_FILES['img']['tmp_name'], "../uploads/{$_FILES['img']['name']}");
+		#move_uploaded_file($_FILES['img']['tmp_name'], "../uploads/{$_FILES['img']['name']}");
+
+	/* Creates a new Dropbox client to access API */
+		$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
+		$f = fopen($_FILES['img']['tmp_name'], "rb");
+		$dbxClient->uploadFile("/".$_FILES['img']['name'], dbx\WriteMode::add(), $f);
+		fclose($f);
+		$f = fopen($_FILES['img']['name'], "wb");
+		$dbxClient->getFile("/".$_FILES['img']['name'], $f);
+		fclose($f);
+		exit(0);
 
 		/* Somehow, having the author field disabled for
 		 * logged in users prevent the field value from
