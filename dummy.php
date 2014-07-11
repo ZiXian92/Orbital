@@ -6,5 +6,5 @@
 	$accessToken = file_get_contents("accessToken.txt");
 	$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0")
 	$accountInfo = $dbxClient->getAccountInfo();
-	echo $accountInfo;
+	print_r $accountInfo;
 ?>
