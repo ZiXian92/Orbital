@@ -1,4 +1,4 @@
-Security and Exception Handling Documentation
+Security and Exception Handling Documentation(updated as of 12 July 2014)
 
 General:
 - Checking if a user is logged in is done by checking session variables.
@@ -10,6 +10,14 @@ Database
 - All database queries are executed using prepared statements to prevent
   information about the database being leaked through error messages displayed
   should any unexpected error occur when executing queries.
+- mvc_temp branch uses MySQL database server on localhost
+- master branch uses PostgreSQL database server on Heroku
+
+Storage
+- mvc_temp can be set to use local filesystem or Dropbox storage at any time,
+  as it is mainly to test out master branch on localhost for faster debugging.
+- master branch uses Dropbox storage as folder allocated by Heroku is a 
+  read-only filesystem(except for /tmp folder)
 
 Home page
 - If user is logged in, script will always ensure that HTTPS is used. 
@@ -48,6 +56,9 @@ Entry Creation Form
   performance due to removing unnecessary access to PHP script.
 - On submission, a PDF file will be created and users will receive a download
   prompt to download their created entries.
+
+Users
+- Confirmation prompt is given whenever user clicks on a delete link.
 
 Normal User
 - Home page displays a list of the user's entries.
