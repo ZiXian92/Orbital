@@ -1,4 +1,7 @@
 <?php
+	require_once 'dropbox-sdk/Dropbox/autoload.php';
+	use \Dropbox as dbx;
+
 	/* Defines the Model class, which is responsible for retrieving
 	 * web pages or data from database.
 	 */
@@ -115,7 +118,41 @@
 		 * deleted manually through an admin script or through
 		 * the database client.
 		 */
-		public function remove_user($id){
+		#public function remove_user($id){
+			#$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
+			/* Gets the file paths of all entries authored by
+			 * the user with the given user ID and removes
+			 * these files
+			 */
+			/*$q = "SELECT FILE FROM ENTRIES WHERE AUTHOR=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "i", $id);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_bind_result($stmt, $file);
+			while(mysqli_stmt_fetch($stmt))
+				unlink($file);
+			mysqli_stmt_close($stmt);
+
+			/* Remove all records of entries related to the user
+			 * identified by the given user ID
+			 */
+			/*$q = "DELETE FROM ENTRIES WHERE AUTHOR=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "i", $id);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_close($stmt);
+
+			/* Delete information about the user identified
+			 * by the given user ID
+			 */
+			/*$q = "DELETE FROM USERS WHERE ID=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "i", $id);
+			if($id!=0)
+				mysqli_stmt_execute($stmt);
+			mysqli_stmt_close($stmt);
+		}*/
+		public function remove_user($id, $dbxClient){
 			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
 			/* Gets the file paths of all entries authored by
 			 * the user with the given user ID and removes
@@ -127,7 +164,7 @@
 			mysqli_stmt_execute($stmt);
 			mysqli_stmt_bind_result($stmt, $file);
 			while(mysqli_stmt_fetch($stmt))
-				unlink($file);
+				$dbxClient->delete("/".$file);
 			mysqli_stmt_close($stmt);
 
 			/* Remove all records of entries related to the user
