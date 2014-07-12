@@ -38,13 +38,13 @@
 	 * ../uploads and ../entries requires permission setting of 777
 	 * instead of 755 or 766.
 	 */
-		move_uploaded_file($_FILES['img']['tmp_name'], "../uploads/{$_FILES['img']['name']}");
+		#move_uploaded_file($_FILES['img']['tmp_name'], "../uploads/{$_FILES['img']['name']}");
 
-		#move_uploaded_file($_FILES['img']['tmp_name'], "/tmp/".$_FILES['img']['name']);
+		move_uploaded_file($_FILES['img']['tmp_name'], "/tmp/".$_FILES['img']['name']);
 
 		/* Sets the file path */
-		#$file = "/tmp/".$_FILES['img']['name'];
-		$file = "../uploads/{$_FILES['img']['name']}";
+		$file = "/tmp/".$_FILES['img']['name'];
+		#$file = "../uploads/{$_FILES['img']['name']}";
 
 		/* Somehow, having the author field disabled for
 		 * logged in users prevent the field value from
@@ -74,22 +74,22 @@
 		 */
 		if(isset($_SESSION['user_id'])){
 		/* Loads Dropbox access token */
-			#$accessToken = file_get_contents("accessToken.txt");
+			$accessToken = file_get_contents("accessToken.txt");
 
 		/* Creates a new Dropbox client to access API */
-			#$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
+			$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
 
 		/* Uploads the PDF file to Dropbox */
-			#$f = fopen("/tmp/".(string)$_POST['entry_id'].".pdf", "rb");
-			#$dbxClient->uploadFile("/".(string)$_POST['entry_id'].".pdf", dbx\WriteMode::add(), $f);
-			#fclose($f);
+			$f = fopen("/tmp/".(string)$_POST['entry_id'].".pdf", "rb");
+			$dbxClient->uploadFile("/".(string)$_POST['entry_id'].".pdf", dbx\WriteMode::add(), $f);
+			fclose($f);
 
 		/* Adds entry information to database */
-			#$model->add_entry($_POST['entry_id'], $title, $_SESSION['user_id'], date("Y-m-d"), (string)$_POST['entry_id'].".pdf");
-			$model->add_entry($_POST['entry_id'], $title, $_SESSION['user_id'], date("Y-m-d"), "../entries/".(string)$_POST['entry_id'].".pdf");
+			$model->add_entry($_POST['entry_id'], $title, $_SESSION['user_id'], date("Y-m-d"), (string)$_POST['entry_id'].".pdf");
+			#$model->add_entry($_POST['entry_id'], $title, $_SESSION['user_id'], date("Y-m-d"), "../entries/".(string)$_POST['entry_id'].".pdf");
 
 		/* Removes the PDF file from the temporary storage */
-			#unlink("/tmp/".(string)$_POST['entry_id'].".pdf");
+			unlink("/tmp/".(string)$_POST['entry_id'].".pdf");
 		}
 
 		/* Destroys the session if the user is not logged in.
@@ -103,8 +103,8 @@
 		}
 
 		/* Removes the image file from ../uploads folder */
-		#unlink("/tmp/".$_FILES['img']['name']);
-		unlink("../uploads/{$_FILES['img']['name']}");
+		unlink("/tmp/".$_FILES['img']['name']);
+		#unlink("../uploads/{$_FILES['img']['name']}");
 	}
 	header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
 ?>
