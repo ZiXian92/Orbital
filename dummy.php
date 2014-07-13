@@ -6,9 +6,10 @@
 	$params = array(
 		'api_user' => $user,
 		'api_key' => $pass,
-		'to' => 'zixian1992@hotmail.com',
-		'subject' => 'First SendGrid Email',
-		'text' => 'This is the first email successfully sent using SendGrid!',
+		'to[]' => array('zixian1992@hotmail.com',
+		'zi_xian_moonofdestiny@hotmail.com'),
+		'subject' => 'First SendGrid Email to Multiple Recipients',
+		'text' => 'This email is sent to multiple recipients.',
 		'from' => 'zixian1992@hotmail.com',
 	);
 
