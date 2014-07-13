@@ -119,9 +119,6 @@
 		 */
 		$passwd = $model->reset_password($name, $email);
 		if($passwd){
-			/* Edit this line before publishing */
-			file_put_contents("message.txt", "Password successfully reset. Please check your email for your new password. Please change your password upon logging in.<br/> If you do not receive an email, please contact the site administrator for your password.");
-
 			# Sets the remaining parameters for sending email
 			$params['to'] = $email;
 			$params['subject'] = 'Password Reset';
@@ -151,8 +148,13 @@
 		}
 		else
 			file_put_contents("message.txt", "Your request could not be processed.");
-		if($_SERVER['REQUEST_METHOD']=="POST")
+		if($_SERVER['REQUEST_METHOD']=="POST"){
+			# Tells the user that password has been reset
+			file_put_contents("message.txt", "Password successfully reset. Please check your email for your new password. Please change your password upon logging in.<br/> If you do not receive an email, please contact the site administrator for your password.");
 			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=reset_passwd";
+		}
+		# Admin does not need to know the password since
+		#email has been sent to user
 		else
 			$url = "https://".$_SERVER['HTTP_HOST'];
 	}
