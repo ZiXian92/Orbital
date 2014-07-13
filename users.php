@@ -114,8 +114,9 @@
 		 */
 		$passwd = $model->reset_password($name, $email);
 		if($passwd){
-			/* Edit this line before publishing */
-			file_put_contents("message.txt", "Password successfully reset. Please check your email for your new password. Please change your password upon logging in. If you do not receive any email, please contact the site administrator regarding your password.");
+			# For non-admin users
+			if($_SESSION['user_id']!=0)
+				file_put_contents("message.txt", "Password successfully reset. Please check your email for your new password. Please change your password upon logging in. If you do not receive any email, please contact the site administrator regarding your password.");
 
 			/* Sets the POSTFIELDS for sending email */
 			$params['to'] = $email;
@@ -143,9 +144,11 @@
 			curl_close($session);
 		}
 		else
-			file_put_contents("message.txt", "Your request could not be processed.");
+			file_put_contents("message.txt", "Your request could not be processed. Either the Username or Email is incorrect or your account is not activated.");
+		# If password reset is done through form
 		if($_SERVER['REQUEST_METHOD']=="POST")
 			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=reset_passwd";
+		# If password reset is done by administrator
 		else
 			$url = "https://".$_SERVER['HTTP_HOST'];
 	}
