@@ -8,6 +8,8 @@
 	 */
 
 	require "model.php";
+	DEFINE('USER', 'zixian');
+	DEFINE('PASS', 'Nana7Nana');
 
 	/* Checks if the supplied email address is valid */
 	function is_valid_email($email){
@@ -37,6 +39,13 @@
 	session_start();
 
 	$model = new Model();
+
+	$req_url = 'https://api.sendgrid.com/';
+	$params = array(
+		'api_user' => USER,
+		'api_key' => PASS,
+		'from' => 'donotreply@relivethatmoment.herokuapp.com',
+	);
 
 	/* Handles exception of users entering users.php into URL */
 	if(!isset($_GET['action'])){
@@ -111,10 +120,34 @@
 		$passwd = $model->reset_password($name, $email);
 		if($passwd){
 			/* Edit this line before publishing */
-			file_put_contents("message.txt", "Password successfully reset. Please check your email for your new password. Your new password is ".$passwd."<br/>Please change your password upon logging in.");
+			file_put_contents("message.txt", "Password successfully reset. Please check your email for your new password. Please change your password upon logging in.<br/> If you do not receive an email, please contact the site administrator for your password.");
 
-			/* Uncomment once emailing is settled */
-			#mail($email, "Reset Password", "Your new password is: ".$passwd, "From: admin@localhost");
+			# Sets the remaining parameters for sending email
+			$params['to'] = $email;
+			$params['subject'] = 'Password Reset';
+			$params['text'] = 'Your password has been reset. Your new password is '.$passwd;
+
+			# Forms the URL for API call
+			$request = $req_url.'api/mail.send.json';
+
+			# Starts the API call session
+			$session = curl_init($request);
+
+			# Use the POST method for the API call
+			curl_setopt($session, CURLOPT_POST, true);
+
+			# Sets the POST fields
+			curl_setopt($session, CURLOPT_POSTFIELDS, $params);
+
+			# Do not return header but return a response
+			curl_setopt($session, CURLOPT_HEADER, false);
+			curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+
+			# Executes the request
+			curl_exec($session);
+
+			# Closes the request
+			curl_close($session);
 		}
 		else
 			file_put_contents("message.txt", "Your request could not be processed.");
@@ -171,13 +204,35 @@
 			$code = md5(uniqid(rand(), true));
 			$model->add_user($model->get_user_id(), $name, $passwd, $email, $code);
 			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signedup";
-			file_put_contents("message.txt", "https://".$_SERVER['HTTP_HOST']."/users.php?action=activate&x=".urlencode($email)."&y=".$code);
-			#$subject = "Account Activation";
-			#$message = "Thank you for signing up. To get started, please click on the link below to activate your account.\nhttps://".$_SERVER['HTTP_HOST']."/users.php?action=activate&x=".urlencode($email)."&y=".$code;
+			# Forms the activation link
+			$activate_code = 'https://'.$_SERVER['HTTP_HOST'].'/users.php?action=activate&x='.urlencode($email).'&y='.$code;
 
-			//Sends email with activation link to the user
-			#mail($email, $subject, $message, "From: admin@".$_SERVER['HTTP_HOST']);
+			# Sets the remaining parameters for sending email
+			$params['to'] = $email;
+			$params['subject'] = 'Account Activation';
+			$params['html'] = '<p>Thank your for registering with us. Click <a href="'.$activate_code.'">here</a> to activate your account.</p>';
 
+			# Forms the URL for API call
+			$request = $req_url.'api/mail.send.json';
+
+			# Starts the API call session
+			$session = curl_init($request);
+
+			# Use the POST method for the API call
+			curl_setopt($session, CURLOPT_POST, true);
+
+			# Sets the POST fields
+			curl_setopt($session, CURLOPT_POSTFIELDS, $params);
+
+			# Do not return header but return a response
+			curl_setopt($session, CURLOPT_HEADER, false);
+			curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+
+			# Executes the request
+			curl_exec($session);
+
+			# Closes the request
+			curl_close($session);
 		}
 	}
 
