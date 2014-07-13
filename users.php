@@ -121,7 +121,7 @@
 		if($passwd){
 			# Sets the remaining parameters for sending email
 			$params['to'] = $email;
-			$params['subject'] = 'Password Reset';
+			$params['subject'] = 'Password Reset - Relive That Moment';
 			$params['text'] = 'Your password has been reset. Your new password is '.$passwd;
 
 			# Forms the URL for API call
@@ -211,7 +211,7 @@
 
 			# Sets the remaining parameters for sending email
 			$params['to'] = $email;
-			$params['subject'] = 'Account Activation';
+			$params['subject'] = 'Account Activation - Relive That Moment';
 			$params['html'] = '<p>Thank your for registering with us. Click <a href="'.$activate_code.'">here</a> to activate your account.</p>';
 
 			# Forms the URL for API call
