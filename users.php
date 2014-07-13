@@ -40,6 +40,7 @@
 
 	$model = new Model();
 
+	# Setting up URL and email parameters for call to SendGrid API
 	$req_url = 'https://api.sendgrid.com/';
 	$params = array(
 		'api_user' => USER,
@@ -104,6 +105,7 @@
 			$name = strip_tags($_POST['name']);
 			$email = strip_tags($_POST['email']);
 		}
+		# If password reset is done by administrator
 		elseif($_SESSION['user_id']==0 && isset($_GET['email'])){
 			$name = strip_tags($_GET['name']);
 			$email = strip_tags(urldecode($_GET['email']));
@@ -118,6 +120,8 @@
 		 * and retrieves the new password on successful attempt
 		 */
 		$passwd = $model->reset_password($name, $email);
+
+		# If password is successfully reset
 		if($passwd){
 			# Sets the remaining parameters for sending email
 			$params['to'] = $email;
@@ -148,6 +152,8 @@
 		}
 		else
 			file_put_contents("message.txt", "Your request could not be processed.");
+
+		# If password reset is done through form	
 		if($_SERVER['REQUEST_METHOD']=="POST"){
 			# Tells the user that password has been reset
 			file_put_contents("message.txt", "Password successfully reset. Please check your email for your new password. Please change your password upon logging in.<br/> If you do not receive an email, please contact the site administrator for your password.");

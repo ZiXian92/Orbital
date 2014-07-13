@@ -1,4 +1,4 @@
-Security and Exception Handling Documentation(updated as of 12 July 2014)
+Security and Exception Handling Documentation(updated as of 13 July 2014)
 
 General:
 - Checking if a user is logged in is done by checking session variables.
@@ -86,3 +86,7 @@ Signup
 URL attacks
 - Code is added to each script to deal with invalid URI by redirecting to a
   safe and valid page.
+
+Email
+- Email is sent to user when user signs up or resets password.
+- Email is sent cia SendGrid, a 3rd party SMTP server.
