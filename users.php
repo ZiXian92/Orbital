@@ -156,7 +156,7 @@
 			curl_close($session);
 		}
 		else
-			file_put_contents("message.txt", "Your request could not be processed.");
+			file_put_contents("message.txt", "Your request could not be processed. Either your Username or Email is incorrect.");
 
 		# If password reset is done through form	
 		if($_SERVER['REQUEST_METHOD']=="POST")
