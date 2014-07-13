@@ -37,6 +37,8 @@ June 2014(target)
   password reset for any account)
 
 July 2014(tentative)
++ Email containing activation link(for sign up) and email containing
+  new password(for password reset) is sent to the user.
 - Guided entry form for new users(interface to be done by Yulong, session
   details to be discussed)
 - Integration with social media(ideal target)
