@@ -123,7 +123,7 @@
 
 		# If password is successfully reset
 		if($passwd){
-			if($_SESSION['user_id']!=0){
+			if(!isset($_SESSION['user_id'])){
 				# Tells the user that password has been reset
 				file_put_contents("message.txt", "Password successfully reset. Please check your email for your new password. Please change your password upon logging in.<br/> If you do not receive an email, please contact the site administrator for your password.");
 			}
