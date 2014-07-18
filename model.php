@@ -47,7 +47,6 @@
 		 */
 		public function set_template(&$arr, $page){
 			$arr['title'] = strtoupper(substr($page, 0, 1)).substr($page, 1);
-			$arr['javascript'] = "<script src=\"javascripts/jscript.js\"></script>";
 			if(isset($_SESSION['username'])){
 				if($_SESSION['user_id']==0)
 					$arr['usrmenu'] = file_get_contents("html/admin_menu.html");
