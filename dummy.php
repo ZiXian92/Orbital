@@ -1,5 +1,5 @@
 <?php
-	$url = 'https://api.sendgrid.com/';
+	/*$url = 'https://api.sendgrid.com/';
 	$user = 'zixian';
 	$pass = 'Nana7Nana';
 
@@ -34,5 +34,7 @@
 	#Closes the session
 	curl_close($session);
 
-	print_r($response);
+	print_r($response);*/
+
+	echo 'Hello';
 ?>

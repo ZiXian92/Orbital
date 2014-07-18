@@ -42,11 +42,12 @@
 
 		/* Page Content-related Functions */
 
-		/* Sets all placeholder values in the template,
-		 * except for contents
+		/* Returns an array of all the page parameters
 		 */
-		public function set_template(&$arr, $page){
-			$arr['title'] = strtoupper(substr($page, 0, 1)).substr($page, 1);
+		public function get_page_params($page){
+			$arr = array();
+
+			//Sets the menu bar and the author field of entry form
 			if(isset($_SESSION['username'])){
 				if($_SESSION['user_id']==0)
 					$arr['usrmenu'] = file_get_contents("html/admin_menu.html");
@@ -65,25 +66,16 @@
 					maxlength=\"20\">*required";
 			}
 
-			$arr['message'] = file_get_contents("message.txt");
-			file_put_contents("message.txt", "");
-		}
-
-		/* Returns the contents of the HTML file referred
-		 * to by $page.
-		 * Returns a 404 error page if the page requested
-		 * does not exist.
-		 */
-		public function get_page($page){
-			if(isset($_SESSION['user_id']) && $page=="home"){
-				if($_SESSION['user_id']!=0)
-					return "{{message}}<p>Welcome, ".$_SESSION['username']."</p>".$this->list_entries_by_id($_SESSION['user_id']);
-				return "{{message}}<p>Welcome, ".$_SESSION['username']."</p>".$this->list_users();
+			//Sets the title and the main content
+			if(file_exists("html/".$page.".html")){
+				$arr['content'] = file_get_contents("html/".$page.".html");
+				$arr['title'] = strtoupper(substr($page, 0, 1)).substr($page, 1);
 			}
-
-			if(file_exists("html/".$page.".html"))
-				return file_get_contents("html/".$page.".html");
-			return file_get_contents("html/404.html");
+			else{
+				$arr['content'] = file_get_contents("html/404.html");
+				$arr['title'] = '404';
+			}
+			return $arr;
 		}
 
 		/* User-related Administrative Functions */
