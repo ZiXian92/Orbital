@@ -1,7 +1,7 @@
 <!--Form to gather required information for an entry-->
 <!--Lesson learnt: Must include enctype="multipart/form-data in <form> to
     allow file to be submitted as file"-->
-{{message}}
+<div class="error" id="error">
 <form name="new_entry" action="upload_handler.php" method="post" id="entry" onsubmit="return validate();" enctype="multipart/form-data">
 
 	<!--Image file upload field-->

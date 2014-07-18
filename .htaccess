@@ -4,3 +4,7 @@ RewriteBase /
 
 RewriteCond %{REQUEST_URI}	^/[^/\.]*$
 RewriteRule ^.*$	index.php	[L]
+
+RewriteCond %{REQUEST_URI}	^/[a-z_]+/[^\.]+$
+RewriteCond %{REQUEST_URI}	^/[a-z_]+/[^\.]+/
+RewriteRule ^([a-z_]+)/	$1.php	[L]

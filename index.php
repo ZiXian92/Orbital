@@ -7,6 +7,9 @@
 	require 'view.php';
 	require 'model.php';
 
+	#var_dump($_SERVER['HTTPS']);
+	#exit();
+
 	session_start();
 
 	# Gets the page requested
@@ -16,16 +19,14 @@
 	/* Use HTTPS if user is logged in or if signup, login, or password
 	 * reset pages are requested.
 	 */
-	if((isset($_SESSION['user_id']) || $page=='signup' || $page=='login' ||
-	$page=='reset_password') && !isset($_SERVER['HTTPS'])){
-		#echo 'https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+	if(isset($_SESSION['user_id']) && empty($_SERVER['HTTPS'])){
 		header('Location: https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
-		#exit();
+		exit();
 	}
 
-	//Use HTTP if user is not logged in
-	if(!isset($_SESSION['user_id']) && isset($_SERVER['HTTPS'])){
-		header('Location: http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+	if(($page=='login' || $page=='signup' || $page=='reset_password') &&
+	empty($_SERVER['HTTPS'])){
+		header('Location: https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 		exit();
 	}
 
