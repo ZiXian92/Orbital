@@ -7,9 +7,6 @@
 	require 'view.php';
 	require 'model.php';
 
-	#var_dump($_SERVER['HTTPS']);
-	#exit();
-
 	session_start();
 
 	# Gets the page requested

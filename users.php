@@ -13,20 +13,6 @@
 	DEFINE('USER', 'zixian');
 	DEFINE('PASS', 'Nana7Nana');
 
-	/* Checks if the supplied email address is valid */
-	function is_valid_email($email){
-		$format = "/^[a-zA-Z0-9]+[a-zA-Z0-9_]*@.+\..+$/";
-		return preg_match($format, $email);
-	}
-
-	/* Checks if the given password is valid
-	 * Password must contain strictly 10 alphanumberic characters
-	 */
-	function is_valid_passwd($passwd){
-		$format = "/^[a-zA-Z0-9]{10}$/";
-		return preg_match($format, $passwd);
-	}
-
 	#Checks if user with the supplied credentials exists in database
 	#Request is successful only if called by POST method and JSON string
 	#containing email and password is supplied.
@@ -95,13 +81,11 @@
 
 	session_start();
 
-	#$model = new Model();
-
 	$arr = getallheaders();
 	$url_elements = explode('/', $_SERVER['REQUEST_URI']);
 	$action = $url_elements[2];
-	#echo $arr['Content-Type'];
 
+	#Apply the appropriate function based on action given un URL
 	switch($action){
 		case 'validate_login': validate_login();
 			break;
@@ -112,6 +96,7 @@
 		case 'logout': logout();
 			break;
 		default: http_response_code(400);
+			header('Location: https://'.$_SERVER['HTTP_HOST'].'/404');
 	}
 	exit();
 
