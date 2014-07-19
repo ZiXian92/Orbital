@@ -66,8 +66,17 @@
 					maxlength=\"20\">*required";
 			}
 
+			if(isset($_SESSION['user_id']) && $page=='home'){
+				$arr['content'] = '<div class="message" id="message"></div><p>Welcome, '.$_SESSION['username'].'</p>';
+				if($_SESSION['user_id']==0)
+					$arr['content'].=$this->list_users();
+				else
+					$arr['content'].=$this->list_entries_by_id($_SESSION['user_id']);
+				$arr['title'] = 'Home';
+			}
+
 			//Sets the title and the main content
-			if(file_exists("html/".$page.".html")){
+			elseif(file_exists("html/".$page.".html")){
 				$arr['content'] = file_get_contents("html/".$page.".html");
 				$arr['title'] = strtoupper(substr($page, 0, 1)).substr($page, 1);
 			}

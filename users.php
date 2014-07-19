@@ -58,9 +58,8 @@
 	elseif($_GET['action']=="logout"){
 		$_SESSION = array();
 		session_destroy();
-		setcookie('PHPSESSID'
-, '', time()-3600, '/', '', 0, 0);
-		$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=loggedout";
+		setcookie('PHPSESSID', '', time()-3600, '/', '', 0, 0);
+		$url = "http://".$_SERVER['HTTP_HOST']."/loggedout";
 	}
 
 	/* Activates the appropriate account if the email and
@@ -172,13 +171,13 @@
 		/* Checks if $name is still valid after removing tags */
 		if(strlen($name)==0){
 			file_put_contents("message.txt", "Invalid username.");
-			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signup";
+			$url = "https://".$_SERVER['HTTP_HOST']."/signup";
 		}
 
 		/* Checks if the username is already taken */
 		elseif($model->contains_username($name)){
 			file_put_contents("message.txt", "This username is already taken.");
-			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signup";
+			$url = "https://".$_SERVER['HTTP_HOST']."/signup";
 		}
 
 		/* If email is not currently used by another user,
@@ -186,20 +185,20 @@
 		 */
 		elseif(!is_valid_email($email) || $model->contains_email($email)){
 			file_put_contents("message.txt", "Invalid email or email is used by another user.");
-			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signup";
+			$url = "https://".$_SERVER['HTTP_HOST']."/signup";
 		}
 
 		/* Validates password */
 		elseif(!is_valid_passwd($passwd) || !($passwd===$passwd2)){
 			file_put_contents("message.txt", "Invalid password or the 2 passwords do not match.<br/>Password should contain only 10 alphanumeric characters.");
-			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signup";
+			$url = "https://".$_SERVER['HTTP_HOST']."/signup";
 		}
 		//On successful registration
 		else{
 			//Generate activation code
 			$code = md5(uniqid(rand(), true));
 			$model->add_user($model->get_user_id(), $name, $passwd, $email, $code);
-			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=signedup";
+			$url = "https://".$_SERVER['HTTP_HOST']."/signedup";
 			# Forms the activation link
 			$activate_code = 'https://'.$_SERVER['HTTP_HOST']."/users.php?action=activate&x=".urlencode($email)."&y=".$code;
 
@@ -245,8 +244,8 @@
 			$url = "https://".$_SERVER['HTTP_HOST'];
 		}
 		else{
-			file_put_contents("message.txt", "Incorrect email or password or account is not activated.");
-			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=login";
+			#file_put_contents("message.txt", "Incorrect email or password or account is not activated.");
+			$url = "https://".$_SERVER['HTTP_HOST']."/login";
 		}
 	}
 
@@ -257,23 +256,23 @@
 		$old_passwd = strip_tags((string)$_POST['old_passwd']);
 		$new_passwd = strip_tags((string)$_POST['new_passwd']);
 		$new_passwd2 = strip_tags((string)$_POST['re-new_passwd']);
-		if(isset($_SESSION['user_id'])){
+		/*if(isset($_SESSION['user_id'])){
 			if(!is_valid_passwd($old_passwd) ||
 			$model->get_password_by_id($_SESSION['user_id'])!=
 			SHA1($old_passwd))
-				file_put_contents("message.txt", "Incorrect current password.");
+				#file_put_contents("message.txt", "Incorrect current password.");
 			elseif(!is_valid_passwd($new_passwd))
-				file_put_contents("message.txt", "Invalid new password.");
+				#file_put_contents("message.txt", "Invalid new password.");
 			elseif($new_passwd!=$new_passwd2)
-				file_put_contents("message.txt", "The 2 new passwords do not match.");
+				#file_put_contents("message.txt", "The 2 new passwords do not match.");
 			else{
 				$model->set_new_password($_SESSION['user_id'], $new_passwd);
-				file_put_contents("message.txt", "Success!");
+				#file_put_contents("message.txt", "Success!");
 			}
-			$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=change_passwd";
+			$url = "https://".$_SERVER['HTTP_HOST']."/change_passwd";
 		}
 		else
-			$url = "http://".$_SERVER['HTTP_HOST'];
+			$url = "http://".$_SERVER['HTTP_HOST'];*/
 	}
 
 	/* Destroys the session if user is not logged in */

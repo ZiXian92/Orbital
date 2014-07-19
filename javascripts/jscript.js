@@ -6,16 +6,22 @@
 
 var ajaxRequest;
 
+function setCheckName(str){
+	document.getElementById("checkName").innerHTML = str;
+}
+
 function checkName(name){
 	ajaxRequest = new XMLHttpRequest();
 	var data = {};
 	data.name = name;
-	ajaxHttpRequest.open("GET", "/dummy/checkname", true);
-	ajaxHttpRequest.setRequestHeader("Content-type", "application/json; charset=utf-8");
+	ajaxRequest.open("GET", "/dummy/checkname", true);
+	ajaxRequest.setRequestHeader("Content-type", "application/json");
 	ajaxRequest.onreadystatechange = function(){
 		if(ajaxRequest.readyState==4 && ajaxRequest.status==200){
-			data = JSON.parse(ajaxRequest.resonseText);
-			document.getElementById("checkName").innerHTML = data.message;
+			data = ajaxRequest.responseText;
+	ajaxRequest.setRequestHeader("Accept", "application/json");
+	ajaxRequest.setRequestHeader("Accept", "application/json");
+			document.getElementById("checkName").innerHTML = data;
 		}
 	}
 	ajaxRequest.send(JSON.stringify(data));
