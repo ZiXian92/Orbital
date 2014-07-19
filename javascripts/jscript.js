@@ -76,7 +76,7 @@ function validate_signup(){
 	return true;
 }
 
-/* Validates the login form */
+//Validates the login form and logs the user in if login is successful
 function validate_login(ev){
 	var email = document.forms["login_form"]["email"].value;
 	var pass = document.forms["login_form"]["passwd"].value;
@@ -84,7 +84,7 @@ function validate_login(ev){
 
 	//Performs input validation
 	if(email.length==0 || pass.length==0){
-		document.getElementById('error').innerHTML='Please fill out all required fields';
+		document.getElementById('error').innerHTML='Empty email and/or password field(s).';
 		return false;
 	}
 
@@ -95,27 +95,30 @@ function validate_login(ev){
 
 	//Prevent form from submitting by default
 	ev.preventDefault();
-	//alert('Hello');
-	//return false;
 
 	//Sending request to server to check login credentials
 	var data = {};
-	var form = document.forms[0];
-	data.email = form[0].value;
-	data.password = form[1].value;
+	data.email = email;
+	data.password = pass;
 
 	ajaxRequest = new XMLHttpRequest();
+
+	//Defines function to execute when request is completely processed,
+	//as seen in conditional check for readyState to be 4.
 	ajaxRequest.onreadystatechange=function(){
-		if(ajaxRequest.readyState==4 && ajaxRequest.status==200){
-			document.getElementById('error').innerHTML=ajaxRequest.responseText;
-			if(ajaxRequest.responseText=='Login successful')
-				login(JSON.stringify(data));
+		if(ajaxRequest.readyState==4){
+			if(ajaxRequest.status==200){
+				document.getElementById('error').innerHTML=ajaxRequest.responseText;
+				if(ajaxRequest.responseText=='Login successful')
+					document.getElementById('login_form').submit();
+			}
+			else if(ajaxRequest.status==400)
+				document.getElementById('error').innerHTML='Bad request';
 		}
 	};
 	ajaxRequest.open("POST", "users/validate_login", true);
 	ajaxRequest.setRequestHeader("Content-Type", "application/json");
 	ajaxRequest.send(JSON.stringify(data));
-	return false;
 }
 
 /* Prompts user for confirmation of delete action */

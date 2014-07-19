@@ -33,7 +33,7 @@
 	function validate_login(){
 		$req_headers = getallheaders();
 		if($_SERVER['REQUEST_METHOD']=='POST' &&
-		$req_headers['Content-Type']=='application/json'){
+		$req_headers['Content-Type']=='application/json; charset=UTF-8'){
 			$req_params = json_decode(file_get_contents('php://input'), true);
 			$model = new Model();
 			try{
@@ -44,8 +44,9 @@
 				else
 					echo 'Incorrect email and/or password.';
 			}
-			catch(Exception e)
+			catch(Exception $e){
 				http_response_code(400);
+			}
 		}
 		else
 			http_response_code(400);
@@ -61,9 +62,11 @@
 			exit();
 		}
 
+		$model = new Model();
+
 		#Remove any tags to prevent XSS attacks.
 		$email = strip_tags((string)$_POST['email']);
-		$passwd = strip_tags((string)$_POST['passwd']);*/
+		$passwd = strip_tags((string)$_POST['passwd']);
 
 		#Sets the session variables if login is successful
 		if($model->is_valid_user($email, $passwd)){
@@ -74,6 +77,14 @@
 		}
 		else
 			header('Location: https://'.$_SERVER['HTTP_HOST'].'/login');
+	}
+
+	#Logs the user out
+	function logout(){
+		$_SESSION = array();
+		session_destroy();
+		setcookie('PHPSESSID', '', time()-3600, '/', '', 0, 0);
+		header('Location: http://'.$_SERVER['HTTP_HOST'].'/loggedout');
 	}
 
 	/* Ensure that the rest of the script is accessed via HTTPS */
@@ -97,6 +108,8 @@
 		case 'login': login();
 			break;
 		case 'signup':
+			break;
+		case 'logout': logout();
 			break;
 		default: http_response_code(400);
 	}
