@@ -77,22 +77,45 @@ function validate_signup(){
 }
 
 /* Validates the login form */
-function validate_login(){
+function validate_login(ev){
 	var email = document.forms["login_form"]["email"].value;
 	var pass = document.forms["login_form"]["passwd"].value;
 	var email_format = /^[a-zA-Z0-9]+[a-zA-Z0-9_]*@.+\..+$/;
 
+	//Performs input validation
 	if(email.length==0 || pass.length==0){
-		alert("Please fill out all required fields.");
+		document.getElementById('error').innerHTML='Please fill out all required fields';
 		return false;
 	}
 
 	if(!email.match(email_format)){
-		alert("Invalid email address.");
+		document.getElementById('error').innerHTML="Invalid email address.";
 		return false;
 	}
 
-	return true;
+	//Prevent form from submitting by default
+	ev.preventDefault();
+	//alert('Hello');
+	//return false;
+
+	//Sending request to server to check login credentials
+	var data = {};
+	var form = document.forms[0];
+	data.email = form[0].value;
+	data.password = form[1].value;
+
+	ajaxRequest = new XMLHttpRequest();
+	ajaxRequest.onreadystatechange=function(){
+		if(ajaxRequest.readyState==4 && ajaxRequest.status==200){
+			document.getElementById('error').innerHTML=ajaxRequest.responseText;
+			if(ajaxRequest.responseText=='Login successful')
+				login(JSON.stringify(data));
+		}
+	};
+	ajaxRequest.open("POST", "users/validate_login", true);
+	ajaxRequest.setRequestHeader("Content-Type", "application/json");
+	ajaxRequest.send(JSON.stringify(data));
+	return false;
 }
 
 /* Prompts user for confirmation of delete action */

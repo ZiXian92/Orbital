@@ -1,10 +1,12 @@
 <?php
 	/* Handles all user account-related requests, such as signup,
 	 * login, logout, change and forgot password.
-	 * To-Do: Touch up password reset and signup portions once emailing is
-	 * resolved.
-	 * Modify account activation to allow for manual activation by
-	 * administrator.
+	 * Incoming URLs have request URI of the form
+	 * /users/action or /users/action/params
+	 * Requests of the form /users is dealt with by redirecting to index.php
+	 * in .htaccess file.
+	 * The case of request URI being /users/ is checked after
+	 * processing the incoming request URI.
 	 */
 
 	require "model.php";
@@ -25,15 +27,80 @@
 		return preg_match($format, $passwd);
 	}
 
+	#Checks if user with the supplied credentials exists in database
+	#Request is successful only if called by POST method and JSON string
+	#containing email and password is supplied.
+	function validate_login(){
+		$req_headers = getallheaders();
+		if($_SERVER['REQUEST_METHOD']=='POST' &&
+		$req_headers['Content-Type']=='application/json'){
+			$req_params = json_decode(file_get_contents('php://input'), true);
+			$model = new Model();
+			try{
+				$email = strip_tags($req_params['email']);
+				$passwd = strip_tags($req_params['password']);
+				if($model->is_valid_user($email, $passwd))
+					echo 'Login successful';
+				else
+					echo 'Incorrect email and/or password.';
+			}
+			catch(Exception e)
+				http_response_code(400);
+		}
+		else
+			http_response_code(400);
+	}
+
+	#Checks the login credentials and logs the user in if is a valid user.
+	#If not a valid user, which should not happen since validate_login
+	#is executed before submitting form, redirects back to login page.
+	#Reject access to URI /users/login.
+	function login(){
+		if($_SERVER['REQUEST_METHOD']!='POST'){
+			header('Location: https://'.$_SERVER['HTTP_HOST'].'/404');
+			exit();
+		}
+
+		#Remove any tags to prevent XSS attacks.
+		$email = strip_tags((string)$_POST['email']);
+		$passwd = strip_tags((string)$_POST['passwd']);*/
+
+		#Sets the session variables if login is successful
+		if($model->is_valid_user($email, $passwd)){
+			$user = $model->get_user($email, $passwd);
+			$_SESSION['user_id'] = $user['ID'];
+			$_SESSION['username'] = $user['USERNAME'];
+			header('Location: https://'.$_SERVER['HTTP_HOST']);
+		}
+		else
+			header('Location: https://'.$_SERVER['HTTP_HOST'].'/login');
+	}
+
 	/* Ensure that the rest of the script is accessed via HTTPS */
-	if(empty($_SERVER['HTTPS'])){
+	/*if(empty($_SERVER['HTTPS'])){
 		header("Location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 		exit(0);
-	}
+	}*/
 
 	session_start();
 
-	$model = new Model();
+	#$model = new Model();
+
+	$arr = getallheaders();
+	$url_elements = explode('/', $_SERVER['REQUEST_URI']);
+	$action = $url_elements[2];
+	#echo $arr['Content-Type'];
+
+	switch($action){
+		case 'validate_login': validate_login();
+			break;
+		case 'login': login();
+			break;
+		case 'signup':
+			break;
+		default: http_response_code(400);
+	}
+	exit();
 
 	$req_url = 'https://api.sendgrid.com/';
 	$params = array(
@@ -43,31 +110,31 @@
 	);
 
 	/* Handles exception of users entering users.php into URL */
-	if(!isset($_GET['action'])){
+	/*if(!isset($_GET['action'])){
 		if(isset($_SESSION['user_id']))
 			$url = "https://";
 		else
 			$url = "http://";
 		$url.=$_SERVER['HTTP_HOST'];
-	}
+	}*/
 
 	/* Handles logout requests
 	 * Logout is done by erasing all the session variables and destroying
 	 * the cookie witht he session ID
 	 */
-	elseif($_GET['action']=="logout"){
+	/*elseif($_GET['action']=="logout"){
 		$_SESSION = array();
 		session_destroy();
 		setcookie('PHPSESSID', '', time()-3600, '/', '', 0, 0);
 		$url = "http://".$_SERVER['HTTP_HOST']."/loggedout";
-	}
+	}*/
 
 	/* Activates the appropriate account if the email and
 	 * activation code matches. Else, redirects to page not found
 	 */
-	elseif($_GET['action']=="activate"){
+	#elseif($_GET['action']=="activate"){
 		/* If activation script is called manually by user */
-		if(isset($_GET['x']) && isset($_GET['y'])){
+		/*if(isset($_GET['x']) && isset($_GET['y'])){
 			$email = urldecode(strip_tags($_GET['x']));
 			$code = strip_tags($_GET['y']);
 			if($model->activate($email, $code)){
@@ -76,25 +143,25 @@
 			}
 			else
 				$url = "https://".$_SERVER['HTTP_HOST']."/index.php?page=404";
-		}
+		}*/
 
 		/* If activation script is called by administrator*/
-		elseif($_SESSION['user_id']==0 && isset($_GET['id'])){
+		/*elseif($_SESSION['user_id']==0 && isset($_GET['id'])){
 			$id = (int)strip_tags((string)$_GET['id']);
 			$model->admin_activate($id);
 			$url = "https://".$_SERVER['HTTP_HOST'];
 		}
 		else
 			$url = "http://".$_SERVER['HTTP_HOST']."/index.php?page=404";
-	}
+	}*/
 
 	/* Handles password reset requests */
-	elseif($_GET['action']=="reset_passwd"){
+	#elseif($_GET['action']=="reset_passwd"){
 		/* Initialise $name and $email, whether the information
 		 * is submitted by user through form or directly by
 		 * admin's link
 		 */
-		if($_SERVER['REQUEST_METHOD']=="POST"){
+		/*if($_SERVER['REQUEST_METHOD']=="POST"){
 			$name = strip_tags($_POST['name']);
 			$email = strip_tags($_POST['email']);
 		}
@@ -102,22 +169,22 @@
 			$name = strip_tags($_GET['name']);
 			$email = strip_tags(urldecode($_GET['email']));
 		}
-		/* Prevent any prankster attempt */
+		# Prevent any prankster attempt
 		else{
 			header("Location: https://".$_SERVER['HTTP_HOST']);
 			exit(0);
-		}
+		}*/
 
 		/* Attempts to reset the password given the name and email
 		 * and retrieves the new password on successful attempt
 		 */
-		$passwd = $model->reset_password($name, $email);
+		/*$passwd = $model->reset_password($name, $email);
 		if($passwd){
 			# For non-admin users
 			if(!isset($_SESSION['user_id']))
 				file_put_contents("message.txt", "Password successfully reset. Please check your email for your new password. Please change your password upon logging in. If you do not receive any email, please contact the site administrator regarding your password.");
 
-			/* Sets the POSTFIELDS for sending email */
+			#Sets the POSTFIELDS for sending email
 			$params['to'] = $email;
 			$params['subject'] = 'Password Reset';
 			$params['text'] = 'Your password has been reset. Your new password is '.$passwd.'. Please change your password upon logging in.';
@@ -140,7 +207,7 @@
 
 			#Sends the email
 			curl_exec($session);
-			curl_close($session);*/
+			curl_close($session);
 		}
 		else
 			file_put_contents("message.txt", "Your request could not be processed. Either the Username or Email is incorrect or your account is not activated.");
@@ -152,7 +219,7 @@
 			$url = "https://".$_SERVER['HTTP_HOST'];
 	}
 
-	/* Subsequent blocks should only be executed if the method is POST */
+	#Subsequent blocks should only be executed if the method is POST
 	elseif($_SERVER['REQUEST_METHOD']!="POST"){
 		if(isset($_SESSION['user_id']))
 			$url = "https://";
@@ -161,34 +228,34 @@
 		$url.=$_SERVER['HTTP_HOST'];
 	}
 
-	/* Executes request to sign up as new user */
+	#Executes request to sign up as new user
 	elseif($_GET['action']=="signup"){
 		$name = strip_tags((string)$_POST['name']);
 		$email = strip_tags((string)$_POST['email']);
 		$passwd = strip_tags((string)$_POST['passwd']);
 		$passwd2 = strip_tags((string)$_POST['re-passwd']);
 
-		/* Checks if $name is still valid after removing tags */
+		#Checks if $name is still valid after removing tags
 		if(strlen($name)==0){
 			file_put_contents("message.txt", "Invalid username.");
 			$url = "https://".$_SERVER['HTTP_HOST']."/signup";
 		}
 
-		/* Checks if the username is already taken */
+		#Checks if the username is already taken
 		elseif($model->contains_username($name)){
 			file_put_contents("message.txt", "This username is already taken.");
 			$url = "https://".$_SERVER['HTTP_HOST']."/signup";
-		}
+		}*/
 
 		/* If email is not currently used by another user,
 		 * add the user to database.
 		 */
-		elseif(!is_valid_email($email) || $model->contains_email($email)){
+		/*elseif(!is_valid_email($email) || $model->contains_email($email)){
 			file_put_contents("message.txt", "Invalid email or email is used by another user.");
 			$url = "https://".$_SERVER['HTTP_HOST']."/signup";
 		}
 
-		/* Validates password */
+		#Validates password
 		elseif(!is_valid_passwd($passwd) || !($passwd===$passwd2)){
 			file_put_contents("message.txt", "Invalid password or the 2 passwords do not match.<br/>Password should contain only 10 alphanumeric characters.");
 			$url = "https://".$_SERVER['HTTP_HOST']."/signup";
@@ -228,16 +295,16 @@
 		}
 	}
 
-	/* Handles login requests */
+	#Handles login requests
 	elseif($_GET['action']=="login"){
 		$email = strip_tags((string)$_POST['email']);
-		$passwd = strip_tags((string)$_POST['passwd']);
+		$passwd = strip_tags((string)$_POST['passwd']);*/
 
 		/* If login credentials are correct, start a new session.
 		 * Sets the user's ID and username as session variables.
 		 * Else, returns the user to the login page.
 		 */
-		if($model->is_valid_user($email, $passwd)){
+		/*if($model->is_valid_user($email, $passwd)){
 			$user = $model->get_user($email, $passwd);
 			$_SESSION['user_id'] = $user['ID'];
 			$_SESSION['username'] = $user['USERNAME'];
@@ -247,12 +314,12 @@
 			#file_put_contents("message.txt", "Incorrect email or password or account is not activated.");
 			$url = "https://".$_SERVER['HTTP_HOST']."/login";
 		}
-	}
+	}*/
 
 	/* Handles password change request.
 	 * Code is executed only if the user is logged in.
 	 */
-	elseif($_GET['action']=="changepasswd"){
+	/*elseif($_GET['action']=="changepasswd"){
 		$old_passwd = strip_tags((string)$_POST['old_passwd']);
 		$new_passwd = strip_tags((string)$_POST['new_passwd']);
 		$new_passwd2 = strip_tags((string)$_POST['re-new_passwd']);
@@ -272,10 +339,10 @@
 			$url = "https://".$_SERVER['HTTP_HOST']."/change_passwd";
 		}
 		else
-			$url = "http://".$_SERVER['HTTP_HOST'];*/
+			$url = "http://".$_SERVER['HTTP_HOST'];
 	}
 
-	/* Destroys the session if user is not logged in */
+	Destroys the session if user is not logged in
 	if(!isset($_SESSION['user_id'])){
 		$_SESSION = array();
 		#session_destroy();
@@ -284,5 +351,5 @@
 
 	unset($_GET['action']);
 	header("Location: ".$url);
-	exit(0);
+	exit(0);*/
 ?>
