@@ -282,7 +282,21 @@
 	function changepassword(){
 		$req_headers = getallheaders();
 		if($_SERVER['REQUEST_METHOD']=='POST' && $req_headers['Content-Type']=='application/json; charset=UTF-8'){
-
+			$req_params = json_decode(file_get_contents('php://input'), true);
+			try{
+				$oldpass = strip_tags($req_params['oldpass']);
+				$newpass = strip_tags($req_params['newpass']);
+				$model = new Model();
+				if($model->get_password_by_id($_SESSION['user_id'])==SHA1($oldpass)){
+					$model->set_new_password($_SESSION['user_id'], $newpass);
+					echo 'Success';
+				}
+				else
+					echo 'Current password is incorrect';
+			}
+			catch(Exception $e){
+				http_response_code(400);
+			}
 		}
 		elseif($_SERVER['REQUEST_METHOD']=='POST')
 			http_response_code(400);
