@@ -70,7 +70,7 @@ function checkPassword(passwd){
 
 //Checks if the 2nd password matches the first
 function confirmPassword(passwd2){
-	var pass = document.forms['signup']['passwd'].value;
+	var pass = document.forms[0].passwd.value;
 	if(pass==passwd2)
 		document.getElementById('confirmPassword').innerHTML = 'Ok';
 	else
@@ -220,6 +220,10 @@ function admin_reset_password(ev, name, email){
 	ajaxRequest.setRequestHeader("Content-Type", "application/json");
 	ajaxRequest.send(JSON.stringify(data));
 }
+
+//function change_password(ev){
+//	ev.preventDefault();
+//}
 
 /* Prompts user for confirmation of delete action */
 function confirm_delete(){
