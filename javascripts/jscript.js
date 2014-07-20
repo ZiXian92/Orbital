@@ -93,28 +93,16 @@ function validate_file(){
 
 /* Validates signup form submission */
 function validate_signup(){
-	var name = document.forms["signup"]["name"].value;
-	var email = document.forms["signup"]['email'].value;
-	var pass1 = document.forms["signup"]["passwd"].value;
-	var pass2 = document.forms["signup"]["re-passwd"].value;
-	var email_format = /^[a-zA-Z0-9]+[a-zA-Z0-9_]*@[a-z\.]+\.[a-z]+$/;
+	var nameCheck = document.getElementById('checkName').value;
+	var emailCheck = document.getElementById('checkEmail').value;
+	var passCheck = document.getElementById('checkPassword').value;
+	var pass2Check = document.getElementById('confirmPassword').value;
 
-	if(name.length==0 || email.length==0 ||
-		pass1.length==0 || pass2.length==0){
-		alert("Please fill out all required fields.");
+	if(nameCheck!='Ok' || emailCheck!='Ok' || passCheck!='Ok' ||
+	pass2Check!='Ok'){
+		document.getElementById('error').innerHTML = 'Please make sure all fields are valid';
 		return false;
 	}
-
-	if(!email.match(email_format)){
-		alert("Invalid email address.");
-		return false;
-	}
-
-	if(pass1!==pass2){
-		alert("Please make sure the 2 password fields are the same.");
-		return false;
-	}
-
 	return true;
 }
 
