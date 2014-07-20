@@ -100,9 +100,9 @@
 			$email = strip_tags($req_params['email']);
 			$model = new Model();
 			if($model->contains_email($email))
-				echo 'Ok';
-			else
 				echo 'This email address is already used by another user.';
+			else
+				echo 'Ok';
 		}
 		else
 			http_response_code(400);

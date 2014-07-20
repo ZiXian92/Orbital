@@ -6,10 +6,7 @@
 
 var ajaxRequest;
 
-function setCheckName(str){
-	document.getElementById("checkName").innerHTML = str;
-}
-
+//Checks the database to see if the username is available for use
 function checkName(name){
 	if(name.length==0){
 		document.getElementById('checkName').innerHTML = 'Please enter a username';
@@ -25,6 +22,32 @@ function checkName(name){
 			document.getElementById("checkName").innerHTML = ajaxRequest.responseText;
 		}
 	}
+	ajaxRequest.send(JSON.stringify(data));
+}
+
+//Checks if the given email addressis valid
+function is_valid_email(email){
+	var email_format = /^[a-zA-Z0-9]+[a-zA-Z0-9_]*@[a-z\.]+\.[a-z]+$/;
+	return email.match(email_format);
+}
+
+//Checks the database to see if the email address is used by another user.
+//Valid email address is sent to the server for checking against database.
+function checkEmail(email){
+	if(!is_valid_email(email)){
+		document.getElementById('checkEmail').innerHTML = 'Invalid email address';
+		return;
+	}
+
+	var data = {};
+	data.email = email;
+	ajaxRequest = new XMLHttpRequest();
+	ajaxRequest.onreadystatechange = function(){
+		if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
+			document.getElementById('checkEmail').innerHTML = ajaxRequest.responseText;
+	};
+	ajaxRequest.open('POST', 'users/checkEmail', true);
+	ajaxRequest.setRequestHeader('Content-Type', 'application/json');
 	ajaxRequest.send(JSON.stringify(data));
 }
 
@@ -56,7 +79,7 @@ function validate_signup(){
 	var email = document.forms["signup"]['email'].value;
 	var pass1 = document.forms["signup"]["passwd"].value;
 	var pass2 = document.forms["signup"]["re-passwd"].value;
-	var email_format = /^[a-zA-Z0-9]+[a-zA-Z0-9_]*@[a-z\.]+\.com$/;
+	var email_format = /^[a-zA-Z0-9]+[a-zA-Z0-9_]*@[a-z\.]+\.[a-z]+$/;
 
 	if(name.length==0 || email.length==0 ||
 		pass1.length==0 || pass2.length==0){

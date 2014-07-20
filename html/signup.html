@@ -7,8 +7,8 @@ onsubmit="return validate_signup();">
 	</label><span id="checkName"></span><br/>
 
 	<label>Email:
-	<input type="text" name="email" size="30">*required
-	</label><br/>
+	<input type="text" name="email" size="30" onkeyup="checkEmail(this.value);">*required
+	</label><span id="checkEmail"></span><br/>
 
 	<label>Password:
 	<input type="password" name="passwd" size="10" maxlength="10">*required(Strictly 10 alphanumberic characters)
