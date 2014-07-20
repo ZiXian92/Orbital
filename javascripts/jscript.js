@@ -51,6 +51,24 @@ function checkEmail(email){
 	ajaxRequest.send(JSON.stringify(data));
 }
 
+//Checks if the given password is valid
+function checkPassword(passwd){
+	var pass_format = /^[a-zA-Z0-9]+$/;
+	if(passwd.match(pass_format))
+		document.getElementById('checkPassword').innerHTML = 'Ok';
+	else
+		document.getElementById('checkPassword').innerHTML = 'Invalid password';
+}
+
+//Checks if the 2nd password matches the first
+function confirmPassword(passwd2){
+	var pass = document.forms['signup']['passwd'].value;
+	if(pass==passwd2)
+		document.getElementById('confirmPassword').innerHTML = 'Ok';
+	else
+		document.getElementById('confirmPassword').innerHTML = 'The passwords do not match';
+}
+
 //Returns true if ALL fields are not empty and false otherwise
 function validate(){
 	var filename = document.forms["new_entry"]["img"].value;
