@@ -278,6 +278,18 @@
 			header('Location: https://'.$_SERVER['HTTP_HOST'].'/404');
 	}
 
+	#Changes a user's password
+	function changepassword(){
+		$req_headers = getallheaders();
+		if($_SERVER['REQUEST_METHOD']=='POST' && $req_headers['Content-Type']=='application/json; charset=UTF-8'){
+
+		}
+		elseif($_SERVER['REQUEST_METHOD']=='POST')
+			http_response_code(400);
+		else
+			header('Location: https://'.$_SERVER['HTTP_HOST'].'/404');
+	}
+
 	/* Ensure that the rest of the script is accessed via HTTPS */
 	/*if(empty($_SERVER['HTTPS'])){
 		header("Location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
