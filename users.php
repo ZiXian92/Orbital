@@ -272,6 +272,8 @@
 				http_response_code(400);
 			}
 		}
+		elseif($_SERVER['REQUEST_METHOD']=='POST')
+			http_response_code(400);
 		else
 			header('Location: https://'.$_SERVER['HTTP_HOST'].'/404');
 	}
