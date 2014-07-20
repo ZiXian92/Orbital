@@ -73,6 +73,41 @@
 		header('Location: http://'.$_SERVER['HTTP_HOST'].'/loggedout');
 	}
 
+	#Checks if the given username is already taken.
+	#Only accessible by POST method and parameters must be sent in
+	#JSON format.
+	function checkUsername(){
+		$req_headers = getallheaders();
+		if($_SERVER['REQUEST_MTHOD']='POST' && $req_headers['Content-Type']=='application/json; charset=UTF-8'){
+			$req_params = json_decode(file_get_contents('php://input'), true);
+			$name = strip_tags($req_params['name']);
+			$model = new Model();
+			if($model->contains_username($name))
+				echo 'This username is already taken.';
+			else
+				echo 'Ok';
+		}
+		else
+			http_response_code(400);
+	}
+
+	#Checks if the given email is taken by another user.
+	#Only accessible by POST request using JSON format.
+	function checkEmail(){
+		$req_headers = getallheaders();
+		if($_SERVER['REQUEST_METHOD']=='POST' && $req_headers['Content-Type']=='application/json; charset=UTF-8'){
+			$req_params = json_decode(file_get_contents('php://input'), true);
+			$email = strip_tags($req_params['email']);
+			$model = new Model();
+			if($model->contains_email($email))
+				echo 'Ok';
+			else
+				echo 'This email address is already used by another user.';
+		}
+		else
+			http_response_code(400);
+	}
+
 	/* Ensure that the rest of the script is accessed via HTTPS */
 	/*if(empty($_SERVER['HTTPS'])){
 		header("Location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
@@ -90,6 +125,10 @@
 		case 'validate_login': validate_login();
 			break;
 		case 'login': login();
+			break;
+		case 'checkName': checkUsername();
+			break;
+		case 'checkEmail': checkEmail();
 			break;
 		case 'signup':
 			break;
