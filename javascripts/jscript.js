@@ -221,9 +221,37 @@ function admin_reset_password(ev, name, email){
 	ajaxRequest.send(JSON.stringify(data));
 }
 
-//function change_password(ev){
-//	ev.preventDefault();
-//}
+//Sends password change request to server
+function change_password(ev){
+	ev.preventDefault();
+	var oldpass = document.forms[0].oldpasswd.value;
+	var newpass = document.forms[0].passwd.value;
+	var checkPass = document.getElementById('checkPassword').innerHTML;
+	var checkPass2 = document.getElementById('confirmPassword').innerHTML;
+
+	if(oldpass.length==0){
+		document.getElementById('error').innerHTML = 'Please enter your current password';
+		return false;
+	}
+
+	if(checkPass!='Ok' || checkPass2!='Ok'){
+		document.getElementById('error').innerHTML = 'Please make sure the 2 new passwords match';
+		return false;
+	}
+
+	var data = {};
+	data.oldpass = oldpass;
+	data.newpass = newpass;
+
+	ajaxRequest = new XMLHttpRequest();
+	ajaxRequest.onreadystatechange=function(){
+		if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
+			document.getElementById('error').innerHTML = ajaxRequest.responseText;
+	};
+	ajaxRequest.open('POST', 'users/changepassword', true);
+	ajaxRequest.setRequestHeader('Content-Type', 'application/json');
+	ajaxRequest.send(JSON.stringify(data));
+}
 
 /* Prompts user for confirmation of delete action */
 function confirm_delete(){

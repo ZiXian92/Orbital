@@ -332,7 +332,7 @@
 			break;
 		case 'reset_password': reset_password();
 			break;
-		case 'changepassword':
+		case 'changepassword': changepassword();
 			break;
 		case 'logout': logout();
 			break;
