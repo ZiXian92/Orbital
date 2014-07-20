@@ -34,8 +34,10 @@
 				http_response_code(400);
 			}
 		}
-		else
+		elseif($_SERVER['REQUEST_METHOD']=='POST')
 			http_response_code(400);
+		else
+			header('Location: http://'.$_SERVER['HTTP_HOST'].'/404');
 	}
 
 	#Checks the login credentials and logs the user in if is a valid user.
