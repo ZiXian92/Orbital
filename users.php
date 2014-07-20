@@ -80,12 +80,17 @@
 		$req_headers = getallheaders();
 		if($_SERVER['REQUEST_MTHOD']='POST' && $req_headers['Content-Type']=='application/json; charset=UTF-8'){
 			$req_params = json_decode(file_get_contents('php://input'), true);
-			$name = strip_tags($req_params['name']);
-			$model = new Model();
-			if($model->contains_username($name))
-				echo 'This username is already taken.';
-			else
-				echo 'Ok';
+			try{
+				$name = strip_tags($req_params['name']);
+				$model = new Model();
+				if($model->contains_username($name))
+					echo 'This username is already taken.';
+				else
+					echo 'Ok';
+			}
+			catch(Exception $e){
+				http_response_code(400);
+			}
 		}
 		else
 			http_response_code(400);
@@ -97,15 +102,172 @@
 		$req_headers = getallheaders();
 		if($_SERVER['REQUEST_METHOD']=='POST' && $req_headers['Content-Type']=='application/json; charset=UTF-8'){
 			$req_params = json_decode(file_get_contents('php://input'), true);
-			$email = strip_tags($req_params['email']);
-			$model = new Model();
-			if($model->contains_email($email))
-				echo 'This email address is already used by another user.';
-			else
-				echo 'Ok';
+			try{
+				$email = strip_tags($req_params['email']);
+				$model = new Model();
+				if($model->contains_email($email))
+					echo 'This email address is already used by another user.';
+				else
+					echo 'Ok';
+			}
+			catch(Exception $e){
+				http_response_code(400);
+			}
 		}
 		else
 			http_response_code(400);
+	}
+
+	#Registers a new user.
+	#Request must be a submission of form with fields name, email,
+	#passwd and re-passwd.
+	function signup(){
+		#Rejects any invalid requests
+		if($_SERVER['REQUEST_METHOD']!='POST' || !isset($_POST['name'])
+		|| !isset($_POST['email']) || !isset($_POST['passwd']) ||
+		!isset($_POST['re-passwd'])){
+			header('Location: https://'.$_SERVER['HTTP_HOST'].'/signup');
+			exit();
+		}
+
+		$name = strip_tags($_POST['name']);
+		$email = strip_tags($_POST['email']);
+		$password = strip_tags($_POST['passwd']);
+		$model = new Model();
+
+		#Prevents other sites from calling this function with
+		#the exact required form but did not check the form fields.
+		if(empty($name) || $model->contains_username($name) || 
+		empty($email) || $model->contains_email($email)){
+			header('Location: https://'.$_SERVER['HTTP_HOST'].'/signup');
+			exit();
+		}
+
+		#Prepare URL and parameters for SendGrid API call
+		$req_url = 'https://api.sendgrid.com/';
+		$params = array(
+			'api_user' => USER,
+			'api_key' => PASS,
+			'from' => 'donotreply@localhost.com'
+		);
+
+		#Generate activation code
+		$code = md5(uniqid(rand(), true));
+		$model->add_user($model->get_user_id(), $name, $password, $email, $code);
+		header("Location: https://".$_SERVER['HTTP_HOST']."/signedup");
+
+		#Forms the activation link
+		$activate_code = 'https://'.$_SERVER['HTTP_HOST']."/users/activate/".urlencode($email)."/".$code;
+
+		#Sets the remaining parameters for sending email
+		$params['to'] = $email;
+		$params['subject'] = 'Account Activation';
+		$params['html'] = '<p>Thank you for signing up wth Relive That Moment. Click <a href="'.$activate_code.'">here</a> to activate your account.</p>';
+
+		#Forms the mail request URL
+		$request = $req_url."api/mail.send.json";
+
+		#Initialise the request
+		$session = curl_init($request);
+
+		#Use POST method to API
+		curl_setopt($session, CURLOPT_POST, true);
+
+		#Supplies the POST parameters
+		curl_setopt($session, CURLOPT_POSTFIELDS, $params);
+
+		#Do not return header but return response
+		curl_setopt($session, CURLOPT_HEADER, false);
+		curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+
+		#Sends the email
+		curl_exec($session);
+	}
+
+	#Activates a user account
+	function activate(){
+		#Handles activation via URL
+		$url_elements = explode('/', $_SERVER['REQUEST_URI']);
+		$model = new Model();
+		if(count($url_elements)==5){
+			$email = strip_tags(urldecode($url_elements[3]));
+			$code = strip_tags($url_elements[4]);
+			if($model->activate($email, $code))
+				header('Location: https://'.$_SERVER['HTTP_HOST'].'/login');
+			else
+				header('Location: https://'.$_SERVER['HTTP_HOST'].'/404');
+		}
+		#Handles activation by admin
+		elseif($_SERVER['REQUEST_METHOD']=='POST' &&
+		$_SESSION['user_id']==0 && count($url_elements)==4){
+			$id = strip_tags($url_elements[3]);
+			if(!$model->admin_activate($id))
+				http_response_code(400);
+			
+		}
+		else
+			header('Location: https://'.$_SERVER['HTTP_HOST'].'/404');
+	}
+
+	#Resets the user's password.
+	#Should only be accessed via POST request in JSON format with keys name
+	#and email specified.
+	function reset_password(){
+		$req_headers = getallheaders();
+		if($_SERVER['REQUEST_METHOD']=='POST' &&
+		$req_headers['Content-Type']=='application/json; charset=UTF-8'){
+			$req_params = json_decode(file_get_contents('php://input'), true);
+			try{
+				$name = strip_tags($req_params['name']);
+				$email = strip_tags($req_params['email']);
+				$model = new Model();
+				$passwd = $model->reset_password($name, $email);
+
+				#Checks if password reset succeeded
+				if(!$passwd){
+					echo 'Your request could not be processed';
+					exit();
+				}
+
+			#Prepares URL and parameters for SendGrid API call
+				$req_url = 'https://api.sendgrid.com/';
+				$params = array(
+					'api_user' => USER,
+					'api_key' => PASS,
+					'from' => 'donotreply@localhost.com'
+				);
+
+				#Sets the POSTFIELDS for sending email
+				$params['to'] = $email;
+				$params['subject'] = 'Password Reset';
+				$params['text'] = 'Your password has been reset. Your new password is '.$passwd.'. Please change your password upon logging in.';
+				# Forms the mail request URL
+				$request = $req_url."api/mail.send.json";
+
+				# Initialise the request
+				$session = curl_init($request);
+
+				# Use POST method to API
+				curl_setopt($session, CURLOPT_POST, true);
+
+				# Supplies the POST parameters
+				curl_setopt($session, CURLOPT_POSTFIELDS, $params);
+
+				# Do not return header but return response
+				curl_setopt($session, CURLOPT_HEADER, false);
+				curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+
+				#Sends the email
+				curl_exec($session);
+				curl_close($session);
+				echo 'Password successfully reset. Please check email for new password.';
+			}
+			catch(Exception $e){
+				http_response_code(400);
+			}
+		}
+		else
+			header('Location: https://'.$_SERVER['HTTP_HOST'].'/404');
 	}
 
 	/* Ensure that the rest of the script is accessed via HTTPS */
@@ -130,7 +292,13 @@
 			break;
 		case 'checkEmail': checkEmail();
 			break;
-		case 'signup':
+		case 'signup': signup();
+			break;
+		case 'activate': activate();
+			break;
+		case 'reset_password': reset_password();
+			break;
+		case 'changepassword':
 			break;
 		case 'logout': logout();
 			break;

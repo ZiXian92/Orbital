@@ -272,13 +272,13 @@
 				$list.="<tr><td>".$id."</td>
 					<td>".$name."</td>
 					<td>".$email."</td>
-					<td><a href=\"admin.php?action=view&id=".(string)$id."\">View</a></td>";
+					<td><a href=\"admin/view/".(string)$id."\">View</a></td>";
 					if($activated)
 						$list.="<td>Activated</td>";
 					else
-						$list.="<td><a href=\"users.php?action=activate&id=".$id."\">Activate</a></td>";
-					$list.="<td><a href=\"users.php?action=reset_passwd&name=".$name."&email=".urlencode($email)."\">Reset Password</a></td>
-					<td><a href=\"admin.php?action=delete&id=".(string)$id."\" onclick=\"return confirm_delete();\">Delete</a></td></tr>";
+						$list.="<td id=\"active_".$id."\"><a href=\"users/activate/".$id."\" onclick=\"activate(event, ".$id.");\">Activate</a></td>";
+					$list.="<td><a href=\"users/reset_password/".$name."/".urlencode($email)."\" onclick=\"admin_reset_password(event, '".$name."', '".$email."');\">Reset Password</a></td>
+					<td><a href=\"admin/delete/".(string)$id."\" onclick=\"return confirm_delete();\">Delete</a></td></tr>";
 
 		/* Every 10th user is the last of the group of 10 */
 				if($counter%10==0)
@@ -351,7 +351,12 @@
 			$stmt = mysqli_prepare($this->sql_con, $q);
 			mysqli_stmt_bind_param($stmt, "i", $id);
 			mysqli_stmt_execute($stmt);
+			if(mysqli_stmt_affected_rows($stmt)==1){
+				mysqli_stmt_close($stmt);
+				return true;
+			}
 			mysqli_stmt_close($stmt);
+			return false;
 		}
 
 		/* User Login Functions */

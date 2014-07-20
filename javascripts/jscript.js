@@ -31,6 +31,14 @@ function is_valid_email(email){
 	return email.match(email_format);
 }
 
+//Displays the message indicating validity of email in password reset page
+function validate_email(email){
+	if(is_valid_email(email))
+		document.getElementById('checkEmail').innerHTML = 'Ok';
+	else
+		document.getElementById('checkEmail').innerHTML = 'Invalid email address';
+}
+
 //Checks the database to see if the email address is used by another user.
 //Valid email address is sent to the server for checking against database.
 function checkEmail(email){
@@ -93,10 +101,10 @@ function validate_file(){
 
 /* Validates signup form submission */
 function validate_signup(){
-	var nameCheck = document.getElementById('checkName').value;
-	var emailCheck = document.getElementById('checkEmail').value;
-	var passCheck = document.getElementById('checkPassword').value;
-	var pass2Check = document.getElementById('confirmPassword').value;
+	var nameCheck = document.getElementById('checkName').innerHTML;
+	var emailCheck = document.getElementById('checkEmail').innerHTML;
+	var passCheck = document.getElementById('checkPassword').innerHTML;
+	var pass2Check = document.getElementById('confirmPassword').innerHTML;
 
 	if(nameCheck!='Ok' || emailCheck!='Ok' || passCheck!='Ok' ||
 	pass2Check!='Ok'){
@@ -110,7 +118,6 @@ function validate_signup(){
 function validate_login(ev){
 	var email = document.forms["login_form"]["email"].value;
 	var pass = document.forms["login_form"]["passwd"].value;
-	var email_format = /^[a-zA-Z0-9]+[a-zA-Z0-9_]*@.+\..+$/;
 
 	//Performs input validation
 	if(email.length==0 || pass.length==0){
@@ -118,7 +125,7 @@ function validate_login(ev){
 		return false;
 	}
 
-	if(!email.match(email_format)){
+	if(!is_valid_email(email)){
 		document.getElementById('error').innerHTML="Invalid email address.";
 		return false;
 	}
@@ -147,6 +154,69 @@ function validate_login(ev){
 		}
 	};
 	ajaxRequest.open("POST", "users/validate_login", true);
+	ajaxRequest.setRequestHeader("Content-Type", "application/json");
+	ajaxRequest.send(JSON.stringify(data));
+}
+
+//Activates the user account identified by id.
+//Only available to admin user.
+function activate(ev, id){
+	ev.preventDefault();
+	ajaxRequest = new XMLHttpRequest();
+	ajaxRequest.onreadystatechange=function(){
+		if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
+			document.getElementById('active_'+id).innerHTML = 'Activated';
+	};
+	ajaxRequest.open("POST", "users/activate/"+id, true);
+	ajaxRequest.send();
+}
+
+//Sends a request to reset password
+function reset_passwd(ev){
+	var name = document.forms['reset_password']['name'].value;
+	var email = document.forms['reset_password']['email'].value;
+	var checkEmail = document.getElementById('checkEmail').innerHTML;
+
+	if(name.length==0){
+		document.getElementById('error').innerHTML = 'Please enter a username';
+		return false;
+	}
+
+	if(checkEmail!='Ok'){
+		document.getElementById('error').innerHTML = 'Please use a valid email address';
+		return false;
+	}
+
+	ev.preventDefault();
+
+	//Prepares form data to be sent in JSON format
+	var data = {};
+	data.name = name;
+	data.email = email;
+
+	ajaxRequest = new XMLHttpRequest();
+	ajaxRequest.onreadystatechange = function(){
+		if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
+			document.getElementById('error').innerHTML = ajaxRequest.responseText;
+	};
+	ajaxRequest.open("POST", "users/reset_password", true);
+	ajaxRequest.setRequestHeader("Content-Type", "application/json");
+	ajaxRequest.send(JSON.stringify(data));
+}
+
+//Sends a request to server to reset password for the selected user
+//Can only be executed by admin user.
+function admin_reset_password(ev, name, email){
+	ev.preventDefault();
+	var data = {};
+	data.name = name;
+	data.email = email;
+	ajaxRequest = new XMLHttpRequest();
+	ajaxRequest.onreadystatechange=function(){
+		if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
+			document.getElementById('message').innerHTML = ajaxRequest.responseText;
+	};
+	ajaxRequest.open("POST", "users/reset_password", true);
 	ajaxRequest.setRequestHeader("Content-Type", "application/json");
 	ajaxRequest.send(JSON.stringify(data));
 }
