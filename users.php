@@ -80,9 +80,9 @@
 	#JSON format.
 	function checkUsername(){
 		#$req_headers = getallheaders();
-		if($_SERVER['REQUEST_METHOD']='POST' && $_SERVER['CONTENT-TYPE']=='application/json; charset=UTF-8'){
-			$req_params = json_decode(file_get_contents('php://input'), true);
-			try{
+		try{
+			if($_SERVER['REQUEST_METHOD']='POST' && $_SERVER['CONTENT_TYPE']=='application/json; charset=UTF-8'){
+				$req_params = json_decode(file_get_contents('php://input'), true);
 				$name = strip_tags($req_params['name']);
 				$model = new Model();
 				if($model->contains_username($name))
@@ -90,14 +90,14 @@
 				else
 					echo 'Ok';
 			}
-			catch(Exception $e){
+			elseif($_SERVER['REQUEST_METHOD']=='POST')
 				http_response_code(400);
-			}
+			else
+				header('Location: https://'.$_SERVER['HTTP_HOST'].'/404');
 		}
-		elseif($_SERVER['REQUEST_METHOD']=='POST')
+		catch(Exception $e){
 			http_response_code(400);
-		else
-			header('Location: https://'.$_SERVER['HTTP_HOST'].'/404');
+		}
 	}
 
 	#Checks if the given email is taken by another user.
