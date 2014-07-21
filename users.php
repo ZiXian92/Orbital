@@ -79,7 +79,7 @@
 	#Only accessible by POST method and parameters must be sent in
 	#JSON format.
 	function checkUsername(){
-		$req_headers = http_get_request_headers();
+		$req_headers = apache_request_headers();
 		echo $req_headers['Content-Type'];
 		return;
 		if($_SERVER['REQUEST_METHOD']='POST' && $req_headers['Content-Type']=='application/json; charset=UTF-8'){
