@@ -472,8 +472,8 @@
 					$list.="<span class=\"section\" id=\"".(string)(floor($counter/10)+1)."\">";
 				$list.="<tr><td>".$date."</td>
 					<td>".$title."</td>
-					<td><a href=\"entries_handler.php?action=view&id=".$e_id."\">View</a>
-					<a href=\"entries_handler.php?action=delete&id=".$e_id."\" onclick=\"return confirm_delete();\">Delete</a></td></tr>";
+					<td><a href=\"/entries_handler/view/".$e_id."\">View</a>
+					<a href=\"/entries_handler/delete/".$e_id."\" onclick=\"return delete_entry(event, ".$e_id.");\">Delete</a></td></tr>";
 				if($counter%10==0)
 					$list.="</span>";
 			}

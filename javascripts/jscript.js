@@ -271,7 +271,7 @@ function change_password(ev){
 			if(ajaxRequest.responseText=='Success')
 				document.forms[0].reset();
 	};
-	ajaxRequest.open('POST', 'users/changepassword', true);
+	ajaxRequest.open('POST', '/users/changepassword', true);
 	ajaxRequest.setRequestHeader('Content-Type', 'application/json');
 	ajaxRequest.send(JSON.stringify(data));
 }
@@ -290,7 +290,21 @@ function delete_user(ev, id){
 			if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
 				document.getElementById('content').innerHTML = ajaxRequest.responseText;
 		};
-		ajaxRequest.open('POST', 'admin/delete/'+id, true);
+		ajaxRequest.open('POST', '/admin/delete/'+id, true);
+		ajaxRequest.send();
+	}
+}
+
+//Sends request to server to delete entry identified by id
+function delete_entry(ev, id){
+	ev.preventDefault();
+	if(confirm_delete()){
+		ajaxRequest = new XMLHttpRequest();
+		ajaxRequest.onreadystatechange=function(){
+			if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
+				window.location.reload(true);
+		};
+		ajaxRequest.open('POST', '/entries_handler/delete/'+id, true);
 		ajaxRequest.send();
 	}
 }
