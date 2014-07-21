@@ -18,6 +18,7 @@
 	#containing email and password is supplied.
 	function validate_login(){
 		echo $_SERVER['CONTENT_TYPE'];
+		return;
 		#$req_headers = getallheaders();
 		try{
 			if($_SERVER['REQUEST_METHOD']=='POST' &&
