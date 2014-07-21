@@ -17,12 +17,10 @@
 	#Request is successful only if called by POST method and JSON string
 	#containing email and password is supplied.
 	function validate_login(){
-		echo $_SERVER['CONTENT_TYPE'];
-		return;
 		#$req_headers = getallheaders();
 		try{
 			if($_SERVER['REQUEST_METHOD']=='POST' &&
-			$_SERVER['CONTENT_TYPE']=='application/json'){
+			$_SERVER['CONTENT_TYPE']=='application/json; charset=UTF-8'){
 				$req_params = json_decode(file_get_contents('php://input'), true);
 				$model = new Model();
 				$email = strip_tags($req_params['email']);
@@ -81,10 +79,8 @@
 	#Only accessible by POST method and parameters must be sent in
 	#JSON format.
 	function checkUsername(){
-		$req_headers = getallheaders();
-		echo $req_headers['Content-Type'];
-		return;
-		if($_SERVER['REQUEST_METHOD']='POST' && $req_headers['Content-Type']=='application/json; charset=UTF-8'){
+		#$req_headers = getallheaders();
+		if($_SERVER['REQUEST_METHOD']='POST' && $_SERVER['CONTENT-TYPE']=='application/json; charset=UTF-8'){
 			$req_params = json_decode(file_get_contents('php://input'), true);
 			try{
 				$name = strip_tags($req_params['name']);
