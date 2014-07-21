@@ -59,8 +59,8 @@
 		#Sets the session variables if login is successful
 		if($model->is_valid_user($email, $passwd)){
 			$user = $model->get_user($email, $passwd);
-			$_SESSION['user_id'] = $user['ID'];
-			$_SESSION['username'] = $user['USERNAME'];
+			$_SESSION['user_id'] = $user['id'];
+			$_SESSION['username'] = $user['username'];
 			header('Location: https://'.$_SERVER['HTTP_HOST']);
 		}
 		else
@@ -103,10 +103,10 @@
 	#Checks if the given email is taken by another user.
 	#Only accessible by POST request using JSON format.
 	function checkEmail(){
-		$req_headers = getallheaders();
-		if($_SERVER['REQUEST_METHOD']=='POST' && $req_headers['Content-Type']=='application/json; charset=UTF-8'){
-			$req_params = json_decode(file_get_contents('php://input'), true);
-			try{
+		#$req_headers = getallheaders();
+		try{
+			if($_SERVER['REQUEST_METHOD']=='POST' && $_SERVER['CONTENT_TYPE']=='application/json; charset=UTF-8'){
+				$req_params = json_decode(file_get_contents('php://input'), true);
 				$email = strip_tags($req_params['email']);
 				$model = new Model();
 				if($model->contains_email($email))
@@ -114,14 +114,14 @@
 				else
 					echo 'Ok';
 			}
-			catch(Exception $e){
+			elseif($_SERVER['REQUEST_METHOD']=='POST')
 				http_response_code(400);
-			}
+			else
+				header('Location: https://'.$_SERVER['HTTP_HOST'].'/404');
 		}
-		elseif($_SERVER['REQUEST_METHOD']=='POST')
+		catch(Exception $e){
 			http_response_code(400);
-		else
-			header('Location: https://'.$_SERVER['HTTP_HOST'].'/404');
+		}
 	}
 
 	#Registers a new user.
@@ -219,11 +219,11 @@
 	#Should only be accessed via POST request in JSON format with keys name
 	#and email specified.
 	function reset_password(){
-		$req_headers = getallheaders();
-		if($_SERVER['REQUEST_METHOD']=='POST' &&
-		$req_headers['Content-Type']=='application/json; charset=UTF-8'){
-			$req_params = json_decode(file_get_contents('php://input'), true);
-			try{
+		#$req_headers = getallheaders();
+		try{
+			if($_SERVER['REQUEST_METHOD']=='POST' &&
+			$req_headers['Content-Type']=='application/json; charset=UTF-8'){
+				$req_params = json_decode(file_get_contents('php://input'), true);
 				$name = strip_tags($req_params['name']);
 				$email = strip_tags($req_params['email']);
 				$model = new Model();
@@ -232,7 +232,7 @@
 				#Checks if password reset succeeded
 				if(!$passwd){
 					echo 'Your request could not be processed';
-					exit();
+					return;
 				}
 
 			#Prepares URL and parameters for SendGrid API call
@@ -268,22 +268,22 @@
 				curl_close($session);
 				echo 'Password successfully reset. Please check email for new password.';
 			}
-			catch(Exception $e){
+			elseif($_SERVER['REQUEST_METHOD']=='POST')
 				http_response_code(400);
-			}
+			else
+				header('Location: https://'.$_SERVER['HTTP_HOST'].'/404');
 		}
-		elseif($_SERVER['REQUEST_METHOD']=='POST')
+		catch(Exception $e){
 			http_response_code(400);
-		else
-			header('Location: https://'.$_SERVER['HTTP_HOST'].'/404');
+		}
 	}
 
 	#Changes a user's password
 	function changepassword(){
-		$req_headers = getallheaders();
-		if($_SERVER['REQUEST_METHOD']=='POST' && $req_headers['Content-Type']=='application/json; charset=UTF-8'){
-			$req_params = json_decode(file_get_contents('php://input'), true);
-			try{
+		#$req_headers = getallheaders();
+		try{
+			if($_SERVER['REQUEST_METHOD']=='POST' && $_SERVER['CONTENT_TYPE']=='application/json; charset=UTF-8'){
+				$req_params = json_decode(file_get_contents('php://input'), true);
 				$oldpass = strip_tags($req_params['oldpass']);
 				$newpass = strip_tags($req_params['newpass']);
 				$model = new Model();
@@ -294,14 +294,14 @@
 				else
 					echo 'Current password is incorrect';
 			}
-			catch(Exception $e){
+			elseif($_SERVER['REQUEST_METHOD']=='POST')
 				http_response_code(400);
-			}
+			else
+				header('Location: https://'.$_SERVER['HTTP_HOST'].'/404');
 		}
-		elseif($_SERVER['REQUEST_METHOD']=='POST')
+		catch(Exception $e){
 			http_response_code(400);
-		else
-			header('Location: https://'.$_SERVER['HTTP_HOST'].'/404');
+		}
 	}
 
 	/* Ensure that the rest of the script is accessed via HTTPS */
