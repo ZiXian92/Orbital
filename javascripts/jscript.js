@@ -119,6 +119,9 @@ function validate_signup(){
 
 //Validates the login form and logs the user in if login is successful
 function validate_login(ev){
+	//Prevent form from submitting by default
+	ev.preventDefault();
+
 	var email = document.forms["login_form"]["email"].value;
 	var pass = document.forms["login_form"]["passwd"].value;
 
@@ -132,9 +135,6 @@ function validate_login(ev){
 		document.getElementById('error').innerHTML="Invalid email address.";
 		return false;
 	}
-
-	//Prevent form from submitting by default
-	ev.preventDefault();
 
 	//Sending request to server to check login credentials
 	var data = {};
@@ -176,6 +176,8 @@ function activate(ev, id){
 
 //Sends a request to reset password
 function reset_passwd(ev){
+	ev.preventDefault();
+
 	var name = document.forms['reset_password']['name'].value;
 	var email = document.forms['reset_password']['email'].value;
 	var checkEmail = document.getElementById('checkEmail').innerHTML;
@@ -190,8 +192,6 @@ function reset_passwd(ev){
 		return false;
 	}
 
-	ev.preventDefault();
-
 	//Prepares form data to be sent in JSON format
 	var data = {};
 	data.name = name;
@@ -199,8 +199,10 @@ function reset_passwd(ev){
 
 	ajaxRequest = new XMLHttpRequest();
 	ajaxRequest.onreadystatechange = function(){
-		if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
+		if(ajaxRequest.readyState==4 && ajaxRequest.status==200){
 			document.getElementById('error').innerHTML = ajaxRequest.responseText;
+			document.forms[0].reset();
+		}
 	};
 	ajaxRequest.open("POST", "users/reset_password", true);
 	ajaxRequest.setRequestHeader("Content-Type", "application/json");
