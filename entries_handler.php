@@ -26,7 +26,7 @@
 			#Creates Dropbox client to access files
 			$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
 			#Gets the file path
-			$file = $model->get_entry_file($_GET['id']);
+			$file = $model->get_entry_file($id);
 
 			#Downloads the PDF file into /tmp folder
 			$f = fopen("/tmp/".$file, "wb");
@@ -43,6 +43,34 @@
 			header('Location: https://'.$_SERVER['HTTP_HOST'].'/404'); 
 	}
 
+	#Deletes an entry identified by id.
+	#Only accepts POST request.
+	function delete_entry($id){
+		if($_SERVER['REQUEST_METHOD']!='POST'){
+			http_response_code(400);
+			header('Location: https://'.$_SERVER['HTTP_HOST'].'/404');
+			return;
+		}
+
+		$model = new Model();
+		if($model->authenticate_entry_request($_SESSION['user_id'], $id)){
+			#Gets the access token to access Dropbox API
+			$accessToken = file_get_contents("accessToken.txt");
+
+			#Creates Dropbox client to access files
+			$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
+			#Gets the file path
+			$file = $model->get_entry_file($id);
+			try{
+				$dbxClient->delete("/".$file);
+			}
+			catch(Exception $e){}
+			$model->remove_entry($id);
+		}
+		else
+			http_response_code(400);
+	}
+
 	session_start();
 	
 	/* Block out all unauthorised execution of this script */
@@ -54,7 +82,10 @@
 		exit(0);
 	}
 
+	#Gets the URL elements
 	$url_elem = explode('/', $_SERVER['REQUEST_URI']);
+
+	#To deal with cases when the number of parameters is insufficient
 	try{
 		$action = strip_tags((string)$url_elem[2]);
 		$id = strip_tags((string)$url_elem[3]);
@@ -72,6 +103,7 @@
 		if($_SERVER['REQUEST_METHOD']=='GET')
 			header('Location: https://'.$_SERVER['HTTP_HOST'].'/404');
 	}
+	exit();
 
 	/* On passing the logged in check, authenticates if the user is
 	 * dealing with his/her own entry and not someone else's.
