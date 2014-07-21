@@ -1,7 +1,10 @@
-AddType text/css css .css
-
-RewriteEngine off
+RewriteEngine On
 
 RewriteBase /
 
-RewriteRule ^/?(.+) index.php?page=$1 [L]
+RewriteCond %{REQUEST_URI}	^/[^/\.]*$
+RewriteRule ^.*$	index.php	[L]
+
+RewriteCond %{REQUEST_URI}	^/[a-z_]+/[^/\.]+$	[OR]
+RewriteCond %{REQUEST_URI}	^/[a-z_]+/[^/\.]+/
+RewriteRule ^([a-z_]+)/.+	$1.php	[L]

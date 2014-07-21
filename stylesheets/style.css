@@ -8,6 +8,14 @@ div{
 	margin: 0 auto;
 }
 
+.message{
+	border-style: none;
+}
+
+.error{
+	border-style: none;
+}
+
 #header{
 	text-align: center;
 	width: 98%;
