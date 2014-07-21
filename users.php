@@ -222,7 +222,7 @@
 		#$req_headers = getallheaders();
 		try{
 			if($_SERVER['REQUEST_METHOD']=='POST' &&
-			$req_headers['Content-Type']=='application/json; charset=UTF-8'){
+			$req_headers['CONTENT_TYPE']=='application/json; charset=UTF-8'){
 				$req_params = json_decode(file_get_contents('php://input'), true);
 				$name = strip_tags($req_params['name']);
 				$email = strip_tags($req_params['email']);
