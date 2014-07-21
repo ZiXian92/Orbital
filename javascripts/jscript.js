@@ -194,18 +194,18 @@ function activate(ev, id){
 function reset_passwd(ev){
 	ev.preventDefault();
 
-	var name = document.forms['reset_password']['name'].value;
-	var email = document.forms['reset_password']['email'].value;
+	var name = document.forms[0].name.value;
+	var email = document.forms[0].email.value;
 	var checkEmail = document.getElementById('checkEmail').innerHTML;
 
 	if(name.length==0){
 		document.getElementById('error').innerHTML = 'Please enter a username';
-		return false;
+		return;
 	}
 
 	if(checkEmail!='Ok'){
 		document.getElementById('error').innerHTML = 'Please use a valid email address';
-		return false;
+		return;
 	}
 
 	//Prepares form data to be sent in JSON format
