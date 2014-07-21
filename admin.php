@@ -35,8 +35,6 @@
 			$accessToken = file_get_contents('accessToken.txt');
 			$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
 			$model->remove_user($id, $dbxClient);
-			$content = '<div id="message" class="message"></div><p>Welcome, '.$_SESSION['username'].'</p>'.$model->list_users();
-			echo $content;
 		}
 		else
 			throw new Exception('Invalid user ID');

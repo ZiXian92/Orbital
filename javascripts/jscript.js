@@ -18,7 +18,7 @@ function checkName(name){
 	ajaxRequest = new XMLHttpRequest();
 	var data = {};
 	data.name = name;
-	ajaxRequest.open("POST", "users/checkName", true);
+	ajaxRequest.open("POST", "/users/checkName", true);
 	ajaxRequest.setRequestHeader("Content-type", "application/json");
 	ajaxRequest.onreadystatechange = function(){
 		if(ajaxRequest.readyState==4 && ajaxRequest.status==200){
@@ -57,7 +57,7 @@ function checkEmail(email){
 		if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
 			document.getElementById('checkEmail').innerHTML = ajaxRequest.responseText;
 	};
-	ajaxRequest.open('POST', 'users/checkEmail', true);
+	ajaxRequest.open('POST', '/users/checkEmail', true);
 	ajaxRequest.setRequestHeader('Content-Type', 'application/json');
 	ajaxRequest.send(JSON.stringify(data));
 }
@@ -91,6 +91,7 @@ function validate_entry(ev){
 		document.getElementById('error').innerHTML = 'Please make sure all fields are properly filled';
 	else{
 		document.forms[0].submit();
+		//window.location.reload(false);
 		document.forms[0].reset();
 		document.getElementById('error').innerHTML = '';
 		document.getElementById('preview').src = '#';
@@ -138,8 +139,8 @@ function validate_login(ev){
 	//Prevent form from submitting by default
 	ev.preventDefault();
 
-	var email = document.forms["login_form"]["email"].value;
-	var pass = document.forms["login_form"]["passwd"].value;
+	var email = document.forms[0].email.value;
+	var pass = document.forms[0].passwd.value;
 
 	//Performs input validation
 	if(email.length==0 || pass.length==0){
@@ -172,7 +173,7 @@ function validate_login(ev){
 				document.getElementById('error').innerHTML='Bad request';
 		}
 	};
-	ajaxRequest.open("POST", "users/validate_login", true);
+	ajaxRequest.open("POST", "/users/validate_login", true);
 	ajaxRequest.setRequestHeader("Content-Type", "application/json");
 	ajaxRequest.send(JSON.stringify(data));
 }
@@ -186,7 +187,7 @@ function activate(ev, id){
 		if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
 			document.getElementById('active_'+id).innerHTML = 'Activated';
 	};
-	ajaxRequest.open("POST", "users/activate/"+id, true);
+	ajaxRequest.open("POST", "/users/activate/"+id, true);
 	ajaxRequest.send();
 }
 
@@ -194,8 +195,8 @@ function activate(ev, id){
 function reset_passwd(ev){
 	ev.preventDefault();
 
-	var name = document.forms['reset_password']['name'].value;
-	var email = document.forms['reset_password']['email'].value;
+	var name = document.forms[0].name.value;
+	var email = document.forms[0].email.value;
 	var checkEmail = document.getElementById('checkEmail').innerHTML;
 
 	if(name.length==0){
@@ -220,7 +221,7 @@ function reset_passwd(ev){
 			document.forms[0].reset();
 		}
 	};
-	ajaxRequest.open("POST", "users/reset_password", true);
+	ajaxRequest.open("POST", "/users/reset_password", true);
 	ajaxRequest.setRequestHeader("Content-Type", "application/json");
 	ajaxRequest.send(JSON.stringify(data));
 }
@@ -237,7 +238,7 @@ function admin_reset_password(ev, name, email){
 		if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
 			document.getElementById('message').innerHTML = ajaxRequest.responseText;
 	};
-	ajaxRequest.open("POST", "users/reset_password", true);
+	ajaxRequest.open("POST", "/users/reset_password", true);
 	ajaxRequest.setRequestHeader("Content-Type", "application/json");
 	ajaxRequest.send(JSON.stringify(data));
 }
@@ -288,7 +289,7 @@ function delete_user(ev, id){
 		ajaxRequest = new XMLHttpRequest();
 		ajaxRequest.onreadystatechange=function(){
 			if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
-				document.getElementById('content').innerHTML = ajaxRequest.responseText;
+				window.location.reload(true);
 		};
 		ajaxRequest.open('POST', '/admin/delete/'+id, true);
 		ajaxRequest.send();
