@@ -202,12 +202,12 @@ function reset_passwd(ev){
 
 	if(name.length==0){
 		document.getElementById('error').innerHTML = 'Please enter a username';
-		return;
+		return false;
 	}
 
 	if(checkEmail!='Ok'){
 		document.getElementById('error').innerHTML = 'Please use a valid email address';
-		return;
+		return false;
 	}
 
 	//Prepares form data to be sent in JSON format
