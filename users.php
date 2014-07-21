@@ -80,7 +80,7 @@
 	#JSON format.
 	function checkUsername(){
 		$req_headers = getallheaders();
-		if($_SERVER['REQUEST_MTHOD']='POST' && $req_headers['Content-Type']=='application/json; charset=UTF-8'){
+		if($_SERVER['REQUEST_METHOD']='POST' && $req_headers['Content-Type']=='application/json; charset=UTF-8'){
 			$req_params = json_decode(file_get_contents('php://input'), true);
 			try{
 				$name = strip_tags($req_params['name']);
