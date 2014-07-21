@@ -9,6 +9,11 @@
 
 	session_start();
 
+	if($_SERVER['HTTP_X_FORWARDED_PROTO']=="https")
+		$_SERVER['HTTPS'] = "on";
+	else
+		$_SERVER['HTTPS'] = NULL;
+
 	# Gets the page requested
 	$page = explode('/', $_SERVER['REQUEST_URI']);
 	$page = $page[1];
