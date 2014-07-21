@@ -285,7 +285,10 @@
 			$id =  (int)pg_escape_string($this->sql_con, (string)$id);
 			$q = "UPDATE USERS SET ACTIVE=NULL WHERE ID=$1";
 			pg_prepare($this->sql_con, "", $q);
-			pg_execute($this->sql_con, "", array($id));
+			$result = pg_execute($this->sql_con, "", array($id));
+			if(pg_affected_rows($result)==1)
+				return true;
+			return false;
 		}
 
 		/* User Login Functions */

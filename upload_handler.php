@@ -21,8 +21,8 @@
 		finfo_close($fileinfo);
 		if($filetype!="image/jpg" && $filetype!="image/jpeg" &&
 		$filetype!="image/png" && $filetype!="image/bmp"){
-			file_put_contents("message.txt", "Please use only JPEG, BMP or PNG files");
-			header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
+			#file_put_contents("message.txt", "Please use only JPEG, BMP or PNG files");
+			header("Location: https://".$_SERVER['HTTP_HOST']."/create_entry");
 			exit(0);
 		}
 			
