@@ -146,7 +146,7 @@
 		if(empty($name) || $model->contains_username($name) || 
 		empty($email) || $model->contains_email($email)){
 			header('Location: https://'.$_SERVER['HTTP_HOST'].'/signup');
-			exit();
+			return;
 		}
 
 		#Prepare URL and parameters for SendGrid API call
@@ -222,7 +222,7 @@
 		#$req_headers = getallheaders();
 		try{
 			if($_SERVER['REQUEST_METHOD']=='POST' &&
-			$req_headers['CONTENT_TYPE']=='application/json; charset=UTF-8'){
+			$_SERVER['CONTENT_TYPE']=='application/json; charset=UTF-8'){
 				$req_params = json_decode(file_get_contents('php://input'), true);
 				$name = strip_tags($req_params['name']);
 				$email = strip_tags($req_params['email']);
