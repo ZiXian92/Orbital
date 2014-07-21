@@ -17,6 +17,7 @@
 	#Request is successful only if called by POST method and JSON string
 	#containing email and password is supplied.
 	function validate_login(){
+		echo $_SERVER['CONTENT_TYPE'];
 		#$req_headers = getallheaders();
 		try{
 			if($_SERVER['REQUEST_METHOD']=='POST' &&
