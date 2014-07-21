@@ -8,10 +8,13 @@ var ajaxRequest;
 
 //Checks the database to see if the username is available for use
 function checkName(name){
+	//Checks if name is empty
 	if(name.length==0){
 		document.getElementById('checkName').innerHTML = 'Please enter a username';
 		return;
 	}
+
+	//Sends POST request with parameters in JSON format
 	ajaxRequest = new XMLHttpRequest();
 	var data = {};
 	data.name = name;
