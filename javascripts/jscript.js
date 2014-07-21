@@ -262,3 +262,17 @@ function change_password(ev){
 function confirm_delete(){
 	return confirm("Proceed with delete?");
 }
+
+//Confirms and deletes the selected user if admin chooses Ok
+function delete_user(ev, id){
+	ev.preventDefault();
+	if(confirm_delete()){
+		ajaxRequest = new XMLHttpRequest();
+		ajaxRequest.onreadystatechange=function(){
+			if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
+				document.getElementById('content').innerHTML = ajaxRequest.responseText;
+		};
+		ajaxRequest.open('POST', 'admin/delete/'+id, true);
+		ajaxRequest.send();
+	}
+}

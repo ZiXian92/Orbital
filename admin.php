@@ -17,6 +17,7 @@
 		$model = new Model();
 		if($model->contains_id($id)){
 			$arr = $model->get_page_params('User '.(string)$id);
+			$arr['title'] = 'User '.(string)$id;
 			$arr['content'] = $model->list_entries_by_id($id);
 			$view = new View($arr);
 			$view->render();
@@ -34,7 +35,8 @@
 			$accessToken = file_get_contents('accessToken.txt');
 			$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
 			$model->remove_user($id, $dbxClient);
-
+			$content = '<div id="message" class="message"></div><p>Welcome, '.$_SESSION['username'].'</p>'.$model->list_users();
+			echo $content;
 		}
 		else
 			throw new Exception('Invalid user ID');
