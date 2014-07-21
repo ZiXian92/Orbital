@@ -17,12 +17,12 @@
 	#Request is successful only if called by POST method and JSON string
 	#containing email and password is supplied.
 	function validate_login(){
-		$req_headers = getallheaders();
-		if($_SERVER['REQUEST_METHOD']=='POST' &&
-		$req_headers['Content-Type']=='application/json; charset=UTF-8'){
-			$req_params = json_decode(file_get_contents('php://input'), true);
-			$model = new Model();
-			try{
+		#$req_headers = getallheaders();
+		try{
+			if($_SERVER['REQUEST_METHOD']=='POST' &&
+			$_SERVER['CONTENT_TYPE']=='application/json'){
+				$req_params = json_decode(file_get_contents('php://input'), true);
+				$model = new Model();
 				$email = strip_tags($req_params['email']);
 				$passwd = strip_tags($req_params['password']);
 				if($model->is_valid_user($email, $passwd))
@@ -30,14 +30,14 @@
 				else
 					echo 'Incorrect email and/or password.';
 			}
-			catch(Exception $e){
+			elseif($_SERVER['REQUEST_METHOD']=='POST')
 				http_response_code(400);
-			}
+			else
+				header('Location: http://'.$_SERVER['HTTP_HOST'].'/404');
 		}
-		elseif($_SERVER['REQUEST_METHOD']=='POST')
+		catch(Exception $e){
 			http_response_code(400);
-		else
-			header('Location: http://'.$_SERVER['HTTP_HOST'].'/404');
+		}
 	}
 
 	#Checks the login credentials and logs the user in if is a valid user.
