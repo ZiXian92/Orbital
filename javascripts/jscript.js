@@ -247,6 +247,8 @@ function change_password(ev){
 	ajaxRequest.onreadystatechange=function(){
 		if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
 			document.getElementById('error').innerHTML = ajaxRequest.responseText;
+			if(ajaxRequest.responseText=='Success')
+				document.forms[0].reset();
 	};
 	ajaxRequest.open('POST', 'users/changepassword', true);
 	ajaxRequest.setRequestHeader('Content-Type', 'application/json');
