@@ -218,7 +218,7 @@
 				$list.="<tr><td>".$row['id']."</td>
 					<td>".$row['username']."</td>
 					<td>".$row['email']."</td>
-					<td><a href=\"admin.php?action=view&id=".(string)$row['id']."\">View</a></td>";
+					<td><a href=\"admin/view/".(string)$id."\">View</a></td>";
 					if($row['activated'])
 						$list.="<td>Activated</td>";
 					else

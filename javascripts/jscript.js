@@ -152,6 +152,8 @@ function validate_login(ev){
 		return false;
 	}
 
+	document.getElementById('error').innerHTML = 'Valid';
+
 	//Sending request to server to check login credentials
 	var data = {};
 	data.email = email;
