@@ -225,6 +225,7 @@ function reset_passwd(ev){
 	ajaxRequest.open("POST", "users/reset_password", true);
 	ajaxRequest.setRequestHeader("Content-Type", "application/json");
 	ajaxRequest.send(JSON.stringify(data));
+	document.getElementById('error').innerHTML = 'Request sent';
 }
 
 //Sends a request to server to reset password for the selected user
