@@ -81,25 +81,41 @@ function confirmPassword(passwd2){
 }
 
 //Returns true if ALL fields are not empty and false otherwise
-function validate(){
-	var filename = document.forms["new_entry"]["img"].value;
-	var title = document.forms["new_entry"]["title"].value;
-	var text = document.forms["new_entry"]["story"].value;
-	if(filename=="" || title=="" || text==""){
-		alert("All fields are required.");
-		return false;
+function validate_entry(ev){
+	ev.preventDefault();
+	var filename = document.forms[0].img.value;
+	var title = document.forms[0].title.value;
+	var text = document.forms[0].story.value;
+	var checkFile = document.getElementById('checkFile').innerHTML;
+	if(filename=="" || title=="" || text=="" || checkFile!='Ok')
+		document.getElementById('error').innerHTML = 'Please make sure all fields are properly filled';
+	else{
+		document.forms[0].submit();
+		document.forms[0].reset();
+		document.getElementById('error').innerHTML = '';
+		document.getElementById('preview').src = '#';
 	}
+}
+
+//Checks if the given image is of the supported type.
+function is_valid_image(img){
+	var imgType = img.type;
+	if(imgType!="image/jpeg" && imgType!="image/png" && imgType!="image/bmp")
+		return false;
 	return true;
 }
 
-function validate_file(){
-	var filename = document.forms["new_entry"]["img"].value;
-	var arr = str.split(filename, ".");
-	var ext = arr[arr.length-1];
-	if(ext!="jpg" && ext!="jpeg" && ext!="png"){
-		document.forms["new_entry"]["img"]="";
-		alert("Please upload an image file(extensions: jpg, jpeg, png)");
-	}
+//Displays the preview of the selected image
+function previewImage(){
+	if(is_valid_image(document.forms[0].img.files[0]))
+		document.getElementById('checkFile').innerHTML = 'Ok';
+	else
+		document.getElementById('checkFile').innerHTML = 'Only JPEG, PNG, and BMP files allowed';
+	var ifReader = new FileReader();
+	ifReader.readAsDataURL(document.forms[0].img.files[0]);
+	ifReader.onload = function(evt){
+		document.getElementById('preview').src = evt.target.result;
+	};
 }
 
 /* Validates signup form submission */

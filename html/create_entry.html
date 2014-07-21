@@ -1,19 +1,19 @@
 <!--Form to gather required information for an entry-->
 <!--Lesson learnt: Must include enctype="multipart/form-data in <form> to
     allow file to be submitted as file"-->
-<div class="error" id="error">
-<form name="new_entry" action="upload_handler.php" method="post" id="entry" onsubmit="return validate();" enctype="multipart/form-data">
+<div class="error" id="error"></div>
+<form name="new_entry" action="upload_handler/submit" method="post" id="entry" onsubmit="validate_entry(event);" enctype="multipart/form-data">
 
 	<!--Image file upload field-->
 	<label for="file">Image File:</label>
 	<!--readURL() function to be implemented. Complicated.-->
 	<input type="file" name="img" id="file"
 	accept="image/gif, image/jpeg, image/png"
-	onchange="validate_file()">*required<br/>
+	onchange="previewImage();">*required<span id="checkFile"></span><br/>
 
 	<!--Handle the preview issue at a later stage-->
 	<!--Image preview-->
-	<img src="#" alt="No preview available"><br/>
+	<img id="preview" src="#" width="300" height="300" alt="No preview available"><br/>
 	
 	<label>Author:
 	{{author}}
@@ -29,6 +29,6 @@
 	<textarea name="story" rows="20" cols="80" form="entry" placeholder="Write your story here..."></textarea>*required<br/>
 
 	<!--Submit button-->
-	<input type="submit" name="submit" value="Submit">
+	<input type="submit" name="submit_button" value="Submit">
 	</label>
 </form>
