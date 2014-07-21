@@ -314,7 +314,6 @@
 
 	session_start();
 
-	$arr = getallheaders();
 	$url_elements = explode('/', $_SERVER['REQUEST_URI']);
 	$action = $url_elements[2];
 
