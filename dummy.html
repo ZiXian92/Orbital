@@ -2,12 +2,18 @@
 <head>
 	<script type="text/javascript">
 		function runscript(){
-			var data = {};
-			data.name = 'zixian';
-			document.writeln(JSON.stringify(data));
+			var ajax = new XMLHttpRequest();
+			ajax.onreadystatechange = function(){
+				if(ajax.readyState==4 && ajax.status==200)
+					document.writeln(ajax.responseText);
+			};
+			ajax.open('POST', '/dummy/submit', true);
+			ajax.setRequestHeader('Content-Type', 'application/json');
+			ajax.send();
 		}		
 	</script>
 </head>
 <body onload="runscript();">
+Hello
 </body>
 </html>

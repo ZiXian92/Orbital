@@ -36,9 +36,5 @@
 
 	print_r($response);*/
 
-	$request_params = json_decode(file_get_contents("php://input"));
-	$fn = explode('/', $_SERVER['REQUEST_URI']);
-	$fn = $fn[2];
-	#file_put_contents('message.txt', file_get_contents("php://input"));
-	echo $fn;
+	echo $_SERVER['CONTENT_TYPE'];
 ?>
