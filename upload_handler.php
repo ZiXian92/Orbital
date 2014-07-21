@@ -21,8 +21,8 @@
 		finfo_close($fileinfo);
 		if($filetype!="image/jpg" && $filetype!="image/jpeg" &&
 		$filetype!="image/png" && $filetype!="image/bmp"){
-			#file_put_contents("message.txt", "Please use only JPEG, BMP or PNG files");
-			header("Location: https://".$_SERVER['HTTP_HOST']."/create_entry");
+			file_put_contents("message.txt", "Please use only JPEG, BMP or PNG files");
+			header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
 			exit(0);
 		}
 			
@@ -32,11 +32,19 @@
 	/* $model contains database connection */
 		$model = new Model();
 
-	/* Renames the uploaded image for use by PDF object */
-		move_uploaded_file($_FILES['img']['tmp_name'], "/tmp/{$_FILES['img']['name']}");
+	/* Moves image to uploads folder in server for use in PDF.
+	 * Please create the destination folder called uploads with the same
+	 * relative paths in the 2nd parameter of move_uploaded_file.
+	 * ../uploads and ../entries requires permission setting of 777
+	 * instead of 755 or 766.
+	 */
+		#move_uploaded_file($_FILES['img']['tmp_name'], "../uploads/{$_FILES['img']['name']}");
 
-	/* Sets the file path of the uploaded image */
+		move_uploaded_file($_FILES['img']['tmp_name'], "/tmp/".$_FILES['img']['name']);
+
+		/* Sets the file path */
 		$file = "/tmp/".$_FILES['img']['name'];
+		#$file = "../uploads/{$_FILES['img']['name']}";
 
 		/* Somehow, having the author field disabled for
 		 * logged in users prevent the field value from
@@ -70,15 +78,17 @@
 
 		/* Creates a new Dropbox client to access API */
 			$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
-		/* Uploads the entry to Dropbox */
+
+		/* Uploads the PDF file to Dropbox */
 			$f = fopen("/tmp/".(string)$_POST['entry_id'].".pdf", "rb");
 			$dbxClient->uploadFile("/".(string)$_POST['entry_id'].".pdf", dbx\WriteMode::add(), $f);
 			fclose($f);
 
-		/* Adds the entry information to database */
+		/* Adds entry information to database */
 			$model->add_entry($_POST['entry_id'], $title, $_SESSION['user_id'], date("Y-m-d"), (string)$_POST['entry_id'].".pdf");
+			#$model->add_entry($_POST['entry_id'], $title, $_SESSION['user_id'], date("Y-m-d"), "../entries/".(string)$_POST['entry_id'].".pdf");
 
-		/* Destroys the PDF file in ./tmp folder */
+		/* Removes the PDF file from the temporary storage */
 			unlink("/tmp/".(string)$_POST['entry_id'].".pdf");
 		}
 
@@ -92,8 +102,9 @@
 			setcookie('PHPSESSID', '', time()-3600, '/', '', 0, 0);
 		}
 
-		/* Removes the image file from /tmp folder */
+		/* Removes the image file from ../uploads folder */
 		unlink("/tmp/".$_FILES['img']['name']);
+		#unlink("../uploads/{$_FILES['img']['name']}");
 	}
 	header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
 ?>
