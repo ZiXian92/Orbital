@@ -19,7 +19,7 @@ function checkName(name){
 	var data = {};
 	data.name = name;
 	ajaxRequest.open("POST", "/users/checkName", true);
-	ajaxRequest.setRequestHeader("Content-type", "application/json");
+	ajaxRequest.setRequestHeader("Content-Type", "application/json");
 	ajaxRequest.onreadystatechange = function(){
 		if(ajaxRequest.readyState==4 && ajaxRequest.status==200){
 			document.getElementById("checkName").innerHTML = ajaxRequest.responseText;
