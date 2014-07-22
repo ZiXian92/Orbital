@@ -7,6 +7,8 @@
 	 * in .htaccess file.
 	 * The case of request URI being /users/ is checked after
 	 * processing the incoming request URI.
+	 * getallheaders() function is currently not supported on
+	 * Heroku's PHP-FPM
 	 */
 
 	require "model.php";
