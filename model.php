@@ -48,16 +48,16 @@
 			//Sets the menu bar and the author field of entry form
 			if(isset($_SESSION['username'])){
 				if($_SESSION['user_id']==0)
-					$arr['usrmenu'] = file_get_contents("/html/admin_menu.html");
+					$arr['usrmenu'] = file_get_contents("html/admin_menu.html");
 				else
-					$arr['usrmenu'] = file_get_contents("/html/loggedinmenu.html");
+					$arr['usrmenu'] = file_get_contents("html/loggedinmenu.html");
 				$arr['author'] = "<input type=\"text\" 
 					name=\"author\" size=\"20\" 
 					value=\"".$_SESSION['username'].
 					"\"maxlength=\"20\" disabled>";
 			}
 			else{
-				$arr['usrmenu'] = file_get_contents("/html/loggedoutmenu.html");
+				$arr['usrmenu'] = file_get_contents("html/loggedoutmenu.html");
 				$arr['author'] = "<input type=\"text\" 
 					name=\"author\" size=\"20\" 
 					placeholder=\"Your name here\"
@@ -74,7 +74,7 @@
 			}
 
 			//Sets the title and the main content
-			elseif(file_exists("/html/".$page.".html")){
+			elseif(file_exists("html/".$page.".html")){
 				$arr['content'] = file_get_contents("html/".$page.".html");
 				$arr['title'] = strtoupper(substr($page, 0, 1)).substr($page, 1);
 			}
