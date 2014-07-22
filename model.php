@@ -198,7 +198,7 @@
 
 		/* Returns a table list of registered users */
 		public function list_users(){
-			$table = file_get_contents("/html/users_table.html");
+			$table = file_get_contents("html/users_table.html");
 			$q = "SELECT ID, USERNAME, EMAIL, ACTIVE IS NULL ACTIVATED FROM USERS WHERE ID!=0";
 			pg_prepare($this->sql_con, "", $q);
 			$result = pg_execute($this->sql_con, "", array());
