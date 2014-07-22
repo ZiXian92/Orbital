@@ -378,7 +378,7 @@
 			$q = "SELECT ENTRY_ID, DATE, TITLE FROM ENTRIES WHERE AUTHOR=$1 ORDER BY ENTRY_ID DESC";
 			pg_prepare($this->sql_con, "", $q);
 			$result = pg_execute($this->sql_con, "", array($id));
-			$table = file_get_contents("/html/entries_table.html");
+			$table = file_get_contents("html/entries_table.html");
 			$list = "";
 			for($counter=1;;$counter++){
 				if(!$row = pg_fetch_assoc($result)){
