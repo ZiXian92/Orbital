@@ -1,6 +1,10 @@
 <!--Form to gather required information for an entry-->
 <!--Lesson learnt: Must include enctype="multipart/form-data in <form> to
     allow file to be submitted as file"-->
+<div class="message" id="message">This entry will only be archived if the user
+is logged in at the time of creating this entry.<br/>
+Disclaimer: We are not responsible for any controversial/sensitive entries
+created using this application.</div>
 <div class="error" id="error"></div>
 <form name="new_entry" action="upload_handler/submit" method="post" id="entry" onsubmit="validate_entry(event);" enctype="multipart/form-data">
 
