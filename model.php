@@ -48,16 +48,16 @@
 			//Sets the menu bar and the author field of entry form
 			if(isset($_SESSION['username'])){
 				if($_SESSION['user_id']==0)
-					$arr['usrmenu'] = file_get_contents("html/admin_menu.html");
+					$arr['usrmenu'] = file_get_contents("/html/admin_menu.html");
 				else
-					$arr['usrmenu'] = file_get_contents("html/loggedinmenu.html");
+					$arr['usrmenu'] = file_get_contents("/html/loggedinmenu.html");
 				$arr['author'] = "<input type=\"text\" 
 					name=\"author\" size=\"20\" 
 					value=\"".$_SESSION['username'].
 					"\"maxlength=\"20\" disabled>";
 			}
 			else{
-				$arr['usrmenu'] = file_get_contents("html/loggedoutmenu.html");
+				$arr['usrmenu'] = file_get_contents("/html/loggedoutmenu.html");
 				$arr['author'] = "<input type=\"text\" 
 					name=\"author\" size=\"20\" 
 					placeholder=\"Your name here\"
@@ -74,7 +74,7 @@
 			}
 
 			//Sets the title and the main content
-			elseif(file_exists("html/".$page.".html")){
+			elseif(file_exists("/html/".$page.".html")){
 				$arr['content'] = file_get_contents("html/".$page.".html");
 				$arr['title'] = strtoupper(substr($page, 0, 1)).substr($page, 1);
 			}
@@ -198,7 +198,7 @@
 
 		/* Returns a table list of registered users */
 		public function list_users(){
-			$table = file_get_contents("html/users_table.html");
+			$table = file_get_contents("/html/users_table.html");
 			$q = "SELECT ID, USERNAME, EMAIL, ACTIVE IS NULL ACTIVATED FROM USERS WHERE ID!=0";
 			pg_prepare($this->sql_con, "", $q);
 			$result = pg_execute($this->sql_con, "", array());
@@ -218,12 +218,12 @@
 				$list.="<tr><td>".$row['id']."</td>
 					<td>".$row['username']."</td>
 					<td>".$row['email']."</td>
-					<td><a href=\"admin/view/".(string)$row['id']."\">View</a></td>";
+					<td><a href=\"/admin/view/".(string)$row['id']."\">View</a></td>";
 					if($row['activated'])
 						$list.="<td>Activated</td>";
 					else
-						$list.="<td id=\"active_".$id."\"><a href=\"users/activate/".$row['id']."\" onclick=\"activate(event, ".$row['id'].");\">Activate</a></td>";
-					$list.="<td><a href=\"users/reset_password/".$row['username']."/".urlencode($row['email'])."\" onclick=\"admin_reset_password(event, '".$row['username']."', '".$row['email']."');\">Reset Password</a></td>
+						$list.="<td id=\"active_".$id."\"><a href=\"/users/activate/".$row['id']."\" onclick=\"activate(event, ".$row['id'].");\">Activate</a></td>";
+					$list.="<td><a href=\"/users/reset_password/".$row['username']."/".urlencode($row['email'])."\" onclick=\"admin_reset_password(event, '".$row['username']."', '".$row['email']."');\">Reset Password</a></td>
 					<td><a href=\"admin/delete/".(string)$row['id']."\" onclick=\"delete_user(event, ".(string)$row['id'].");\">Delete</a></td></tr>";
 
 		/* Every 10th user is the last of the group of 10 */
@@ -378,7 +378,7 @@
 			$q = "SELECT ENTRY_ID, DATE, TITLE FROM ENTRIES WHERE AUTHOR=$1 ORDER BY ENTRY_ID DESC";
 			pg_prepare($this->sql_con, "", $q);
 			$result = pg_execute($this->sql_con, "", array($id));
-			$table = file_get_contents("html/entries_table.html");
+			$table = file_get_contents("/html/entries_table.html");
 			$list = "";
 			for($counter=1;;$counter++){
 				if(!$row = pg_fetch_assoc($result)){
@@ -390,8 +390,8 @@
 					$list.="<span class=\"section\" id=\"".(string)(floor($counter/10)+1)."\">";
 				$list.="<tr><td>".$row['date']."</td>
 					<td>".$row['title']."</td>
-					<td><a href=\"entries_handler/view/".$row['entry_id']."\">View</a>
-					<a href=\"entries_handler/delete/".$row['entry_id']."\" onclick=\"delete_entry(event, ".$row['entry_id'].");\">Delete</a></td></tr>";
+					<td><a href=\"/entries_handler/view/".$row['entry_id']."\">View</a>
+					<a href=\"/entries_handler/delete/".$row['entry_id']."\" onclick=\"delete_entry(event, ".$row['entry_id'].");\">Delete</a></td></tr>";
 				if($counter%10==0)
 					$list.="</span>";
 			}
