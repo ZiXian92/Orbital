@@ -262,8 +262,8 @@
 			$name = pg_escape_string($this->sql_con, $name);
 			$q = "SELECT ID FROM USERS WHERE USERNAME=$1";
 			pg_prepare($this->sql_con, "", $q);
-			pg_execute($this->sql_con, "", array($name));
-			return pg_fetch_row($stmt);
+			$result = pg_execute($this->sql_con, "", array($name));
+			return pg_fetch_row($result);
 		}
 
 		/* Activates a new user account. Returns true on successful
