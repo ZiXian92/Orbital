@@ -218,13 +218,13 @@
 				$list.="<tr><td>".$row['id']."</td>
 					<td>".$row['username']."</td>
 					<td>".$row['email']."</td>
-					<td><a href=\"admin/view/".(string)$id."\">View</a></td>";
+					<td><a href=\"admin/view/".(string)$row['id']."\">View</a></td>";
 					if($row['activated'])
 						$list.="<td>Activated</td>";
 					else
-						$list.="<td id=\"active_".$id."\"><a href=\"users/activate/".$id."\" onclick=\"activate(event, ".$id.");\">Activate</a></td>";
-					$list.="<td><a href=\"users/reset_password/".$name."/".urlencode($email)."\" onclick=\"admin_reset_password(event, '".$name."', '".$email."');\">Reset Password</a></td>
-					<td><a href=\"admin/delete/".(string)$id."\" onclick=\"delete_user(event, ".(string)$id.");\">Delete</a></td></tr>";
+						$list.="<td id=\"active_".$id."\"><a href=\"users/activate/".$row['id']."\" onclick=\"activate(event, ".$row['id'].");\">Activate</a></td>";
+					$list.="<td><a href=\"users/reset_password/".$row['username']."/".urlencode($row['email'])."\" onclick=\"admin_reset_password(event, '".$row['username']."', '".$row['email']."');\">Reset Password</a></td>
+					<td><a href=\"admin/delete/".(string)$row['id']."\" onclick=\"delete_user(event, ".(string)$row['id'].");\">Delete</a></td></tr>";
 
 		/* Every 10th user is the last of the group of 10 */
 				if($counter%10==0)
