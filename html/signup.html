@@ -3,7 +3,7 @@
 <form name="signup" id="signup" action="users/signup" method="POST"
 onsubmit="return validate_signup();">
 	<label>Name:
-	<input type="text" name="name" size="20" maxlength="20" placeholder="Your name" onchange="checkName(this.value);">*required
+	<input type="text" name="name" size="20" maxlength="20" placeholder="Your name" onkeyup="checkName(this.value);">*required
 	</label><span id="checkName"></span><br/>
 
 	<label>Email:
