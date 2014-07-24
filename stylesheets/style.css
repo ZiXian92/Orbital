@@ -67,9 +67,7 @@ nav{
 	min-width: 500px;
 	font-size: 0.9em;
 	padding: 2px;
-	position: absolute;
 	text-align: center;
-	bottom: 0;
 }
 
 textarea{
