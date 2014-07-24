@@ -1,7 +1,6 @@
 Main(updated as of 26 June 2014):
 1. Complete model.php(Majority completed. Left with digging out more
    information from database based on needs)
-2. Improve on Javascript form validation(to be done by Yulong)
 3. Implement guided interface for 1st-time users(to be done by Yulong)
 4. Create buttons to use as link for both types of users
 	- Created a normal text link as stand in to test functionality
