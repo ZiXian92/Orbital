@@ -271,13 +271,13 @@
 				$list.="<tr><td>".$id."</td>
 					<td>".$name."</td>
 					<td>".$email."</td>
-					<td><a href=\"admin/view/".(string)$id."\">View</a></td>";
+					<td><a href=\"admin/view/".(string)$id."\"><button type=\"button\">View</button></a></td>";
 					if($activated)
 						$list.="<td>Activated</td>";
 					else
-						$list.="<td id=\"active_".$id."\"><a href=\"users/activate/".$id."\" onclick=\"activate(event, ".$id.");\">Activate</a></td>";
-					$list.="<td><a href=\"users/reset_password/".$name."/".urlencode($email)."\" onclick=\"admin_reset_password(event, '".$name."', '".$email."');\">Reset Password</a></td>
-					<td><a href=\"admin/delete/".(string)$id."\" onclick=\"delete_user(event, ".(string)$id.");\">Delete</a></td></tr>";
+						$list.="<td id=\"active_".$id."\"><a href=\"users/activate/".$id."\" onclick=\"activate(event, ".$id.");\"><button type=\"button\">Activate</button></a></td>";
+					$list.="<td><a href=\"users/reset_password/".$name."/".urlencode($email)."\" onclick=\"admin_reset_password(event, '".$name."', '".$email."');\"><button type=\"button\">Reset Password</button></a></td>
+					<td><a href=\"admin/delete/".(string)$id."\" onclick=\"delete_user(event, ".(string)$id.");\"><button type=\"button\">Delete</button></a></td></tr>";
 
 		/* Every 10th user is the last of the group of 10 */
 				if($counter%10==0)
@@ -472,8 +472,8 @@
 					$list.="<span class=\"section\" id=\"".(string)(floor($counter/10)+1)."\">";
 				$list.="<tr><td>".$date."</td>
 					<td>".$title."</td>
-					<td><a href=\"entries_handler.php?action=view&id=".$e_id."\">View</a>
-					<a href=\"entries_handler.php?action=delete&id=".$e_id."\" onclick=\"return confirm_delete();\">Delete</a></td></tr>";
+					<td><a href=\"/entries_handler/view/".$e_id."\"><button type=\"button\">View</button></a>
+					<a href=\"/entries_handler/delete/".$e_id."\" onclick=\"return confirm_delete();\"><button type=\"button\">Delete</button></a></td></tr>";
 				if($counter%10==0)
 					$list.="</span>";
 			}

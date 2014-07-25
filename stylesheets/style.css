@@ -23,34 +23,8 @@ div{
 }
 
 #header h1{
-	text-align: left;
 	display: inline-block;
 	margin-right: 10px;
-}
-
-nav{
-	border-style: solid;
-	border-width: 1px;
-	margin: 0 auto;
-	width: 98%;
-	min-width: 500px;
-}
-
-#navbar {
-	list-style-type: none;
-	text-align: center;
-	margin: 0;
-	padding: 0;
-}
-
-#navbar li{
-	display: inline-block;
-	text-decoration: none;
-	margin: 0 1em;
-}
-
-#navbar li a{
-	text-decoration: none;
 }
 
 #content{

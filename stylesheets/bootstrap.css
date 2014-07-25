@@ -185,7 +185,7 @@ table {
 }
 td,
 th {
-  padding: 0;
+  padding: 5px;
 }
 @media print {
   * {
@@ -3121,6 +3121,7 @@ tbody.collapse.in {
 }
 .dropdown {
   position: relative;
+  display: inline-block;
 }
 .dropdown-toggle:focus {
   outline: 0;
