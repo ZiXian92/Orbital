@@ -218,13 +218,13 @@
 				$list.="<tr><td>".$row['id']."</td>
 					<td>".$row['username']."</td>
 					<td>".$row['email']."</td>
-					<td><a href=\"/admin/view/".(string)$row['id']."\">View</a></td>";
+					<td><a href=\"/admin/view/".(string)$row['id']."\"><button type=\"button\">View</button></a></td>";
 					if($row['activated'])
 						$list.="<td>Activated</td>";
 					else
-						$list.="<td id=\"active_".$id."\"><a href=\"/users/activate/".$row['id']."\" onclick=\"activate(event, ".$row['id'].");\">Activate</a></td>";
-					$list.="<td><a href=\"/users/reset_password/".$row['username']."/".urlencode($row['email'])."\" onclick=\"admin_reset_password(event, '".$row['username']."', '".$row['email']."');\">Reset Password</a></td>
-					<td><a href=\"admin/delete/".(string)$row['id']."\" onclick=\"delete_user(event, ".(string)$row['id'].");\">Delete</a></td></tr>";
+						$list.="<td id=\"active_".$id."\"><a href=\"/users/activate/".$row['id']."\" onclick=\"activate(event, ".$row['id'].");\"><button type=\"button\">Activate</button></a></td>";
+					$list.="<td><a href=\"/users/reset_password/".$row['username']."/".urlencode($row['email'])."\" onclick=\"admin_reset_password(event, '".$row['username']."', '".$row['email']."');\"><button type=\"button\">Reset Password</button></a></td>
+					<td><a href=\"admin/delete/".(string)$row['id']."\" onclick=\"delete_user(event, ".(string)$row['id'].");\"><button type=\"button\">Delete</button></a></td></tr>";
 
 		/* Every 10th user is the last of the group of 10 */
 				if($counter%10==0)
@@ -390,8 +390,8 @@
 					$list.="<span class=\"section\" id=\"".(string)(floor($counter/10)+1)."\">";
 				$list.="<tr><td>".$row['date']."</td>
 					<td>".$row['title']."</td>
-					<td><a href=\"/entries_handler/view/".$row['entry_id']."\">View</a>
-					<a href=\"/entries_handler/delete/".$row['entry_id']."\" onclick=\"delete_entry(event, ".$row['entry_id'].");\">Delete</a></td></tr>";
+					<td><a href=\"/entries_handler/view/".$row['entry_id']."\"><button type=\"button\">View</button></a>
+					<a href=\"/entries_handler/delete/".$row['entry_id']."\" onclick=\"delete_entry(event, ".$row['entry_id'].");\"><button type=\"button\">Delete</button></a></td></tr>";
 				if($counter%10==0)
 					$list.="</span>";
 			}
