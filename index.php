@@ -6,21 +6,21 @@
 
 	require 'view.php';
 	require 'model.php';
-	require 'facebook-php-sdk-v4-4.0-dev/autoload.php';
-	use Facebook\FacebookRequest;
-	use Facebook\GraphUser;
-	use Facebook\FacebookRequestException;
+	#require 'facebook-php-sdk-v4-4.0-dev/autoload.php';
+	#use Facebook\FacebookRequest;
+	#use Facebook\GraphUser;
+	#use Facebook\FacebookRequestException;
 
 	#Returns a new Facebook session if a user is logged in.
 	#Returns null otherwise.
-	function createFBSession(){
+	/*function createFBSession(){
 		$helper = new FacebookJavaScriptLoginHelper();
 		try{
 			return $helper->getSession();
 		} catch(Exception $e){
 			return null;
 		}
-	}
+	}*/
 
 	session_start();
 
@@ -41,7 +41,7 @@
 		exit();
 	}
 
-	if(!isset($_SESSION['user_id'])){
+	/*if(!isset($_SESSION['user_id'])){
 		$fbsess = createFBSession();
 		if($fbsess){
 			try{
@@ -55,7 +55,7 @@
 				
 			} catch(Exception $e){}
 		}
-	}
+	}*/
 
 	if(($page=='login' || $page=='signup' || $page=='reset_password') &&
 	empty($_SERVER['HTTPS'])){

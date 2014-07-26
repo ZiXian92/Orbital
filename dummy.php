@@ -1,29 +1,31 @@
 <?php
-	require_once "dropbox-sdk/Dropbox/autoload.php";
-	use \Dropbox as dbx;
-	#mail("zixian1992@hotmail.com", "Hello", "Mizuki Nana desu~", "From: admin@relivethemoment.host-ed.me\r\n");
+	require 'facebook-php-sdk-v4-4.0-dev/autoload.php';
+	use Facebook\FacebookRequest;
+	use Facebook\GraphUser;
+	use Facebook\FacebookRequestException;
 
-	/*function getWebAuth(){
-		$appInfo = dbx\AppInfo::loadFromJsonFile("app-info.json");
-		$clientIdentifier = "localhost/1.0";
-		$redirectUri = "https://localhost/dropbox-auth-finish";
-		$csrfTokenStore = new dbx\ArrayEntryStore($_SESSION, 'dropbox-auth-csrf-token');
-		return new dbx\WebAuth($appInfo, $clientIdentifier, $redirectUri, $csrfTokenStore);
-	}*/
-
-	$accessToken = file_get_contents("accessToken.txt");
-	$dbxClient = new dbx\Client($accessToken, "relivethatmoment/1.0");
-	$accountInfo = $dbxClient->getAccountInfo();
-	print_r($accountInfo);
-	#$f = fopen("blank.txt", "r");
-	#$res = $dbxClient->uploadFile("/blank.txt", dbx\WriteMode::add(), $f);
-	#fclose($f);
-	/*try{
-		$res = $dbxClient->delete("/blank.txt");
-		print_r($res);
+	#Returns a new Facebook session if a user is logged in.
+	#Returns null otherwise.
+	function createFBSession(){
+		$helper = new FacebookJavaScriptLoginHelper();
+		try{
+			return $helper->getSession();
+		} catch(Exception $e){
+			return null;
+		}
 	}
-	catch(Exception $e){}
-	finally{
-		echo "File no longer exists.";
-	}*/
+
+	$fbsess = createFBSession();
+	if($fbsess){
+		try{
+			$user_profile = (new FacebookRequest($fbsess, 'GET', '/me'))->execute()->getGraphObject();
+			$name = $user_profile->getProperty('name');
+			$email = $user_profile->getProperty('email');
+			$model = new Model();
+			#if !user exists
+				$model->add_user($model->get_user_id, $name, null, $email, null);
+			$user = $model->get_user($email, null);
+				
+		} catch(Exception $e){}
+	}
 ?>
