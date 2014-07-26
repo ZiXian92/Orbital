@@ -2,14 +2,13 @@
 <div class="error" id="error"></div>
 <form name="change_passwd" action="users/changepassword" method="POST"
 onsubmit="return change_password(event);">
-<label>Current Password:
-<input type="password" name="oldpasswd" size="20" placeholder="Your current password">
-</label><br/>
-<label>New Password:
+<label>Current Password:</label>
+<input type="password" name="oldpasswd" size="20" placeholder="Your current password"><br/>
+<label>New Password:</label>
 <input type="password" name="passwd" size="20" placeholder="New alphanumeric password" onkeyup="checkPassword(this.value);">
-</label><span id="checkPassword"></span><br/>
-<label>Re-enter New Password:
+<span id="checkPassword"></span><br/>
+<label>Re-enter New Password:</label>
 <input type="password" name="passwd2" size="20" placeholder="Re-type new password" onkeyup="confirmPassword(this.value);">
-</label><span id="confirmPassword"></span><br/>
+<span id="confirmPassword"></span><br/>
 <input type="submit" name="submit" value="Change Password">
 </form>
