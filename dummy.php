@@ -1,40 +1,31 @@
 <?php
-	/*$url = 'https://api.sendgrid.com/';
-	$user = 'zixian';
-	$pass = 'Nana7Nana';
+	require 'facebook-php-sdk-v4-4.0-dev/autoload.php';
+	use Facebook\FacebookRequest;
+	use Facebook\GraphUser;
+	use Facebook\FacebookRequestException;
 
-	$params = array(
-		'api_user' => $user,
-		'api_key' => $pass,
-		'to[]' => array('zixian1992@hotmail.com',
-		'zi_xian_moonofdestiny@hotmail.com'),
-		'subject' => 'First SendGrid Email to Multiple Recipients',
-		'text' => 'This email is sent to multiple recipients.',
-		'from' => 'zixian1992@hotmail.com',
-	);
+	#Returns a new Facebook session if a user is logged in.
+	#Returns null otherwise.
+	function createFBSession(){
+		$helper = new FacebookJavaScriptLoginHelper();
+		try{
+			return $helper->getSession();
+		} catch(Exception $e){
+			return null;
+		}
+	}
 
-	$request = $url."api/mail.send.json";
-
-	#Create new cURL request
-	$session = curl_init($request);
-
-	#Use HTTP POST
-	curl_setopt($session, CURLOPT_POST, true);
-
-	#Sets the POST parameters
-	curl_setopt($session, CURLOPT_POSTFIELDS, $params);
-
-	#Don't return headers, but returns the response
-	curl_setopt($session, CURLOPT_HEADER, false);
-	curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
-
-	#Execute the request and get response
-	$response = curl_exec($session);
-
-	#Closes the session
-	curl_close($session);
-
-	print_r($response);*/
-
-	echo $_SERVER['CONTENT_TYPE'];
+	$fbsess = createFBSession();
+	if($fbsess){
+		try{
+			$user_profile = (new FacebookRequest($fbsess, 'GET', '/me'))->execute()->getGraphObject();
+			$name = $user_profile->getProperty('name');
+			$email = $user_profile->getProperty('email');
+			$model = new Model();
+			#if !user exists
+				$model->add_user($model->get_user_id, $name, null, $email, null);
+			$user = $model->get_user($email, null);
+				
+		} catch(Exception $e){}
+	}
 ?>
