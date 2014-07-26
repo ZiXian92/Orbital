@@ -10,7 +10,9 @@
 	#Returns null otherwise.
 	function createFBSession(){
 		$helper = new FacebookJavaScriptLoginHelper();
+		#var_dump($helper);
 		try{
+			var_dump($helper->getSession());
 			return $helper->getSession();
 		} catch(Exception $e){
 			return null;
@@ -22,6 +24,7 @@
 	FacebookSession::setDefaultApplication($arr['app_id'], $arr['app_secret']);
 
 	$fbsess = createFBSession();
+	#var_dump($fbsess);
 	if($fbsess){
 		try{
 			$user_profile = (new FacebookRequest($fbsess, 'GET', '/me'))->execute()->getGraphObject();
