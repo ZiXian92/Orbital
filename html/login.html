@@ -97,8 +97,7 @@ onsubmit="return validate_login(event);">
 	<input type="submit" name="submit_button" value="Login">
 	
 	<!--FB Login Button-->
-	<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-	</fb:login-button>
+	<div class="fb-login-button" data-size="medium" data-auto-logout-link="true" data-scope="email"></div>
 	
 	<div id="status">
 	</div>

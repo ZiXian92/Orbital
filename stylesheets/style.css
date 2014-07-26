@@ -67,3 +67,7 @@ label{
 textarea{
 	vertical-align: top;
 }
+
+input.button{
+	display: block;
+}
