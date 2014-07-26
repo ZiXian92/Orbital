@@ -37,23 +37,6 @@ nav{
 	min-width: 500px;
 }
 
-#navbar {
-	list-style-type: none;
-	text-align: center;
-	margin: 0;
-	padding: 0;
-}
-
-#navbar li{
-	display: inline-block;
-	text-decoration: none;
-	margin: 0 1em;
-}
-
-#navbar li a{
-	text-decoration: none;
-}
-
 #content{
 	width: 60%;
 	min-width: 500px;
@@ -70,7 +53,7 @@ nav{
 }
 
 label{
-	width: 250px;
+	width: 50px;
 }
 
 #footer{
