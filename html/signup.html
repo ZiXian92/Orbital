@@ -4,21 +4,21 @@ admin is able to view all the entries archived as collection on this application
 <div class="error" id="error"></div>
 <form name="signup" id="signup" action="users/signup" method="POST"
 onsubmit="return validate_signup();">
-	<label>Name:
+	<label>Name:</label>
 	<input type="text" name="name" size="20" maxlength="20" placeholder="Your name" onkeyup="checkName(this.value);">
-	</label><span id="checkName"></span><br/>
+	<span id="checkName"></span><br/>
 
-	<label>Email:
+	<label>Email:</label>
 	<input type="text" name="email" size="30" placeholder="email@example.com" onkeyup="checkEmail(this.value);">
-	</label><span id="checkEmail"></span><br/>
+	<span id="checkEmail"></span><br/>
 
-	<label>Password:
+	<label>Password:</label>
 	<input type="password" name="passwd" size="20" placeholder="Use only alphanumeric characters" onkeyup="checkPassword(this.value);">
-	</label><span id="checkPassword"></span><br/>
+	<span id="checkPassword"></span><br/>
 
-	<label>Re-type password:
+	<label>Re-type password:</label>
 	<input type="password" name="re-passwd" size="20" placeholder="Must match password field" onkeyup="confirmPassword(this.value);">
-	</label><span id="confirmPassword"></span><br/>
+	<span id="confirmPassword"></span><br/>
 
 	<input type="submit" name="submit" value="Sign Up">
 </form>
