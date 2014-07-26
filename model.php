@@ -61,7 +61,7 @@
 				$arr['author'] = "<input type=\"text\" 
 					name=\"author\" size=\"20\" 
 					placeholder=\"Your name here\"
-					maxlength=\"20\">*required";
+					maxlength=\"20\">";
 			}
 
 			if(isset($_SESSION['user_id']) && $page=='home'){
