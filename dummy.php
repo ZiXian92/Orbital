@@ -1,4 +1,6 @@
 <?php
+	use FacebookSession;
+
 	#Returns a new Facebook session if a user is logged in.
 	#Returns null otherwise.
 	function createFBSession(){
