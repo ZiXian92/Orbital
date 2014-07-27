@@ -1,5 +1,6 @@
 <?php
-	use FacebookSession;
+	use Facebook\FacebookSession;
+	use Facebook\FacebookRequestException;
 
 	#Returns a new Facebook session if a user is logged in.
 	#Returns null otherwise.
