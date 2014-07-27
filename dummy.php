@@ -12,23 +12,25 @@
 		$helper = new FacebookJavaScriptLoginHelper();
 		var_dump($helper);
 		try{
+			var_dump($helper->getSession());
 			return $helper->getSession();
 		} catch(Exception $e){
 			return null;
 		}
 	}
-	ini_set('display_errors', 'On');
-	$app_info = json_decode(file_get_contents('fbsdk.json'), true);
-	FacebookSession::setDefaultApplication($app_info['app_id'], $app_info['app_secret']);
+
+	$arr = json_decode(file_get_contents('fbsdk.json'), true);
+
+	FacebookSession::setDefaultApplication($arr['app_id'], $arr['app_secret']);
+
 	$fbsess = createFBSession();
-	var_dump($fbsess);
+	#var_dump($fbsess);
 	if($fbsess){
 		try{
 			$user_profile = (new FacebookRequest($fbsess, 'GET', '/me'))->execute()->getGraphObject();
-			var_dump($user_profile);
 			$name = $user_profile->getProperty('name');
 			$email = $user_profile->getProperty('email');
-			echo $name.'<br/>'.$email;
+			echo $name."<br/>".$email;
 			#$model = new Model();
 			#if !user exists
 				#$model->add_user($model->get_user_id, $name, null, $email, null);
@@ -36,4 +38,6 @@
 				
 		} catch(Exception $e){}
 	}
+	else
+		echo 'Not logged in to Facebook.';
 ?>
