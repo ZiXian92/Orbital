@@ -18,7 +18,7 @@
 	}
 	ini_set('display_errors', 'On');
 	$app_info = json_decode(file_get_contents('fbsdk.json'), true);
-	FacebookSession::setDefaultApplication();
+	FacebookSession::setDefaultApplication($app_info['app_id'], $app_info['app_secret']);
 	$fbsess = createFBSession();
 	if($fbsess){
 		try{
