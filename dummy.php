@@ -16,6 +16,7 @@
 			return null;
 		}
 	}
+	error_reporting(E_ALL);
 	$app_info = json_decode(file_get_contents('fbsdk.json'), true);
 	FacebookSession::setDefaultApplication();
 	$fbsess = createFBSession();
