@@ -20,6 +20,7 @@
 	$app_info = json_decode(file_get_contents('fbsdk.json'), true);
 	FacebookSession::setDefaultApplication($app_info['app_id'], $app_info['app_secret']);
 	$fbsess = createFBSession();
+	var_dump($fbsess);
 	if($fbsess){
 		try{
 			$user_profile = (new FacebookRequest($fbsess, 'GET', '/me'))->execute()->getGraphObject();
