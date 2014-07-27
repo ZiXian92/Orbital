@@ -1,15 +1,16 @@
 <?php
-	require 'Facebook/FacebookSession.php';
-	require 'Facebook/FacebookJavaScriptLoginHelper.php';
-	require 'Facebook/FacebookRequest.php';
-	require 'Facebook/FacebookRequestException.php';
-	require 'Facebook/GraphObject.php';
+	require 'facebook-php-sdk-v4-4.0-dev/autoload.php';
+	use Facebook\FacebookSession;
+	use Facebook\FacebookJavaScriptLoginHelper;
+	use Facebook\FacebookRequest;
+	use Facebook\GraphUser;
+	use Facebook\FacebookRequestException;
 
 	#Returns a new Facebook session if a user is logged in.
 	#Returns null otherwise.
 	function createFBSession(){
 		$helper = new FacebookJavaScriptLoginHelper();
-		var_dump($helper);
+		#var_dump($helper);
 		try{
 			var_dump($helper->getSession());
 			return $helper->getSession();
@@ -17,11 +18,10 @@
 			return null;
 		}
 	}
-	echo 'Hello';
-	ini_set('display_errors', 'On');
 
-	echo 'Hello';
-	FacebookSession::setDefaultApplication("823148504363911", "2e6875c6ad028b5a7f1099016b4f535f");
+	$arr = json_decode(file_get_contents('fbsdk.json'), true);
+
+	FacebookSession::setDefaultApplication($arr['app_id'], $arr['app_secret']);
 
 	$fbsess = createFBSession();
 	#var_dump($fbsess);
