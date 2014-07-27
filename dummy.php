@@ -17,6 +17,7 @@
 			return null;
 		}
 	}
+	echo 'Hello';
 	ini_set('display_errors', 'On');
 
 	echo 'Hello';
