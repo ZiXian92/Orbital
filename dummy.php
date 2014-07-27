@@ -10,6 +10,7 @@
 	#Returns null otherwise.
 	function createFBSession(){
 		$helper = new FacebookJavaScriptLoginHelper();
+		var_dump($helper);
 		try{
 			return $helper->getSession();
 		} catch(Exception $e){
