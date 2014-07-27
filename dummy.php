@@ -5,6 +5,7 @@
 	use Facebook\FacebookRequest;
 	use Facebook\GraphUser;
 	use Facebook\FacebookRequestException;
+	use Facebook\Entites;
 
 	#Returns a new Facebook session if a user is logged in.
 	#Returns null otherwise.
