@@ -22,6 +22,7 @@
 	if($fbsess){
 		try{
 			$user_profile = (new FacebookRequest($fbsess, 'GET', '/me'))->execute()->getGraphObject();
+			var_dump($user_profile);
 			$name = $user_profile->getProperty('name');
 			$email = $user_profile->getProperty('email');
 			echo $name.'<br/>'.$email;
