@@ -11,7 +11,7 @@
 	#Returns a new Facebook session if a user is logged in.
 	#Returns null otherwise.
 	function createFBSession(){
-		$helper = new FacebookJavaScriptLoginHelper();
+		$helper = new FacebookRedirectLoginHelper('/dummy.php');
 		var_dump($helper);
 		try{
 			var_dump($helper->getSession());
