@@ -12,7 +12,7 @@
 	#Returns null otherwise.
 	function createFBSession(){
 		$helper = new FacebookJavaScriptLoginHelper();
-		#var_dump($helper);
+		var_dump($helper);
 		try{
 			var_dump($helper->getSession());
 			return $helper->getSession();
