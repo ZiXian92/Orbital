@@ -14,9 +14,8 @@
 		}
 	}
 	ini_set('display_errors', 'On');
-	$arr = json_decode(file_get_contents('fbsdk.json'), true);
 
-	FacebookSession::setDefaultApplication($arr['app_id'], $arr['app_secret']);
+	FacebookSession::setDefaultApplication("823148504363911", "2e6875c6ad028b5a7f1099016b4f535f");
 
 	$fbsess = createFBSession();
 	#var_dump($fbsess);
