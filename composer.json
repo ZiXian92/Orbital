@@ -1,5 +1,6 @@
 {
 	"require": {
-		"ext-curl": "*"
+		"ext-curl": "*",
+		"facebook/php-sdk-v4": "4.0.*"
 	}
 }
