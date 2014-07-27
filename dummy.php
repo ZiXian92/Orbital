@@ -15,8 +15,8 @@
 		$helper = new FacebookRedirectLoginHelper('/dummy.php');
 		var_dump($helper);
 		try{
-			var_dump($helper->getSession());
-			return $helper->getSession();
+			var_dump($helper->getSessionFromRedirect());
+			return $helper->getSessionFromRedirect();
 		} catch(Exception $e){
 			return null;
 		}
