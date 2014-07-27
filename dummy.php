@@ -4,11 +4,6 @@
 	require 'Facebook/FacebookRequest.php';
 	require 'Facebook/FacebookRequestException.php';
 	require 'Facebook/GraphObject.php';
-	use Facebook\FacebookSession;
-	use Facebook\FacebookRequest;
-	use Facebook\FacebookRequestException;
-	use Facebook\FacebookJavaScriptLoginHelper;
-	use Facebook\GraphObject;
 
 	#Returns a new Facebook session if a user is logged in.
 	#Returns null otherwise.
