@@ -3,6 +3,7 @@
 	require 'facebook-php-sdk-v4-4.0-dev/src/Facebook/Entities/AccessToken.php';
 	require 'facebook-php-sdk-v4-4.0-dev/src/Facebook/Entities/SignedRequest.php';
 	use Facebook\FacebookSession;
+	use Facebook\FacebookRedirectLoginHelper;
 	use Facebook\FacebookJavaScriptLoginHelper;
 	use Facebook\FacebookRequest;
 	use Facebook\GraphUser;
