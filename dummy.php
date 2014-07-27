@@ -14,10 +14,13 @@
 	function createFBSession(){
 		$helper = new FacebookRedirectLoginHelper('/dummy.php');
 		var_dump($helper);
+		echo '<br/>';
 		try{
 			var_dump($helper->getSessionFromRedirect());
+			echo '<br/>';
 			return $helper->getSessionFromRedirect();
 		} catch(Exception $e){
+			echo 'Exception caught.<br/>';
 			return null;
 		}
 	}
