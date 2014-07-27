@@ -18,7 +18,7 @@
 			return null;
 		}
 	}
-
+	ini_set('display_errors', 'On');
 	$arr = json_decode(file_get_contents('fbsdk.json'), true);
 
 	FacebookSession::setDefaultApplication($arr['app_id'], $arr['app_secret']);
