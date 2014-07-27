@@ -12,7 +12,7 @@
 	#Returns a new Facebook session if a user is logged in.
 	#Returns null otherwise.
 	function createFBSession(){
-		$helper = new FacebookRedirectLoginHelper('/dummy.php');
+		$helper = new FacebookRedirectLoginHelper('http://relivethatmoment.herokuapp.com/dummy.php');
 		var_dump($helper);
 		echo '<br/>';
 		try{
