@@ -143,18 +143,6 @@
 				pg_execute($this->sql_con, "", array($id));
 		}
 
-		#Checks if user with the given name and email exists
-		public function contains_user($name, $email){
-			$name = pg_escape_string($this->sql_con, $name);
-			$email = pg_escape_string($this->sql_con, $email);
-			$q = 'SELECT FROM USERS WHERE USERNAME=$1 AND EMAIL=$2';
-			pg_prepare($this->sql_con, "", $q);
-			$result = pg_execute($this->sql_con, "", array($name, $email));
-			if(pg_affected_rows($result)==1)
-				return true;
-			return false;
-		}
-
 		/* Checks if the given id exists in the database.
 		 * $id must be an integer between 0 and 99999
 		 */

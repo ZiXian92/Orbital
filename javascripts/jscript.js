@@ -311,24 +311,11 @@ function delete_entry(ev, id){
 }
 
 //Sends request to server, telling it that it is log in via Facebook
-/*function fb_login(){
+function fb_login(){
 	FB.getLoginStatus(function(response){
-		if(response.status==='connected'){
-			data = {};
-			FB.api('/me', function(response){
-				data.name = response.name;
-				data.email = response.email;
-			});
-			ajaxRequest = new XMLHttpRequest();
-			ajaxRequest.onreadystatechange=function(){
-				if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
-					document.getElementById('error').innerHTML = 'Login success';
-					window.location = 'https://relivethatmoment.herokuapp.com';
-			};
-			//Send request to server to log in
-			ajaxRequest.open('POST', '/users/fb_login', true);
-			ajaxRequest.send(JSON.stringify(data));
-		}
+		if(response.status==='connected')
+			document.getElementById('error').innerHTML = 'Logged in to Facebook';
+>>>>>>> parent of a70133b... Tries implementing Facebook login
 		else{
 			FB.login(function(response){
 				if(response.authResponse)
@@ -336,4 +323,4 @@ function delete_entry(ev, id){
 			}, {scope: 'public_profile, email'});
 		}
 	});
-}*/
+}
