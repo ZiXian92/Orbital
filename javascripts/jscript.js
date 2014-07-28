@@ -344,7 +344,7 @@ function fb_login(){
 		else{
 			FB.login(function(response){
 				if(response.authResponse)
-					document.getElementById('error').innerHTML = 'Logged in to Facebook';
+					fb_login();
 			}, {scope: 'public_profile, email'});
 		}
 	});
