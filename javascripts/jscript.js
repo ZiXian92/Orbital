@@ -311,7 +311,7 @@ function delete_entry(ev, id){
 }
 
 //Sends request to server, telling it that it is log in via Facebook
-function fb_login(){
+/*function fb_login(){
 	FB.getLoginStatus(function(response){
 		if(response.status=='connected'){
 			FB.api('/me', function(response) {
@@ -334,5 +334,12 @@ function fb_login(){
 					fb_login();
 			});
 		}
+	});
+}*/
+
+function fb_login(){
+	FB.login(function(response){
+		if(response.authResponse)
+			document.getElementById('error').innerHTML = 'Logged in to Facebook';
 	});
 }
