@@ -327,11 +327,12 @@ function fb_login(){
 				ajaxRequest.send(JSON.stringify(data));
 			}
 		}
-		else
+		else{
 			FB.login(function(response){
 			//If Facebook login is complete
 				if(response.authResponse)
 					fb_login();
 			});
+		}
 	});
 }
