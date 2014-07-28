@@ -99,8 +99,10 @@
 		public function add_user($id, $name, $passwd, $email, $code){
 			$id = (int)mysqli_real_escape_string($this->sql_con, (string)$id);
 			$name = mysqli_real_escape_string($this->sql_con, $name);
-			$passwd = mysqli_real_escape_string($this->sql_con, $passwd);
-			$passwd = SHA1($passwd);
+			if(isset($passwd)){
+				$passwd = mysqli_real_escape_string($this->sql_con, $passwd);
+				$passwd = SHA1($passwd);
+			}
 			$email = mysqli_real_escape_string($this->sql_con, $email);
 
 			/* Using prepared statement for security purpose */
@@ -184,6 +186,18 @@
 			if($id!=0)
 				mysqli_stmt_execute($stmt);
 			mysqli_stmt_close($stmt);
+		}
+
+		public function contains_user($name, $email){
+			$name = mysqli_real_escape_string($this->sql_con, $name);
+			$email = mysqli_real_escape_string($this->sql_con, $email);
+			$q = "SELECT ID FROM USERS WHERE USERNAME=? AND EMAIL=?";
+			$stmt = mysqli_prepare($this->sql_con, $q);
+			mysqli_stmt_bind_param($stmt, "ss", $name, $email);
+			mysqli_stmt_execute($stmt);
+			if(mysqli_stmt_affected_rows($stmt)==1)
+				return true;
+			return false;
 		}
 
 		/* Checks if the given id exists in the database.
