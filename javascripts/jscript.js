@@ -348,6 +348,7 @@ function fb_login(){
 			ajaxRequest = new XMLHttpRequest();
 			ajaxRequest.onreadystatechange=function(){
 				if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
+					document.getElementById('error').innerHTML = 'Login success';
 					window.location = 'https://relivethatmoment.herokuapp.com';
 			};
 			//Send request to server to log in
