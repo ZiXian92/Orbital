@@ -339,8 +339,21 @@ function delete_entry(ev, id){
 
 function fb_login(){
 	FB.getLoginStatus(function(response){
-		if(response.status==='connected')
-			document.getElementById('error').innerHTML = 'Logged in to Facebook';
+		if(response.status==='connected'){
+			data = {};
+			FB.api('/me', function(response){
+				data.name = response.name;
+				data.email = response.email;
+			});
+			ajaxRequest = new XMLHttpRequest();
+			ajaxRequest.onreadystatechange=function(){
+				if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
+					window.location = 'https://relivethatmoment.herokuapp.com';
+			};
+			//Send request to server to log in
+			ajaxRequest.open('POST', '/users/fb_login', true);
+			ajaxRequest.send(JSON.stringify(data));
+		}
 		else{
 			FB.login(function(response){
 				if(response.authResponse)

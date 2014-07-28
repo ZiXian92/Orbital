@@ -301,6 +301,30 @@
 		}
 	}
 
+	#Adds/Logs in a user who is logged in to Facebook.
+	#Only accepts POST requests and 
+	function fb_login(){
+		try{
+			if($_SERVER['REQUEST_METHOD']=='POST' && $_SERVER['CONTENT_TYPE']=='application/json; charset=UTF-8'){
+				$req_params = json_decode(file_get_contents('php://input'), true);
+				$name = strip_tags($req_params['name']);
+				$email = strip_tags($req_params['email']);
+				$model = new Model();
+				if(!$model->contains_user($name, $email))
+					$model->add_user($model->get_user_id(), $name, NULL, $email, NULL);
+				$arr = $model->get_user($email, NULL);
+				$_SESSION['user_id'] = $arr['id'];
+				$_SESSION['username'] = $arr['username'];
+			}
+			elseif($_SERVER['REQUEST_METHOD']=='POST')
+				http_response_code(400);
+			else
+				header('Location: https://'.$_SERVER['HTTP_HOST'].'/404');
+		}
+		catch(Exception $e)
+			http_response_code(400);
+	}
+
 	/* Ensure that the rest of the script is accessed via HTTPS */
 	/*if(empty($_SERVER['HTTPS'])){
 		header("Location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
@@ -330,7 +354,7 @@
 			break;
 		case 'changepassword': changepassword();
 			break;
-		case 'fb_login':
+		case 'fb_login': fb_login();
 			break;
 		case 'logout': logout();
 			break;
