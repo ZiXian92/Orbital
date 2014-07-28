@@ -338,8 +338,14 @@ function delete_entry(ev, id){
 }*/
 
 function fb_login(){
-	FB.login(function(response){
-		if(response.authResponse)
+	FB.getLoginStatus(function(response){
+		if(response.status==='connected')
 			document.getElementById('error').innerHTML = 'Logged in to Facebook';
+		else{
+			FB.login(function(response){
+				if(response.authResponse)
+					document.getElementById('error').innerHTML = 'Logged in to Facebook';
+			}, {scope: 'public_profile, email'});
+		}
 	});
 }
