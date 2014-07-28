@@ -315,7 +315,6 @@ function fb_login(){
 	FB.getLoginStatus(function(response){
 		if(response.status==='connected')
 			document.getElementById('error').innerHTML = 'Logged in to Facebook';
->>>>>>> parent of a70133b... Tries implementing Facebook login
 		else{
 			FB.login(function(response){
 				if(response.authResponse)
