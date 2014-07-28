@@ -314,18 +314,19 @@ function delete_entry(ev, id){
 function fb_login(){
 	FB.getLoginStatus(function(response){
 		if(response.status=='connected'){
-			FB.api('/me', function(response) {
+			/*FB.api('/me', function(response) {
 				data = {};
 				data.name = response.name;
 				data.email = response.email;
 				ajaxRequest = new XMLHttpRequest();
 				ajaxRequest.onreadystatechange = function(){
 					if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
-						//document.getElement
-				};
+						//document.getElement*/
+			document.getElementById('error').innerHTML = 'Connected to Facebook';
+				/*};
 				ajaxRequest.open('POST', '/users/fb_login', true);
 				ajaxRequest.send(JSON.stringify(data));
-			}
+			}*/
 		}
 		else
 			FB.login(function(response){
