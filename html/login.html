@@ -12,6 +12,7 @@
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
       testAPI();
+	//fb_login();
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
       document.getElementById('status').innerHTML = 'Please log ' +
@@ -76,7 +77,7 @@
     FB.api('/me', function(response) {
       console.log('Successful login for: ' + response.name);
       document.getElementById('status').innerHTML =
-        'Thanks for logging in, ' + response.name + '!';
+        'Thanks for logging in, ' + response.name + 'at' + response.email +'!';
     });
   }
 </script>

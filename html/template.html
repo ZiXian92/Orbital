@@ -1,7 +1,26 @@
 <!DOCTYPE html>
 <!--Template HTML code for ALL pages-->
 <html>
+<script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '823148504363911',
+          xfbml      : true,
+          version    : 'v2.0',
+	  cookie     : true
+        });
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+</script>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{{title}}-Relive That Moment</title>
 	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
 	<link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.css">
@@ -31,7 +50,10 @@
 	</div>
 
 	<div id="footer">
-		Created by: Qua Zi Xian and Tang Yulong on XX July 2014
+		<!--Facebook Like and Share button-->
+		<div class="fb-like" data-href="http://relivethatmoment.herokuapp.com/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div><br/>
+		Created by: Qua Zi Xian and Tang Yu Long on XX July 2014
 	</div>
+	
 </body>
 </html>
