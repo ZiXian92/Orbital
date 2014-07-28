@@ -309,3 +309,29 @@ function delete_entry(ev, id){
 		ajaxRequest.send();
 	}
 }
+
+//Sends request to server, telling it that it is log in via Facebook
+function fb_login(){
+	FB.getLoginStatus(function(response){
+		if(response.status=='connected'){
+			FB.api('/me', function(response) {
+				data = {};
+				data.name = response.name;
+				data.email = response.email;
+				ajaxRequest = new XMLHttpRequest();
+				ajaxRequest.onreadystatechange = function(){
+					if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
+						//document.getElement
+				};
+				ajaxRequest.open('POST', '/users/fb_login', true);
+				ajaxRequest.send(JSON.stringify(data));
+			}
+		}
+		else
+			FB.login(function(response){
+			//If Facebook login is complete
+				if(response.authResponse)
+					fb_login();
+			});
+	});
+}
