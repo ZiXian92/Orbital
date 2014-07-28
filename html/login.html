@@ -11,7 +11,8 @@
     // for FB.getLoginStatus().
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
-      testAPI();
+      //testAPI();
+      fb_login();
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
       document.getElementById('status').innerHTML = 'Please log ' +
@@ -76,19 +77,19 @@
     FB.api('/me', function(response) {
       console.log('Successful login for: ' + response.name);
       document.getElementById('status').innerHTML =
-        'Thanks for logging in, ' + response.name + '!';
+        'Thanks for logging in, ' + response.name + 'at' + response.email +'!';
     });
   }
 </script>
 <form name="login_form" id="login_form" action="users/login" method="POST"
 onsubmit="return validate_login(event);">
-	<label>Email:</label>
-	<input type="text" name="email" size="30">
-	<br/>
+	<label>Email: 
+	<input type="text" name="email" size="30">*required
+	</label><br/>
 
-	<label>Password:</label>
-	<input type="password" name="passwd" size="30">
-	<br/>
+	<label>Password: 
+	<input type="password" name="passwd" size="10" maxlength="10">*required
+	</label><br/>
 
 	<!--Fill the href section with the appropriate request
 	    to send to script-->
@@ -97,7 +98,9 @@ onsubmit="return validate_login(event);">
 	<input type="submit" name="submit_button" value="Login">
 	
 	<!--FB Login Button-->
-	<div class="fb-login-button" data-size="medium" data-auto-logout-link="true" data-scope="email"></div>
+	<button type="button" onclick="fb_login();">Sign in with Facebook</button>
+	<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+	</fb:login-button>
 	
 	<div id="status">
 	</div>

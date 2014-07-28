@@ -330,6 +330,8 @@
 			break;
 		case 'changepassword': changepassword();
 			break;
+		case 'fb_login':
+			break;
 		case 'logout': logout();
 			break;
 		default: http_response_code(400);

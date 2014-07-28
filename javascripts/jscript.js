@@ -19,7 +19,7 @@ function checkName(name){
 	var data = {};
 	data.name = name;
 	ajaxRequest.open("POST", "/users/checkName", true);
-	ajaxRequest.setRequestHeader("Content-Type", "application/json");
+	ajaxRequest.setRequestHeader("Content-type", "application/json");
 	ajaxRequest.onreadystatechange = function(){
 		if(ajaxRequest.readyState==4 && ajaxRequest.status==200){
 			document.getElementById("checkName").innerHTML = ajaxRequest.responseText;
@@ -127,7 +127,7 @@ function validate_signup(){
 	var pass2Check = document.getElementById('confirmPassword').innerHTML;
 
 	if(nameCheck!='Ok' || emailCheck!='Ok' || passCheck!='Ok' ||
-			pass2Check!='Ok'){
+	pass2Check!='Ok'){
 		document.getElementById('error').innerHTML = 'Please make sure all fields are valid';
 		return false;
 	}
@@ -269,8 +269,8 @@ function change_password(ev){
 	ajaxRequest.onreadystatechange=function(){
 		if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
 			document.getElementById('error').innerHTML = ajaxRequest.responseText;
-		if(ajaxRequest.responseText=='Success')
-			document.forms[0].reset();
+			if(ajaxRequest.responseText=='Success')
+				document.forms[0].reset();
 	};
 	ajaxRequest.open('POST', '/users/changepassword', true);
 	ajaxRequest.setRequestHeader('Content-Type', 'application/json');
@@ -310,46 +310,28 @@ function delete_entry(ev, id){
 	}
 }
 
-function fb_logout(){
-	window.fbAsyncInit = function() {
-		FB.init({
-		appId      : '823148504363911',
-		cookie     : true,  // enable cookies to allow the server to access 
-		// the session
-		xfbml      : true,  // parse social plugins on this page
-		version    : 'v2.0' // use version 2.0
-		});
-
-		// Now that we've initialized the JavaScript SDK, we call 
-		// FB.getLoginStatus().  This function gets the state of the
-		// person visiting this page and can return one of three states to
-		// the callback you provide.  They can be:
-		//
-		// 1. Logged into your app ('connected')
-		// 2. Logged into Facebook, but not your app ('not_authorized')
-		// 3. Not logged into Facebook and can't tell if they are logged into
-		//    your app or not.
-		//
-		// These three cases are handled in the callback function.
-
-		FB.getLoginStatus(function(response) {
-			statusChangeCallback(response);
-		});
-
-	};
-
-	// Load the SDK asynchronously
-	(function(d, s, id) {
-		 var js, fjs = d.getElementsByTagName(s)[0];
-		 if (d.getElementById(id)) return;
-		 js = d.createElement(s); js.id = id;
-		 js.src = "//connect.facebook.net/en_US/sdk.js";
-		 fjs.parentNode.insertBefore(js, fjs);
-	 }(document, 'script', 'facebook-jssdk'));
-	
-	//Facebook logout call
-	FB.logout(function(response) {
-		//user is now logged out
+//Sends request to server, telling it that it is log in via Facebook
+function fb_login(){
+	FB.getLoginStatus(function(response){
+		if(response.status=='connected'){
+			FB.api('/me', function(response) {
+				data = {};
+				data.name = response.name;
+				data.email = response.email;
+				ajaxRequest = new XMLHttpRequest();
+				ajaxRequest.onreadystatechange = function(){
+					if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
+						document.getElementById('error').innerHTML = 'Logged in to Facebook.';
+				};
+				ajaxRequest.open('POST', '/users/fb_login', true);
+				ajaxRequest.send(JSON.stringify(data));
+			}
+		}
+		else
+			FB.login(function(response){
+			//If Facebook login is complete
+				if(response.authResponse)
+					fb_login();
+			});
 	});
-	return true;
 }
