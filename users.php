@@ -21,7 +21,7 @@
 	function validate_login(){
 		try{
 			if($_SERVER['REQUEST_METHOD']=='POST' &&
-			$_SERVER['CONTENT_TYPE']=='application/json; charset=UTF-8'){
+			preg_match('/^application\/json/', $_SERVER['CONTENT_TYPE'])){
 				$req_params = json_decode(file_get_contents('php://input'), true);
 				$model = new Model();
 				$email = strip_tags($req_params['email']);
@@ -329,8 +329,6 @@
 		case 'reset_password': reset_password();
 			break;
 		case 'changepassword': changepassword();
-			break;
-		case 'fb_login':
 			break;
 		case 'logout': logout();
 			break;
