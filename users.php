@@ -104,7 +104,7 @@
 	#Only accessible by POST request using JSON format.
 	function checkEmail(){
 		try{
-			if($_SERVER['REQUEST_METHOD']=='POST' && $_SERVER['CONTENT_TYPE']=='application/json; charset=UTF-8'){
+			if($_SERVER['REQUEST_METHOD']=='POST' && preg_match('/^application\/json/', $_SERVER['CONTENT_TYPE'])){
 				$req_params = json_decode(file_get_contents('php://input'), true);
 				$email = strip_tags($req_params['email']);
 				$model = new Model();
