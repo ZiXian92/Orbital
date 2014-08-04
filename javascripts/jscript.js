@@ -30,7 +30,7 @@ function checkName(name){
 
 //Checks if the given email addressis valid
 function is_valid_email(email){
-	var email_format = /^[a-zA-Z0-9]+[a-zA-Z0-9_]*@[a-z\.]+\.[a-z]+$/;
+	var email_format = /^[a-zA-Z0-9]+[a-zA-Z0-9_\.]*@[a-z\.]+\.[a-z]+$/;
 	return email.match(email_format);
 }
 

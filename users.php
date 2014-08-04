@@ -17,9 +17,8 @@
 	#Request is successful only if called by POST method and JSON string
 	#containing email and password is supplied.
 	function validate_login(){
-		$req_headers = getallheaders();
 		if($_SERVER['REQUEST_METHOD']=='POST' &&
-		$req_headers['Content-Type']=='application/json; charset=UTF-8'){
+		preg_match('/^application\/json/', $_SERVER['CONTENT_TYPE'])){
 			$req_params = json_decode(file_get_contents('php://input'), true);
 			$model = new Model();
 			try{
@@ -79,8 +78,6 @@
 	#Only accessible by POST method and parameters must be sent in
 	#JSON format.
 	function checkUsername(){
-		#echo $_SERVER['REQUEST_METHOD'];
-		#echo $_SERVER['CONTENT_TYPE'];
 		if($_SERVER['REQUEST_METHOD']=='POST' && preg_match('/^application\/json/', $_SERVER['CONTENT_TYPE'])){
 			$req_params = json_decode(file_get_contents('php://input'), true);
 			try{
@@ -104,8 +101,7 @@
 	#Checks if the given email is taken by another user.
 	#Only accessible by POST request using JSON format.
 	function checkEmail(){
-		$req_headers = getallheaders();
-		if($_SERVER['REQUEST_METHOD']=='POST' && $req_headers['Content-Type']=='application/json; charset=UTF-8'){
+		if($_SERVER['REQUEST_METHOD']=='POST' && preg_match('/^application\/json/', $_SERVER['CONTENT_TYPE'])){
 			$req_params = json_decode(file_get_contents('php://input'), true);
 			try{
 				$email = strip_tags($req_params['email']);
@@ -220,9 +216,8 @@
 	#Should only be accessed via POST request in JSON format with keys name
 	#and email specified.
 	function reset_password(){
-		$req_headers = getallheaders();
 		if($_SERVER['REQUEST_METHOD']=='POST' &&
-		$req_headers['Content-Type']=='application/json; charset=UTF-8'){
+		preg_match('/^application\/json/', $_SERVER['CONTENT_TYPE'])){
 			$req_params = json_decode(file_get_contents('php://input'), true);
 			try{
 				$name = strip_tags($req_params['name']);
@@ -281,8 +276,7 @@
 
 	#Changes a user's password
 	function changepassword(){
-		$req_headers = getallheaders();
-		if($_SERVER['REQUEST_METHOD']=='POST' && $req_headers['Content-Type']=='application/json; charset=UTF-8'){
+		if($_SERVER['REQUEST_METHOD']=='POST' && preg_match('/^application\/json/', $_SERVER['CONTENT_TYPE'])){
 			$req_params = json_decode(file_get_contents('php://input'), true);
 			try{
 				$oldpass = strip_tags($req_params['oldpass']);
@@ -313,7 +307,6 @@
 
 	session_start();
 
-	$arr = getallheaders();
 	$url_elements = explode('/', $_SERVER['REQUEST_URI']);
 	$action = $url_elements[2];
 
