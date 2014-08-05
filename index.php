@@ -41,7 +41,8 @@
 		 * a page not available in the navigation bar
 		 */
 		if(isset($_SESSION['user_id']) && $page!='about' &&
-		$page!='create_entry' && $page!='change_passwd'){
+		$page!='user_guide' && $page!='create_entry' && 
+		$page!='change_passwd'){
 			header('Location: https://'.$_SERVER['HTTP_HOST']);
 			exit();
 		}
