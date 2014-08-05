@@ -31,17 +31,19 @@
 
 <body>
 	<div id="header">
-		<h1>Relive That Moment</h1>
-		<div class="dropdown">
-			<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">Menu
-			<span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-				<li role="presentation"><a role="menuitem" tabindex="-1" href="/">Home</a></li>
-				<li role="presentation"><a role="menuitem" tabindex="-1" href="/about">About</a></li>
-				{{usrmenu}}
-			</ul>
-		</div>
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/"><b>Relive That Moment</b></a>
+				</div>
+
+				<ul class="nav navbar-nav">
+					<li><a href="/about">About</a></li>
+					<li><a href="/user_guide">User Guide</a></li>
+					{{usrmenu}}
+				</ul>
+			</div>
+		</nav>
 	</div>
 
 	<!--The main content of the page-->
