@@ -144,12 +144,12 @@ function validate_login(ev){
 
 	//Performs input validation
 	if(email.length==0 || pass.length==0){
-		document.getElementById('error').innerHTML='Empty email and/or password field(s).';
+		document.getElementById('error').innerHTML='<div class="alert alert-danger" role="alert">Empty email and/or password field(s).</div>';
 		return false;
 	}
 
 	if(!is_valid_email(email)){
-		document.getElementById('error').innerHTML="Invalid email address.";
+		document.getElementById('error').innerHTML='<div class="alert alert-danger" role="alert">Invalid email address.</div>';
 		return false;
 	}
 
@@ -165,12 +165,15 @@ function validate_login(ev){
 	ajaxRequest.onreadystatechange=function(){
 		if(ajaxRequest.readyState==4){
 			if(ajaxRequest.status==200){
-				document.getElementById('error').innerHTML=ajaxRequest.responseText;
-				if(ajaxRequest.responseText=='Login successful')
+				if(ajaxRequest.responseText=='Login successful'){
+					document.getElementById('error').innerHTML='<div class="alert alert-success" role="alert">Login successful</div>';
 					document.getElementById('login_form').submit();
+				}
+				else
+					document.getElementById('error').innerHTML='<div class="alert alert-danger" role="alert">'+ajaxRequest.responseText+'</div>';
 			}
 			else if(ajaxRequest.status==400)
-				document.getElementById('error').innerHTML='Bad request';
+				document.getElementById('error').innerHTML='<div class="alert alert-danger" role="alert">Bad request</div>';
 		}
 	};
 	ajaxRequest.open("POST", "/users/validate_login", true);
