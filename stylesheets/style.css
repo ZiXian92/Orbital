@@ -1,12 +1,9 @@
-body{
-
-}
-
 div{
 	border-style: none;
 	border-width: 1px;
-	margin: 0 auto;
+	margin: 0px auto;
 }
+
 
 .message{
 	border-style: none;
@@ -14,6 +11,7 @@ div{
 
 .error{
 	border-style: none;
+	color: red;
 }
 
 #header{
@@ -23,8 +21,17 @@ div{
 }
 
 #header h1{
+	text-align: left;
 	display: inline-block;
 	margin-right: 10px;
+}
+
+nav{
+	border-style: solid;
+	border-width: 1px;
+	margin: 0 auto;
+	width: 98%;
+	min-width: 500px;
 }
 
 #content{
@@ -38,8 +45,16 @@ div{
 	text-align: center;
 }
 
+#content h3{
+	text-align: left;
+}
+
 #content p{
 	padding: 0 5px;
+}
+
+label{
+	width: 150px;
 }
 
 #footer{
@@ -52,4 +67,8 @@ div{
 
 textarea{
 	vertical-align: top;
+}
+
+input.button{
+	display: block;
 }
