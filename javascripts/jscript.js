@@ -239,7 +239,7 @@ function admin_reset_password(ev, name, email){
 	ajaxRequest = new XMLHttpRequest();
 	ajaxRequest.onreadystatechange=function(){
 		if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
-			document.getElementById('message').innerHTML = ajaxRequest.responseText;
+			document.getElementById('message').innerHTML = '<div class="alert alert-success" role="alert">'+ajaxRequest.responseText+'</div>';
 	};
 	ajaxRequest.open("POST", "/users/reset_password", true);
 	ajaxRequest.setRequestHeader("Content-Type", "application/json");
