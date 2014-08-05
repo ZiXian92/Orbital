@@ -88,7 +88,7 @@ function validate_entry(ev){
 	var text = document.forms[0].story.value;
 	var checkFile = document.getElementById('checkFile').innerHTML;
 	if(filename=="" || title=="" || text=="" || checkFile!='Ok')
-		document.getElementById('error').innerHTML = 'Please make sure all fields are properly filled';
+		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please make sure all fields are properly filled</div>';
 	else{
 		document.forms[0].submit();
 		//window.location.reload(false);
@@ -128,7 +128,7 @@ function validate_signup(){
 
 	if(nameCheck!='Ok' || emailCheck!='Ok' || passCheck!='Ok' ||
 	pass2Check!='Ok'){
-		document.getElementById('error').innerHTML = 'Please make sure all fields are valid';
+		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please make sure all fields are valid</div>';
 		return false;
 	}
 	return true;
@@ -203,12 +203,12 @@ function reset_passwd(ev){
 	var checkEmail = document.getElementById('checkEmail').innerHTML;
 
 	if(name.length==0){
-		document.getElementById('error').innerHTML = 'Please enter a username';
+		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please enter a username</div>';
 		return false;
 	}
 
 	if(checkEmail!='Ok'){
-		document.getElementById('error').innerHTML = 'Please use a valid email address';
+		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please use a valid email address</div>';
 		return false;
 	}
 
@@ -220,7 +220,7 @@ function reset_passwd(ev){
 	ajaxRequest = new XMLHttpRequest();
 	ajaxRequest.onreadystatechange = function(){
 		if(ajaxRequest.readyState==4 && ajaxRequest.status==200){
-			document.getElementById('error').innerHTML = ajaxRequest.responseText;
+			document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">'+ajaxRequest.responseText+'</div>';
 			document.forms[0].reset();
 		}
 	};
@@ -255,12 +255,12 @@ function change_password(ev){
 	var checkPass2 = document.getElementById('confirmPassword').innerHTML;
 
 	if(oldpass.length==0){
-		document.getElementById('error').innerHTML = 'Please enter your current password';
+		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please enter your current password</div>';
 		return false;
 	}
 
 	if(checkPass!='Ok' || checkPass2!='Ok'){
-		document.getElementById('error').innerHTML = 'Please make sure the 2 new passwords match';
+		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please make sure the 2 new passwords match</div>';
 		return false;
 	}
 
@@ -270,10 +270,14 @@ function change_password(ev){
 
 	ajaxRequest = new XMLHttpRequest();
 	ajaxRequest.onreadystatechange=function(){
-		if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
-			document.getElementById('error').innerHTML = ajaxRequest.responseText;
-			if(ajaxRequest.responseText=='Success')
+		if(ajaxRequest.readyState==4 && ajaxRequest.status==200){
+			if(ajaxRequest.responseText=='Success'){
+				document.getElementById('error').innerHTML='<div class="alert alert-success" role="alert">Success</div>';
 				document.forms[0].reset();
+			}
+		else
+			document.getElementById('error').innerHTML='<div class="alert alert-danger" role="alert">'+ajaxRequest.responseText+'</div>';
+		}
 	};
 	ajaxRequest.open('POST', '/users/changepassword', true);
 	ajaxRequest.setRequestHeader('Content-Type', 'application/json');
