@@ -74,12 +74,9 @@
 		 * Change the destination to D before publishing.
 		 */
 		public function __destruct(){
-			parent::Output("/tmp/".(string)$_POST['entry_id'].".pdf", "F");
-			header('Content-Type: application/pdf');
-			header('Content-Disposition: inline; filename="'.$this->_title.'.pdf"');
-			readfile('/tmp/'.(string)$_POST['entry_id'].'.pdf');
-			if(!isset($_SESSION['user_id']))
-				unlink('/tmp/'.(string)$_POST['entry_id'].'.pdf');
+			parent::Output($this->_title.'.pdf', 'I');
+			if(isset($_SESSION['user_id']))
+				parent::Output("/tmp/".(string)$_POST['entry_id'].".pdf", "F");
 		}
 
 		/* Methods */
