@@ -21,14 +21,11 @@
 		finfo_close($fileinfo);
 		if($filetype!="image/jpg" && $filetype!="image/jpeg" &&
 		$filetype!="image/png" && $filetype!="image/bmp"){
-			file_put_contents("message.txt", "Please use only JPEG, BMP or PNG files");
-			header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
 			exit(0);
 		}
-			
-	/* Start a session to use session variables */
-		session_start();
 
+	session_start();
+			
 	/* $model contains database connection */
 		$model = new Model();
 
@@ -106,5 +103,5 @@
 		unlink("/tmp/".$_FILES['img']['name']);
 		#unlink("../uploads/{$_FILES['img']['name']}");
 	}
-	header("Location: https://".$_SERVER['HTTP_HOST']."/index.php?page=create_entry");
+	header("Location: https://".$_SERVER['HTTP_HOST']."/create_entry");
 ?>

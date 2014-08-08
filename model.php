@@ -487,7 +487,7 @@
 				$list.="<tr><td>".$date."</td>
 					<td>".$title."</td>
 					<td><a href=\"/entries_handler/view/".$e_id."\"><button type=\"button\">View</button></a>
-					<a href=\"/entries_handler/delete/".$e_id."\" onclick=\"return confirm_delete();\"><button type=\"button\">Delete</button></a></td></tr>";
+					<a href=\"/entries_handler/delete/".$e_id."\" onclick=\"delete_entry(event, ".$e_id.");\"><button type=\"button\">Delete</button></a></td></tr>";
 				if($counter%10==0)
 					$list.="</span>";
 			}

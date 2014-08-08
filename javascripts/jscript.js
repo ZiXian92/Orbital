@@ -91,10 +91,6 @@ function validate_entry(ev){
 		document.getElementById('error').innerHTML = 'Please make sure all fields are properly filled';
 	else{
 		document.forms[0].submit();
-		//window.location.reload(false);
-		document.forms[0].reset();
-		document.getElementById('error').innerHTML = '';
-		document.getElementById('preview').src = '#';
 	}
 }
 
