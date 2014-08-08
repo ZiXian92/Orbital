@@ -14,24 +14,9 @@ div{
 	color: red;
 }
 
-#header{
-	width: 98%;
-	min-width: 500px;
-	text-align: center;
-}
-
-#header h1{
-	text-align: left;
-	display: inline-block;
-	margin-right: 10px;
-}
-
-nav{
-	border-style: solid;
-	border-width: 1px;
-	margin: 0 auto;
-	width: 98%;
-	min-width: 500px;
+#fblogincheck{
+	float: right;
+	height: auto;
 }
 
 #content{
