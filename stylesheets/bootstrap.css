@@ -239,6 +239,7 @@ th {
     background: #fff !important;
   }
   .navbar {
+    background-color: #ADD8E6;
     display: none;
   }
   .table td,
