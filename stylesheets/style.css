@@ -15,8 +15,11 @@ div{
 }
 
 #fblogincheck{
+	border-style: none;
 	float: right;
-	height: auto;
+	height: 100%;
+	padding-top: auto;
+	padding-bottom: auto;
 }
 
 #content{
