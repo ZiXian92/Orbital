@@ -5,7 +5,7 @@
 	function statusChangeCallback(response) {
 		if(response.status === 'connected') {
 			FB.api('/me', function(res){
-				document.getElementById('fblogincheck').innerHTML='Looged in as '+res.name+' on Facebook';
+				document.getElementById('fblogincheck').innerHTML='Logged in as '+res.name+' on Facebook';
 			});
 		} else if(response.status === 'not_authorized'){}
 		else {
