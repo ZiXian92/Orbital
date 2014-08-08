@@ -239,7 +239,6 @@ th {
     background: #fff !important;
   }
   .navbar {
-    background-color: #ADD8E6;
     display: none;
   }
   .table td,
@@ -4094,7 +4093,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-default {
-  background-color: #f8f8f8;
+  background-color: #AED8E6;
   border-color: #e7e7e7;
 }
 .navbar-default .navbar-brand {
