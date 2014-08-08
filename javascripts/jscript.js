@@ -89,13 +89,8 @@ function validate_entry(ev){
 	var checkFile = document.getElementById('checkFile').innerHTML;
 	if(filename=="" || title=="" || text=="" || checkFile!='Ok')
 		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please make sure all fields are properly filled</div>';
-	else{
+	else
 		document.forms[0].submit();
-		//window.location.reload(false);
-		document.forms[0].reset();
-		document.getElementById('error').innerHTML = '';
-		document.getElementById('preview').src = '#';
-	}
 }
 
 //Checks if the given image is of the supported type.
