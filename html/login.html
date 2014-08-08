@@ -8,7 +8,9 @@
 				document.getElementById('fblogincheck').innerHTML='Looged in as '+res.name+' on Facebook';
 			});
 		} else if(response.status === 'not_authorized'){}
-		else {}
+		else {
+			document.getElementById('fblogincheck').innerHTML='';
+		}
 	}
 
 	// This function is called when someone finishes with the Login

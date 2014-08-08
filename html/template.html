@@ -32,11 +32,14 @@
 			// These three cases are handled in the callback function.
 
 			FB.getLoginStatus(function(response) {
-				if(response.status=='connected'){
+				if(response.status==='connected'){
 					FB.api('/me', function(res){
 						document.getElementById('fblogincheck').innerHTML='Logged in as '+res.name+' on Facebook';
 					});
 				}	
+				else if(response.status==='not_authorized'){}
+				else
+					document.getElementById('fblogincheck').innerHTML='';
 			});
 		};
 
