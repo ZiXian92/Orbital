@@ -1,27 +1,9 @@
 <!DOCTYPE html>
 <!--Template HTML code for ALL pages-->
 <html>
-<script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '823148504363911',
-          xfbml      : true,
-          version    : 'v2.0',
-	  cookie     : true
-        });
-      };
-
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "//connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
-</script>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>{{title}} - Relive That Moment</title>
+	<title>{{title}}-Relive That Moment</title>
 	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
 	<link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -30,15 +12,53 @@
 </head>
 
 <body>
+	<script>
+      		window.fbAsyncInit = function() {
+			FB.init({
+				appId      : '823148504363911',
+				cookie     : true,  // enable cookies to allow the server to access the session
+				xfbml      : true,  // parse social plugins on this page
+				version    : 'v2.0' // use version 2.0
+			});
+
+			// Now that we've initialized the JavaScript SDK, we call 
+			// FB.getLoginStatus().  This function gets the state of the
+			// person visiting this page and can return one of three states to
+			// the callback you provide.  They can be:
+			// 1. Logged into your app ('connected')
+			// 2. Logged into Facebook, but not your app ('not_authorized')
+			// 3. Not logged into Facebook and can't tell if they are logged into
+			//    your app or not.
+			// These three cases are handled in the callback function.
+
+			FB.getLoginStatus(function(response) {
+				if(response.status=='connected'){
+					FB.api('/me', function(res){
+						document.getElementById('fblogincheck').innerHTML='Logged in as '+res.name+' on Facebook';
+					});
+				}	
+			});
+		};
+
+		// Load the SDK asynchronously
+		(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/en_US/sdk.js";
+		fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+    	</script>
+
 	<nav class="navbar navbar-default" role="navigation">
 		<div class="container-fluid">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
 				<a class="navbar-brand" href="/"><b>Relive That Moment</b></a>
 			</div>
 
@@ -48,10 +68,15 @@
 					<li><a href="/user_guide">User Guide</a></li>
 					{{usrmenu}}
 				</ul>
+				<span class="fblogincheck" id="fblogincheck"></span>
 			</div>
 		</div>
 	</nav>
 
+	<script>
+		
+	</script>
+	
 	<!--The main content of the page-->
 	<div id="content">
 		{{content}}
@@ -60,7 +85,7 @@
 	<div id="footer">
 		<!--Facebook Like and Share button-->
 		<div class="fb-like" data-href="http://relivethatmoment.herokuapp.com/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div><br/>
-		Created by: Qua Zi Xian and Tang Yu Long in July 2014
+		Created by: Qua Zi Xian and Tang Yu Long on XX July 2014
 	</div>
 	
 </body>

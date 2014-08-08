@@ -1,6 +1,6 @@
 <!--User login form-->
 <div class="error" id="error"></div>
-<script>
+<script>/*
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
     console.log('statusChangeCallback');
@@ -12,15 +12,14 @@
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
       testAPI();
-      //fb_login();
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
-      document.getElementById('status').innerHTML = 'Please log ' +
+      document.getElementById('error').innerHTML = 'Please log ' +
         'into this app.';
     } else {
       // The person is not logged into Facebook, so we're not sure if
       // they are logged into this app or not.
-      document.getElementById('status').innerHTML = 'Please log ' +
+      document.getElementById('error').innerHTML = 'Please log ' +
         'into Facebook.';
     }
   }
@@ -76,14 +75,14 @@
     console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
       console.log('Successful login for: ' + response.name);
-      document.getElementById('status').innerHTML =
-        'Thanks for logging in, ' + response.name +'!';
+      document.getElementById('fblogincheck').innerHTML =
+        'Logged in as ' + response.name + ' on Facebook';
     });
-  }
+  }*/
 </script>
 <form name="login_form" id="login_form" action="users/login" method="POST"
 onsubmit="return validate_login(event);">
-	<label>Email:</label>
+	<label>Email:</label> 
 	<input type="text" name="email" size="30"><br/>
 
 	<label>Password:</label>
@@ -94,5 +93,11 @@ onsubmit="return validate_login(event);">
 	<a href="/reset_password">Forgot your password?</a><br/>
 
 	<input type="submit" name="submit_button" value="Login">
+	
+	<!--FB Login Button-->
+	<fb:login-button scope="public_profile" onlogin="checkLoginState();" auto-logout-link="true">
+	</fb:login-button>
+	
+	<div id="status">
 	</div>
 </form>
