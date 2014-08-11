@@ -38,6 +38,10 @@ div{
 	padding: 0 5px;
 }
 
+.abt_txt{
+	font-size: 18;
+}
+
 label{
 	width: 150px;
 }
