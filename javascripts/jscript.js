@@ -19,7 +19,7 @@ function checkName(name){
 	var data = {};
 	data.name = name;
 	ajaxRequest.open("POST", "/users/checkName", true);
-	ajaxRequest.setRequestHeader("Content-Type", "application/json");
+	ajaxRequest.setRequestHeader("Content-type", "application/json");
 	ajaxRequest.onreadystatechange = function(){
 		if(ajaxRequest.readyState==4 && ajaxRequest.status==200){
 			document.getElementById("checkName").innerHTML = ajaxRequest.responseText;
@@ -88,33 +88,9 @@ function validate_entry(ev){
 	var text = document.forms[0].story.value;
 	var checkFile = document.getElementById('checkFile').innerHTML;
 	if(filename=="" || title=="" || text=="" || checkFile!='Ok')
-		document.getElementById('error').innerHTML = 'Please make sure all fields are properly filled';
-	else{
-      		window.fbAsyncInit = function() {
-			FB.init({
-				appId      : '595408083913803',
-				cookie     : true,  // enable cookies to allow the server to access the session
-				xfbml      : true,  // parse social plugins on this page
-				version    : 'v2.0' // use version 2.0
-			});
-			/*FB.login(function(){
-				FB.api('/me/feed', 'POST', {message: title+'\n'+text});
-			}, {scope: 'publish_actions'});*/
-			
-			FB.api('/me/feed', 'POST', {message: title+'\n'+text});
-		}
-
-		// Load the SDK asynchronously
-		(function(d, s, id) {
-		var js, fjs = d.getElementsByTagName(s)[0];
-		if (d.getElementById(id)) return;
-		js = d.createElement(s); js.id = id;
-		js.src = "//connect.facebook.net/en_US/sdk.js";
-		fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
-
+		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please make sure all fields are properly filled</div>';
+	else
 		document.forms[0].submit();
-	}
 }
 
 //Checks if the given image is of the supported type.
@@ -144,12 +120,19 @@ function validate_signup(){
 	var emailCheck = document.getElementById('checkEmail').innerHTML;
 	var passCheck = document.getElementById('checkPassword').innerHTML;
 	var pass2Check = document.getElementById('confirmPassword').innerHTML;
+	var terms = document.forms[0].terms.checked;
 
 	if(nameCheck!='Ok' || emailCheck!='Ok' || passCheck!='Ok' ||
 	pass2Check!='Ok'){
-		document.getElementById('error').innerHTML = 'Please make sure all fields are valid';
+		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please make sure all fields are valid</div>';
 		return false;
 	}
+
+	if(!terms){
+		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">You must agree to our Terms of Use to sign up.</div>';
+		return false;
+	}
+	
 	return true;
 }
 
@@ -163,12 +146,12 @@ function validate_login(ev){
 
 	//Performs input validation
 	if(email.length==0 || pass.length==0){
-		document.getElementById('error').innerHTML='Empty email and/or password field(s).';
+		document.getElementById('error').innerHTML='<div class="alert alert-danger" role="alert">Empty email and/or password field(s).</div>';
 		return false;
 	}
 
 	if(!is_valid_email(email)){
-		document.getElementById('error').innerHTML="Invalid email address.";
+		document.getElementById('error').innerHTML='<div class="alert alert-danger" role="alert">Invalid email address.</div>';
 		return false;
 	}
 
@@ -184,12 +167,15 @@ function validate_login(ev){
 	ajaxRequest.onreadystatechange=function(){
 		if(ajaxRequest.readyState==4){
 			if(ajaxRequest.status==200){
-				document.getElementById('error').innerHTML=ajaxRequest.responseText;
-				if(ajaxRequest.responseText=='Login successful')
+				if(ajaxRequest.responseText=='Login successful'){
+					document.getElementById('error').innerHTML='<div class="alert alert-success" role="alert">Login successful</div>';
 					document.getElementById('login_form').submit();
+				}
+				else
+					document.getElementById('error').innerHTML='<div class="alert alert-danger" role="alert">'+ajaxRequest.responseText+'</div>';
 			}
 			else if(ajaxRequest.status==400)
-				document.getElementById('error').innerHTML='Bad request';
+				document.getElementById('error').innerHTML='<div class="alert alert-danger" role="alert">Bad request</div>';
 		}
 	};
 	ajaxRequest.open("POST", "/users/validate_login", true);
@@ -219,12 +205,12 @@ function reset_passwd(ev){
 	var checkEmail = document.getElementById('checkEmail').innerHTML;
 
 	if(name.length==0){
-		document.getElementById('error').innerHTML = 'Please enter a username';
+		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please enter a username</div>';
 		return false;
 	}
 
 	if(checkEmail!='Ok'){
-		document.getElementById('error').innerHTML = 'Please use a valid email address';
+		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please use a valid email address</div>';
 		return false;
 	}
 
@@ -236,7 +222,7 @@ function reset_passwd(ev){
 	ajaxRequest = new XMLHttpRequest();
 	ajaxRequest.onreadystatechange = function(){
 		if(ajaxRequest.readyState==4 && ajaxRequest.status==200){
-			document.getElementById('error').innerHTML = ajaxRequest.responseText;
+			document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">'+ajaxRequest.responseText+'</div>';
 			document.forms[0].reset();
 		}
 	};
@@ -255,7 +241,7 @@ function admin_reset_password(ev, name, email){
 	ajaxRequest = new XMLHttpRequest();
 	ajaxRequest.onreadystatechange=function(){
 		if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
-			document.getElementById('message').innerHTML = ajaxRequest.responseText;
+			document.getElementById('message').innerHTML = '<div class="alert alert-success" role="alert">'+ajaxRequest.responseText+'</div>';
 	};
 	ajaxRequest.open("POST", "/users/reset_password", true);
 	ajaxRequest.setRequestHeader("Content-Type", "application/json");
@@ -271,12 +257,12 @@ function change_password(ev){
 	var checkPass2 = document.getElementById('confirmPassword').innerHTML;
 
 	if(oldpass.length==0){
-		document.getElementById('error').innerHTML = 'Please enter your current password';
+		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please enter your current password</div>';
 		return false;
 	}
 
 	if(checkPass!='Ok' || checkPass2!='Ok'){
-		document.getElementById('error').innerHTML = 'Please make sure the 2 new passwords match';
+		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please make sure the 2 new passwords match</div>';
 		return false;
 	}
 
@@ -286,10 +272,14 @@ function change_password(ev){
 
 	ajaxRequest = new XMLHttpRequest();
 	ajaxRequest.onreadystatechange=function(){
-		if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
-			document.getElementById('error').innerHTML = ajaxRequest.responseText;
-			if(ajaxRequest.responseText=='Success')
+		if(ajaxRequest.readyState==4 && ajaxRequest.status==200){
+			if(ajaxRequest.responseText=='Success'){
+				document.getElementById('error').innerHTML='<div class="alert alert-success" role="alert">Success</div>';
 				document.forms[0].reset();
+			}
+		else
+			document.getElementById('error').innerHTML='<div class="alert alert-danger" role="alert">'+ajaxRequest.responseText+'</div>';
+		}
 	};
 	ajaxRequest.open('POST', '/users/changepassword', true);
 	ajaxRequest.setRequestHeader('Content-Type', 'application/json');
@@ -332,26 +322,13 @@ function delete_entry(ev, id){
 //Sends request to server, telling it that it is log in via Facebook
 function fb_login(){
 	FB.getLoginStatus(function(response){
-		if(response.status=='connected'){
-			/*FB.api('/me', function(response) {
-				data = {};
-				data.name = response.name;
-				data.email = response.email;
-				ajaxRequest = new XMLHttpRequest();
-				ajaxRequest.onreadystatechange = function(){
-					if(ajaxRequest.readyState==4 && ajaxRequest.status==200)
-						//document.getElement*/
-			document.getElementById('error').innerHTML = 'Connected to Facebook';
-				/*};
-				ajaxRequest.open('POST', '/users/fb_login', true);
-				ajaxRequest.send(JSON.stringify(data));
-			}*/
-		}
-		else
+		if(response.status==='connected')
+			document.getElementById('error').innerHTML = 'Logged in to Facebook';
+		else{
 			FB.login(function(response){
-			//If Facebook login is complete
 				if(response.authResponse)
 					fb_login();
-			});
+			}, {scope: 'public_profile, email'});
+		}
 	});
 }

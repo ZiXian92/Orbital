@@ -1,18 +1,27 @@
 <!--Signup form-->
+<div class="message" id="message">
+Please read through the Terms of Use and Privacy Policy in our About page before proceeding.
+</div>
 <div class="error" id="error"></div>
 <form name="signup" id="signup" action="users/signup" method="POST"
 onsubmit="return validate_signup();">
 	<label>Name:</label>
-	<input type="text" name="name" size="20" maxlength="20" placeholder="Your name" onkeyup="checkName(this.value);"><span id="checkName"></span><br/>
+	<input type="text" name="name" size="30" maxlength="20" placeholder="Your name" onkeyup="checkName(this.value);">
+	<span id="checkName"></span><br/>
 
 	<label>Email:</label>
-	<input type="text" name="email" size="30" placeholder="email@example.com" onkeyup="checkEmail(this.value);"><span id="checkEmail"></span><br/>
+	<input type="text" name="email" size="30" maxlength="50" placeholder="email@example.com" onkeyup="checkEmail(this.value);">
+	<span id="checkEmail"></span><br/>
 
 	<label>Password:</label>
-	<input type="password" name="passwd" size="20" placeholder="Use only alphanumeric characters" onkeyup="checkPassword(this.value);"><span id="checkPassword"></span><br/>
+	<input type="password" name="passwd" size="30" placeholder="Use only alphanumeric characters" onkeyup="checkPassword(this.value);">
+	<span id="checkPassword"></span><br/>
 
 	<label>Re-type password:</label>
-	<input type="password" name="re-passwd" size="20" placeholder="Must match password field" onkeyup="confirmPassword(this.value);"><span id="confirmPassword"></span><br/>
+	<input type="password" name="re-passwd" size="30" placeholder="Must match password field" onkeyup="confirmPassword(this.value);">
+	<span id="confirmPassword"></span><br/>
 
-	<input type="submit" name="submit" value="Sign Up">
+	<input type="checkbox" name="terms" value="agree">I agree to the <a href="/about">Terms of Use</a>.<br/>
+
+	<input type="submit" class="button" name="submit" value="Sign Up">
 </form>

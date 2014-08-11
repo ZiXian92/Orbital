@@ -15,11 +15,8 @@ div{
 }
 
 #fblogincheck{
-	border-style: none;
 	float: right;
-	height: 100%;
-	padding-top: auto;
-	padding-bottom: auto;
+	height: auto;
 }
 
 #content{
@@ -39,6 +36,10 @@ div{
 
 #content p{
 	padding: 0 5px;
+}
+
+.abt_txt{
+	font-size: 18;
 }
 
 label{
