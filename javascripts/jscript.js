@@ -120,7 +120,7 @@ function validate_signup(){
 	var emailCheck = document.getElementById('checkEmail').innerHTML;
 	var passCheck = document.getElementById('checkPassword').innerHTML;
 	var pass2Check = document.getElementById('confirmPassword').innerHTML;
-	var terms = document.forms[0].terms.value;
+	var terms = document.forms[0].terms.checked;
 
 	document.getElementById('error').innerHTML=terms;
 	return false;
@@ -130,6 +130,8 @@ function validate_signup(){
 		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please make sure all fields are valid</div>';
 		return false;
 	}
+
+	
 	return true;
 }
 
