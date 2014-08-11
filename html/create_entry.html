@@ -1,15 +1,19 @@
 <!--Form to gather required information for an entry-->
 <!--Lesson learnt: Must include enctype="multipart/form-data in <form> to
     allow file to be submitted as file"-->
+<div class="message" id="message">This entry will only be archived if the user
+is logged in at the time of creating this entry.<br/>
+Please take not of our <a href="/about">Terms of Use and Privacy Policy</a> before proceeding.
+</div>
 <div class="error" id="error"></div>
 <form name="new_entry" action="upload_handler/submit" method="post" id="entry" onsubmit="validate_entry(event);" enctype="multipart/form-data">
 
 	<!--Image file upload field-->
-	<label for="file">Image File:</label>
+	<label>Image File:</label>
 	<!--readURL() function to be implemented. Complicated.-->
 	<input type="file" name="img" id="file"
 	accept="image/gif, image/jpeg, image/png"
-	onchange="previewImage();">*required<span id="checkFile"></span><br/>
+	onchange="previewImage();"><span id="checkFile"></span><br/>
 
 	<!--Handle the preview issue at a later stage-->
 	<!--Image preview-->
@@ -21,12 +25,14 @@
 
 	<!--Title field-->
 	<label>Title:</label>
-	<input type="text" name="title" size="30" placeholder="Enter a title"><br/>
+	<input type="text" name="title" size="30" placeholder="Enter a title">
+	<br/>
 
 	<!--Story field-->
 	<label>Story:</label>
-	<textarea name="story" rows="20" cols="50" form="entry" placeholder="Write your story here..."></textarea>*required<br/>
+	<textarea name="story" rows="20" cols="50" form="entry" placeholder="Write your story here..."></textarea><br/>
 
 	<!--Submit button-->
 	<input type="submit" name="submit_button" value="Submit">
+	</label>
 </form>
