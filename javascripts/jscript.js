@@ -120,6 +120,10 @@ function validate_signup(){
 	var emailCheck = document.getElementById('checkEmail').innerHTML;
 	var passCheck = document.getElementById('checkPassword').innerHTML;
 	var pass2Check = document.getElementById('confirmPassword').innerHTML;
+	var terms = document.forms[0].terms.value;
+
+	document.getElementById('error').innerHTML=terms;
+	return false;
 
 	if(nameCheck!='Ok' || emailCheck!='Ok' || passCheck!='Ok' ||
 	pass2Check!='Ok'){
