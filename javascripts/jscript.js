@@ -122,15 +122,16 @@ function validate_signup(){
 	var pass2Check = document.getElementById('confirmPassword').innerHTML;
 	var terms = document.forms[0].terms.checked;
 
-	document.getElementById('error').innerHTML=terms;
-	return false;
-
 	if(nameCheck!='Ok' || emailCheck!='Ok' || passCheck!='Ok' ||
 	pass2Check!='Ok'){
 		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please make sure all fields are valid</div>';
 		return false;
 	}
 
+	if(!terms){
+		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">You must agree to our Terms of Use to sign up.</div>';
+		return false;
+	}
 	
 	return true;
 }
