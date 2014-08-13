@@ -13,6 +13,27 @@
 
 <body>
 	<script>
+		// This is called with the results from from FB.getLoginStatus().
+		function statusChangeCallback(response) {
+			if(response.status === 'connected') {
+				FB.api('/me', function(res){
+					document.getElementById('fblogincheck').innerHTML='Logged in as '+res.name+' on Facebook';
+				});
+			} else if(response.status === 'not_authorized'){}
+			else {
+				document.getElementById('fblogincheck').innerHTML='';
+			}
+		}
+
+		// This function is called when someone finishes with the Login
+		// Button.  See the onlogin handler attached to it in the sample
+		// code below.
+		function checkLoginState() {
+			FB.getLoginStatus(function(response) {
+				statusChangeCallback(response);
+			});
+		}
+
       		window.fbAsyncInit = function() {
 			FB.init({
 				appId      : '595408083913803',
@@ -21,13 +42,8 @@
 				version    : 'v2.0' // use version 2.0
 			});
 
-			FB.getLoginStatus(function(response) {
-				if(response.status=='connected'){
-					FB.api('/me', function(res){
-						document.getElementById('fblogincheck').innerHTML='Logged in as '+res.name+' on Facebook';
-					});
-				}	
-			});
+
+			checkLoginState();
 			
 			//Proven to be working, but pops up on every refresh
 			/*FB.login(function(){
