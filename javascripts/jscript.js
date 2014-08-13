@@ -72,13 +72,13 @@ function checkPassword(passwd){
 }
 
 //Checks if the 2nd password matches the first
-function confirmPassword(passwd2){
+/*function confirmPassword(passwd2){
 	var pass = document.forms[0].passwd.value;
 	if(pass==passwd2)
 		document.getElementById('confirmPassword').innerHTML = 'Ok';
 	else
 		document.getElementById('confirmPassword').innerHTML = 'The passwords do not match';
-}
+}*/
 
 //Returns true if ALL fields are not empty and false otherwise
 function validate_entry(ev){
@@ -118,17 +118,23 @@ function previewImage(){
 function validate_signup(){
 	var nameCheck = document.getElementById('checkName').innerHTML;
 	var emailCheck = document.getElementById('checkEmail').innerHTML;
-	var passCheck = document.getElementById('checkPassword').innerHTML;
-	var pass2Check = document.getElementById('confirmPassword').innerHTML;
+	var pass = document.forms[0].passwd.value;
+	var pass2 = document.forms[0].passwd2.value;
 	var terms = document.forms[0].terms.checked;
 
-	if(nameCheck!='Ok' || emailCheck!='Ok' || passCheck!='Ok' ||
-	pass2Check!='Ok'){
-		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please make sure all fields are valid</div>';
+	if(nameCheck!='Ok'){
+		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Invalid/Unavailable username.</div>';
 		return false;
 	}
-
-	if(!terms){
+	else if(emailCheck!='Ok'){
+		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Invalid/Unavailable email address.</div>';
+		return false;
+	}
+	else if(pass!=pass2){
+		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">The passwords do not match.</div>';
+		return false;
+	}
+	else if(!terms){
 		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">You must agree to our Terms of Use to sign up.</div>';
 		return false;
 	}
