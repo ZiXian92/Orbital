@@ -83,6 +83,7 @@
 
 		/* Removes the PDF file from the temporary storage */
 			unlink("/tmp/".(string)$_POST['entry_id'].".pdf");
+			header('Location: https://'.$_SERVER['HTTP_HOST'].'/create_entry');
 		}
 
 		/* Destroys the session if the user is not logged in.
