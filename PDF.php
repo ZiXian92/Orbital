@@ -74,9 +74,10 @@
 		 * Change the destination to D before publishing.
 		 */
 		public function __destruct(){
-			parent::Output($this->_title.'.pdf', 'I');
 			if(isset($_SESSION['user_id']))
 				parent::Output("/tmp/".(string)$_POST['entry_id'].".pdf", "F");
+			else
+				parent::Output($this->_title.'.pdf', 'I');
 		}
 
 		/* Methods */
