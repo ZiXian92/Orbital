@@ -250,16 +250,19 @@ function change_password(ev){
 	ev.preventDefault();
 	var oldpass = document.forms[0].oldpasswd.value;
 	var newpass = document.forms[0].passwd.value;
-	var checkPass = document.getElementById('checkPassword').innerHTML;
-	var checkPass2 = document.getElementById('confirmPassword').innerHTML;
+	var pass2 = document.forms[0].passwd2.value;
+	var passCheck = document.getElementById('checkPassword').innerHTML;
 
 	if(oldpass.length==0){
 		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please enter your current password</div>';
 		return false;
 	}
-
-	if(checkPass!='Ok' || checkPass2!='Ok'){
-		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please make sure the 2 new passwords match</div>';
+	else if(passCheck!='Ok'){
+		document.getElementById('error').innerHTML='<div class="alert alert-danger" role="alert">Invalid password.</div>';
+		return false;
+	}
+	else if(newpass!=pass2){
+		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">The 2 new passwords do not match.</div>';
 		return false;
 	}
 

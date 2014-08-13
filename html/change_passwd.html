@@ -1,14 +1,14 @@
 <!--Form to change password-->
+<p>Click outside the form field to validate your new password.</p>
 <div class="error" id="error"></div>
 <form name="change_passwd" action="users/changepassword" method="POST"
 onsubmit="return change_password(event);">
 <label>Current Password:</label>
 <input type="password" name="oldpasswd" size="20" placeholder="Your current password"><br/>
 <label>New Password:</label>
-<input type="password" name="passwd" size="20" placeholder="New alphanumeric password" onkeyup="checkPassword(this.value);">
+<input type="password" name="passwd" size="20" placeholder="New alphanumeric password" onchange="checkPassword(this.value);">
 <span id="checkPassword"></span><br/>
 <label>Re-enter New Password:</label>
-<input type="password" name="passwd2" size="20" placeholder="Re-type new password" onkeyup="confirmPassword(this.value);">
-<span id="confirmPassword"></span><br/>
+<input type="password" name="passwd2" size="20" placeholder="Re-type new password"><br/>
 <input type="submit" name="submit" value="Change Password">
 </form>
