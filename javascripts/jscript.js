@@ -88,9 +88,14 @@ function validate_entry(ev){
 				version    : 'v2.0' // use version 2.0
 			});
 
-			FB.login(function(){
-				//FB.api('/me/feed', 'post', {message: title+'\n'+text});
-			}, {scope: 'publish_actions'});
+			FB.getLoginStatus(function(response){
+				if(response=='connected'){
+					FB.login(function(){
+						//FB.api('/me/feed', 'post', {message: title+'\n'+text});
+					}, {scope: 'publish_actions'});
+				}
+				//document.forms[0].submit();
+			});
 		};
 
 		// Load the SDK asynchronously
@@ -102,7 +107,8 @@ function validate_entry(ev){
 		fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));
 
-		document.forms[0].submit();
+		//document.forms[0].submit();
+		return false;
 	}
 }
 
