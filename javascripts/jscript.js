@@ -89,8 +89,9 @@ function validate_entry(ev){
 			});
 
 			FB.getLoginStatus(function(response){
+				alert('Hello');
 				if(response.status==='connected'){
-					alert('Connected');
+					//alert('Connected');
 					FB.login(function(){
 						FB.api('/me/feed', 'post', {message: title+'\n'+text});
 					}, {scope: 'publish_actions'});
