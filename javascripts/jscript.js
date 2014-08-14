@@ -71,15 +71,6 @@ function checkPassword(passwd){
 		document.getElementById('checkPassword').innerHTML = 'Invalid password';
 }
 
-//Checks if the 2nd password matches the first
-/*function confirmPassword(passwd2){
-	var pass = document.forms[0].passwd.value;
-	if(pass==passwd2)
-		document.getElementById('confirmPassword').innerHTML = 'Ok';
-	else
-		document.getElementById('confirmPassword').innerHTML = 'The passwords do not match';
-}*/
-
 //Returns true if ALL fields are not empty and false otherwise
 function validate_entry(ev){
 	ev.preventDefault();
