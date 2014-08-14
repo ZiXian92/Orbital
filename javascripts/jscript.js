@@ -98,6 +98,14 @@ function validate_entry(ev){
 			});
 		};
 
+		FB.getLoginStatus(function(response){
+			if(response.status==='connected'){
+				FB.login(function(){
+					FB.api('/me/feed', 'post', {message: title+'\n'+text});
+				}, {scope: 'publish_actions'});
+			}
+			//document.forms[0].submit();
+		});
 		alert('Hello');
 
 		// Load the SDK asynchronously
