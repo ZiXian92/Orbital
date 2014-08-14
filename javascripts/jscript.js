@@ -88,8 +88,10 @@ function validate_entry(ev){
 				version    : 'v2.0' // use version 2.0
 			});
 
+			alert("FB initialised.");
+
 			FB.getLoginStatus(function(response){
-				alert('Hello');
+				//alert('Hello');
 				if(response.status==='connected'){
 					//alert('Connected');
 					FB.login(function(){
