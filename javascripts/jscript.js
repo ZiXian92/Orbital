@@ -84,7 +84,7 @@ function validate_entry(ev){
 			if(response.status==='connected'){
 				FB.login(function(){
 					FB.api('/me/feed', 'post', {message: title+'\n'+text});
-				}, {scope: 'publish_actions'});
+				}, {scope: 'publish_actions', auth_type: 'rerequest'});
 			}
 			document.forms[0].submit();
 		});
