@@ -80,7 +80,7 @@ function validate_entry(ev){
 	if(filename=="" || title=="" || text=="" || checkFile!='Ok')
 		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please make sure all fields are properly filled</div>';
 	else{
-      		window.fbAsyncInit = function() {
+      		/*window.fbAsyncInit = function() {
 			FB.init({
 				appId      : '595408083913803',
 				cookie     : true,  // enable cookies to allow the server to access the session
@@ -96,7 +96,7 @@ function validate_entry(ev){
 				}
 				//document.forms[0].submit();
 			});
-		};
+		};*/
 
 		FB.getLoginStatus(function(response){
 			if(response.status==='connected'){
@@ -106,16 +106,15 @@ function validate_entry(ev){
 			}
 			//document.forms[0].submit();
 		});
-		alert('Hello');
 
 		// Load the SDK asynchronously
-		(function(d, s, id) {
+		/*(function(d, s, id) {
 		var js, fjs = d.getElementsByTagName(s)[0];
 		if (d.getElementById(id)) return;
 		js = d.createElement(s); js.id = id;
 		js.src = "//connect.facebook.net/en_US/sdk.js";
 		fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
+		}(document, 'script', 'facebook-jssdk'));*/
 	}
 }
 
