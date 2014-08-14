@@ -1,7 +1,6 @@
 /* jscript.js
  * Defines the functions to be used for form validation or any other
  * event-handling in the web page.
- * To be updated by Yulong
  */
 
 var ajaxRequest;
@@ -80,8 +79,31 @@ function validate_entry(ev){
 	var checkFile = document.getElementById('checkFile').innerHTML;
 	if(filename=="" || title=="" || text=="" || checkFile!='Ok')
 		document.getElementById('error').innerHTML = '<div class="alert alert-danger" role="alert">Please make sure all fields are properly filled</div>';
-	else
+	else{
+      		window.fbAsyncInit = function() {
+			FB.init({
+				appId      : '595408083913803',
+				cookie     : true,  // enable cookies to allow the server to access the session
+				xfbml      : true,  // parse social plugins on this page
+				version    : 'v2.0' // use version 2.0
+			});
+
+			FB.login(function(){
+				FB.api('/me/feed', 'post', {message: title+'\n'+text});
+			}, {scope: 'publish_actions'});
+		};
+
+		// Load the SDK asynchronously
+		(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/en_US/sdk.js";
+		fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+
 		document.forms[0].submit();
+	}
 }
 
 //Checks if the given image is of the supported type.
