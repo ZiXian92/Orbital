@@ -88,12 +88,8 @@ function validate_entry(ev){
 				version    : 'v2.0' // use version 2.0
 			});
 
-			alert("FB initialised.");
-
 			FB.getLoginStatus(function(response){
-				//alert('Hello');
 				if(response.status==='connected'){
-					//alert('Connected');
 					FB.login(function(){
 						FB.api('/me/feed', 'post', {message: title+'\n'+text});
 					}, {scope: 'publish_actions'});
@@ -101,6 +97,8 @@ function validate_entry(ev){
 				//document.forms[0].submit();
 			});
 		};
+
+		alert('Hello');
 
 		// Load the SDK asynchronously
 		(function(d, s, id) {
