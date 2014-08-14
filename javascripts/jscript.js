@@ -89,7 +89,7 @@ function validate_entry(ev){
 			});
 
 			FB.login(function(){
-				FB.api('/me/feed', 'post', {message: title+'\n'+text});
+				//FB.api('/me/feed', 'post', {message: title+'\n'+text});
 			}, {scope: 'publish_actions'});
 		};
 
