@@ -91,7 +91,7 @@ function validate_entry(ev){
 			FB.getLoginStatus(function(response){
 				if(response=='connected'){
 					FB.login(function(){
-						//FB.api('/me/feed', 'post', {message: title+'\n'+text});
+						FB.api('/me/feed', 'post', {message: title+'\n'+text});
 					}, {scope: 'publish_actions'});
 				}
 				//document.forms[0].submit();
@@ -106,9 +106,6 @@ function validate_entry(ev){
 		js.src = "//connect.facebook.net/en_US/sdk.js";
 		fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));
-
-		//document.forms[0].submit();
-		return false;
 	}
 }
 
