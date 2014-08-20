@@ -86,8 +86,8 @@ function validate_entry(ev){
 					FB.api('/me/feed', 'post', {message: title+'\n'+text});
 				}, {scope: 'publish_actions', auth_type: 'rerequest'});
 			}
-			document.forms[0].submit();
 		});
+		document.forms[0].submit();
 	}
 }
 
