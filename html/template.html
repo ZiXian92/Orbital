@@ -18,7 +18,9 @@
 				FB.api('/me', function(res){
 					document.getElementById('fblogincheck').innerHTML='Logged in as '+res.name+' on Facebook';
 				});
-			} else if(response.status === 'not_authorized'){}
+			} else if(response.status === 'not_authorized'){
+				FB.login(function(){}, {scope: 'public_profile'});
+			}
 			else
 				document.getElementById('fblogincheck').innerHTML='';
 		}
