@@ -36,8 +36,15 @@
 				xfbml      : true,  // parse social plugins on this page
 				version    : 'v2.0' // use version 2.0
 			});
-			FB.login();
-			checkLoginState();
+			
+			FB.getLoginStatus(function(response){
+				if(response.status==='connected')
+					FB.api('/me', function(res){
+						document.getElementById('fblogincheck').innerHTML=res.name;
+					});
+				else
+					document.getElementById('fblogincheck').innerHTML='';
+			});
 		};
 
 		// Load the SDK asynchronously
